@@ -1,0 +1,2779 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>柔道整復師のための FCM Web学習ナビ｜3級・2級</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#FFFFFF;--surface:#F6F8FA;--card:#FFFFFF;--border:#D0D7DE;
+  --accent:#2563EB;--accent2:#059669;--accent3:#D97706;--danger:#DC2626;
+  --purple:#7C3AED;--text:#1F2328;--text-sub:#4B5563;--text-dim:#6B7280;
+  --s-none:#E5E7EB;--s-weak:#EDE9FE;--s-ok:#DBEAFE;--s-good:#D1FAE5;
+  --c-none:#9CA3AF;--c-weak:#7C3AED;--c-ok:#2563EB;--c-good:#059669;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0F1117;--surface:#181C27;--card:#1E2335;--border:#2A3050;
+    --accent:#4B7BF5;--accent2:#34D399;--accent3:#F59E0B;--danger:#F87171;
+    --purple:#A78BFA;--text:#E8EAF0;--text-sub:#8B95B5;--text-dim:#4A5270;
+    --s-none:#2A3050;--s-weak:#7C3AED;--s-ok:#0369A1;--s-good:#065F46;
+    --c-none:#8B95B5;--c-weak:#A78BFA;--c-ok:#38BDF8;--c-good:#34D399;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+
+/* ─── HEADER ─── */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;}
+.hbadge{background:var(--accent);color:#fff;font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:4px;}
+.htitle{font-size:14px;font-weight:700;}
+.hsub{font-size:11px;color:var(--text-sub);margin-left:auto;}
+
+/* ─── VIEW SWITCHER ─── */
+.views{display:flex;gap:6px;margin:0 0 0 12px;}
+.vbtn{font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--text-sub);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.vbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* ─── LAYOUT ─── */
+.layout{display:grid;grid-template-columns:1fr;}
+.sidebar{display:none !important;}
+.sb-sec{padding:0 14px;margin-bottom:20px;}
+.sb-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.main{padding:20px;overflow-y:auto;}
+
+/* ─── 進捗バー ─── */
+.tp{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;}
+.tp-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+.tp-val{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--accent);}
+.tp-unit{font-size:11px;color:var(--text-sub);margin-left:2px;}
+.ptrack{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s;}
+.legend{display:flex;flex-direction:column;gap:5px;}
+.li{display:flex;align-items:center;gap:7px;font-size:12px;}
+.ldot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.tlist{display:flex;flex-direction:column;gap:4px;}
+.titem{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:12px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:7px;}
+.titem:hover{border-color:var(--accent);}
+.tbadge{font-family:'DM Mono',monospace;font-size:10px;padding:2px 5px;border-radius:3px;flex-shrink:0;}
+.tnone{font-size:12px;color:var(--text-dim);padding:4px;}
+
+/* ─── VIEW: チェック ─── */
+.check-start-card{background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(5,150,105,.06));border:1px solid rgba(37,99,235,.3);border-radius:14px;padding:24px;margin-bottom:20px;text-align:center;}
+.check-start-card h2{font-size:16px;font-weight:700;margin-bottom:8px;}
+.check-start-card p{font-size:13px;color:var(--text-sub);margin-bottom:16px;line-height:1.7;}
+.start-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:opacity .2s;}
+.start-btn:hover{opacity:.85;}
+
+/* ─── 現状把握チェック ─── */
+.check-prog{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;}
+.cp-bar-wrap{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:8px;}
+.cp-bar{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.q-subject{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:8px;letter-spacing:.06em;}
+.q-text{font-size:14px;font-weight:500;line-height:1.6;margin-bottom:16px;}
+.q-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-btn{padding:10px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-sub);cursor:pointer;font-size:12px;font-weight:500;font-family:'Noto Sans JP',sans-serif;transition:all .2s;line-height:1.4;}
+.q-btn:hover{transform:translateY(-1px);}
+.q-btn[data-v="yes"]:hover,.q-btn[data-v="yes"].sel{background:#D1FAE5;border-color:#059669;color:#065F46;}
+.q-btn[data-v="mostly"]:hover,.q-btn[data-v="mostly"].sel{background:#DBEAFE;border-color:#2563EB;color:#1E40AF;}
+.q-btn[data-v="vague"]:hover,.q-btn[data-v="vague"].sel{background:#EDE9FE;border-color:#7C3AED;color:#5B21B6;}
+.q-btn[data-v="no"]:hover,.q-btn[data-v="no"].sel{background:#F3F4F6;border-color:#9CA3AF;color:#4B5563;}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+.q-nav-btn{background:none;border:1px solid var(--border);color:var(--text-sub);padding:7px 16px;border-radius:7px;cursor:pointer;font-size:12px;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.q-nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.q-nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.q-count{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);}
+
+/* ─── 結果マップ ─── */
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.result-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.result-subj{font-size:14px;font-weight:700;}
+.result-score{font-family:'DM Mono',monospace;font-size:13px;}
+.result-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px;}
+.result-fill{height:100%;border-radius:3px;transition:width .5s;}
+.result-detail{display:flex;gap:6px;flex-wrap:wrap;}
+.res-q{font-size:11px;padding:2px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);}
+.res-q.good{background:#D1FAE5;border-color:#059669;color:#065F46;}
+.res-q.ok  {background:#DBEAFE;border-color:#2563EB;color:#1E40AF;}
+.res-q.weak{background:#EDE9FE;border-color:#7C3AED;color:#5B21B6;}
+.res-q.none{background:#F3F4F6;border-color:#9CA3AF;color:#4B5563;}
+.result-action{margin-top:10px;display:flex;gap:8px;}
+.ract-btn{font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--text-sub);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.ract-btn:hover{border-color:var(--accent);color:var(--accent);}
+.ract-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.ract-btn.primary:hover{opacity:.85;}
+
+/* ─── VIEW: 学習 ─── */
+.grid-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.grid-title{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--text-sub);text-transform:uppercase;}
+.reset-btn{font-size:11px;color:var(--text-dim);background:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.reset-btn:hover{color:var(--danger);border-color:var(--danger);}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-bottom:24px;}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.scard::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--s-none);transition:background .22s;}
+.scard[data-status="weak"]::before{background:var(--s-weak);}
+.scard[data-status="ok"]::before{background:var(--s-ok);}
+.scard[data-status="good"]::before{background:var(--s-good);}
+.scard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.sc-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:4px;}
+.sc-name{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.4;}
+.sc-ess{font-size:11px;color:var(--text-sub);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;}
+.sc-cnt{font-size:11px;color:var(--text-dim);font-family:'DM Mono',monospace;}
+.sbadge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:12px;border:1px solid;font-family:'DM Mono',monospace;}
+.st-none{color:var(--c-none);border-color:var(--s-none);background:var(--s-none);}
+.st-weak{color:var(--c-weak);border-color:var(--s-weak);background:var(--s-weak);}
+.st-ok  {color:var(--c-ok);border-color:var(--s-ok);background:rgba(3,105,161,.15);}
+.st-good{color:var(--c-good);border-color:var(--s-good);background:rgba(6,95,70,.2);}
+
+/* ─── 詳細パネル ─── */
+.dpanel{display:none;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+.dpanel.open{display:block;animation:sli .22s ease;}
+@keyframes sli{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.dp-hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.dp-meta{flex:1;}
+.dp-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:4px;}
+.dp-name{font-size:16px;font-weight:700;margin-bottom:8px;}
+.dp-ess{font-size:12px;color:var(--text-sub);line-height:1.7;background:var(--surface);border-radius:7px;padding:8px 12px;border-left:2px solid var(--accent);}
+.dp-close{background:none;border:1px solid var(--border);color:var(--text-sub);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.dp-close:hover{border-color:var(--danger);color:var(--danger);}
+.inner-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);}
+.itab{padding:9px 16px;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-sub);transition:all .2s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
+.itab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.itab-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:4px;background:#DBEAFE;color:var(--accent);}
+.itab-badge.purple{background:#EDE9FE;color:var(--purple);}
+.itab-badge.amber{background:#FEF3C7;color:var(--accent3);}
+.tab-pane{display:none;padding:18px 20px;}
+.tab-pane.active{display:block;}
+.skill-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:1.6;margin-bottom:7px;}
+.skill-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px;}
+.check-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.6;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:color .2s;}
+.check-item:last-child{border-bottom:none;}
+.cbox{width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:10px;}
+.check-item.checked .cbox{background:var(--accent2);border-color:var(--accent2);color:#000;}
+.check-item.checked{color:var(--text-dim);text-decoration:line-through;}
+.kw-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.kw-tag{font-size:12px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .2s;position:relative;}
+.kw-tag:hover{background:var(--s-ok);border-color:var(--accent);color:var(--text);}
+.kw-tag.has-def{border-color:var(--accent);color:var(--accent);font-weight:500;}
+.kw-tag.has-def::after{content:'ⓘ';font-size:10px;margin-left:3px;color:var(--accent);vertical-align:middle;}
+.kw-section{margin-bottom:12px;}
+.kw-section-title{font-size:11px;color:var(--text-dim);font-family:'DM Mono',monospace;letter-spacing:.08em;margin-bottom:6px;text-transform:uppercase;}
+.q-item{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;line-height:1.6;margin-bottom:5px;position:relative;padding-left:24px;}
+.q-item::before{content:'Q';position:absolute;left:8px;top:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);font-weight:500;}
+.jitsu-card{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:14px;margin-bottom:12px;}
+.jitsu-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.jitsu-situation{font-size:13px;line-height:1.8;margin-bottom:12px;padding:9px 11px;background:rgba(0,0,0,.2);border-radius:7px;color:var(--text-sub);}
+.jitsu-q{font-size:13px;font-weight:500;margin-bottom:10px;color:var(--text);}
+.jitsu-input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:13px;padding:9px 11px;resize:vertical;min-height:70px;transition:border-color .2s;line-height:1.6;}
+.jitsu-input:focus{outline:none;border-color:var(--accent);}
+.jitsu-answer-btn{margin-top:7px;font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid var(--accent3);background:none;color:var(--accent3);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.jitsu-answer-btn:hover{background:rgba(245,158,11,.15);}
+.jitsu-answer{display:none;margin-top:8px;padding:10px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.3);border-radius:7px;font-size:13px;line-height:1.8;color:var(--text-sub);}
+.jitsu-answer.open{display:block;animation:sli .2s ease;}
+.answer-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);letter-spacing:.08em;margin-bottom:5px;}
+.calc-box{background:rgba(0,0,0,.25);border-radius:6px;padding:9px 11px;font-family:'DM Mono',monospace;font-size:13px;line-height:1.9;margin-top:7px;color:var(--accent2);}
+.dp-foot{padding:16px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.rat-lbl{font-size:12px;color:var(--text-sub);white-space:nowrap;}
+.rat-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.rbt{font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:500;padding:5px 12px;border-radius:7px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text-sub);transition:all .2s;}
+.rbt[data-val="none"].active{background:var(--s-none);border-color:var(--c-none);color:var(--c-none);}
+.rbt[data-val="weak"].active{background:var(--s-weak);border-color:var(--c-weak);color:var(--c-weak);}
+.rbt[data-val="ok"].active{background:rgba(3,105,161,.2);border-color:var(--c-ok);color:var(--c-ok);}
+.rbt[data-val="good"].active{background:rgba(6,95,70,.25);border-color:var(--c-good);color:var(--c-good);}
+.pages-box{margin-left:auto;font-size:11px;color:var(--text-dim);background:var(--card);border:1px solid var(--border);padding:5px 10px;border-radius:6px;font-family:'DM Mono',monospace;}
+
+/* ─── ポップアップ ─── */
+.kw-popup{display:none;position:fixed;z-index:9999;background:var(--card);border:1.5px solid var(--accent);border-radius:12px;padding:14px 16px;max-width:320px;min-width:200px;width:320px;box-shadow:0 16px 48px rgba(0,0,0,.25);pointer-events:none;}
+.kw-popup.visible{display:block;animation:popIn .15s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(.94) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.kp-term{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:7px;}
+.kp-desc{font-size:12px;color:var(--text);line-height:1.75;margin-bottom:8px;}
+.kp-page{font-family:'DM Mono',monospace;font-size:11px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.35);color:var(--accent2);padding:3px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:5px;}
+.kp-multinote{font-size:10px;color:var(--text-dim);line-height:1.6;margin-top:8px;}
+.kp-close-hint{font-size:10px;color:var(--text-dim);margin-top:6px;text-align:right;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--surface);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.sidebar{display:none !important;}}
+
+
+/* ─── ツール説明 ─── */
+.ps-tool-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.ps-tool-desc{font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:20px;
+  padding:14px 16px;background:var(--card);border:1px solid var(--border);
+  border-radius:10px;border-left:3px solid var(--accent);}
+
+
+/* ─── 過去問タブ ─── */
+.pe-wrap{padding:4px 0;}
+.pe-section{font-size:11px;color:var(--text-dim);margin-bottom:8px;
+  padding:6px 10px;background:var(--surface);border-radius:6px;line-height:1.6;}
+.pe-block{margin-bottom:10px;}
+.pe-label{font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:5px;}
+.pe-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed;}
+.pe-table th:first-child,.pe-table td:first-child{width:160px;}
+.pe-table th{background:var(--surface);padding:5px 8px;text-align:left;
+  border-bottom:1px solid var(--border);color:var(--text-dim);font-weight:500;}
+.pe-table td{padding:5px 8px;border-bottom:1px solid var(--border);
+  vertical-align:top;color:var(--text);}
+.pe-nums{font-family:"DM Mono",monospace;font-size:11px;line-height:1.8;}
+.pe-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;
+  margin-right:3px;font-weight:500;}
+.pe-k12{background:#E1F5EE;color:#085041;}
+.pe-k14{background:#E6F1FB;color:#0C447C;}
+.pe-k16{background:#FAEEDA;color:#633806;}
+.pe-empty{color:var(--text-dim);font-style:italic;font-size:11px;}
+.pe-cta{margin-top:12px;padding:10px 12px;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;font-size:12px;
+  color:var(--text-sub);line-height:1.7;}
+.pe-cta strong{color:var(--text);}
+
+/* ─── 簡易チェック ─── */
+.qc-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;margin-bottom:16px;}
+.qc-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.qc-title{font-size:14px;font-weight:700;}
+.qc-prog{font-size:11px;color:var(--text-dim);font-family:"DM Mono",monospace;}
+.qc-num{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.qc-q{font-size:14px;line-height:1.7;margin-bottom:14px;color:var(--text);}
+.qc-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.qc-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;
+  padding:10px 8px;font-size:12px;font-weight:500;cursor:pointer;
+  font-family:"Noto Sans JP",sans-serif;color:var(--text);transition:all .18s;text-align:center;}
+.qc-btn:hover{border-color:var(--accent);background:rgba(37,99,235,.06);}
+.qc-btn.sel-yes{border-color:#1D9E75;background:#E1F5EE;color:#085041;}
+.qc-btn.sel-vague{border-color:#F5A623;background:#FAEEDA;color:#633806;}
+.qc-btn.sel-no{border-color:#E24B4A;background:#FCEBEB;color:#791F1F;}
+.qc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.qc-nav-btn{background:none;border:1px solid var(--border);border-radius:7px;
+  padding:7px 16px;font-size:12px;cursor:pointer;font-family:"Noto Sans JP",sans-serif;
+  color:var(--text-sub);transition:all .18s;}
+.qc-nav-btn:hover{border-color:var(--accent);color:var(--text);}
+.qc-nav-btn:disabled{opacity:.35;cursor:default;}
+
+/* 簡易結果 */
+.qr-wrap{margin-bottom:16px;}
+.qr-title{font-size:14px;font-weight:700;margin-bottom:10px;}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:12px;}
+.qr-cell{border:1px solid var(--border);border-radius:9px;padding:9px 12px;background:var(--card);}
+.qr-cell.weak{border-color:#E24B4A;background:#FCEBEB;}
+.qr-cell.vague{border-color:#F5A623;background:#FAEEDA;}
+.qr-cell.ok{border-color:#1D9E75;background:#E1F5EE;}
+.qr-label{font-size:10px;color:var(--text-dim);margin-bottom:3px;}
+.qr-val{font-size:12px;font-weight:700;}
+.qr-val.v-ok{color:#085041;}
+.qr-val.v-vague{color:#633806;}
+.qr-val.v-no{color:#791F1F;}
+.qr-action{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.qr-btn-sub{background:none;border:1px solid var(--border);border-radius:8px;
+  padding:9px 18px;font-size:12px;cursor:pointer;font-family:"Noto Sans JP",sans-serif;color:var(--text-sub);}
+.qr-btn-main{background:var(--accent);border:none;border-radius:8px;
+  padding:9px 20px;font-size:12px;font-weight:500;cursor:pointer;
+  font-family:"Noto Sans JP",sans-serif;color:#fff;box-shadow:0 3px 12px rgba(75,123,245,.35);}
+.qr-ok-box{background:#E1F5EE;border:1px solid #1D9E75;border-radius:10px;
+  padding:14px 16px;font-size:13px;line-height:1.7;color:#085041;margin-bottom:12px;}
+.qc-start-btn{background:var(--surface);border:1.5px solid var(--accent);border-radius:10px;
+  padding:11px 24px;font-size:13px;font-weight:500;cursor:pointer;
+  font-family:"Noto Sans JP",sans-serif;color:var(--accent);
+  transition:all .2s;display:block;width:100%;text-align:center;margin-top:10px;}
+.qc-start-btn:hover{background:var(--accent);color:#fff;}
+
+
+/* ─── ペルソナ選択後の級選択（カード直下） ─── */
+.pc-grade-wrap{display:none;margin-top:16px;
+  background:var(--card);border:1.5px solid var(--accent);
+  border-radius:12px;padding:16px 18px;animation:fadeIn .2s ease;}
+.pc-grade-wrap.open{display:block;}
+.pc-grade-title{font-size:13px;font-weight:700;color:var(--text);
+  margin-bottom:6px;text-align:center;}
+.pc-grade-desc{font-size:12px;color:var(--text-sub);text-align:center;
+  margin-bottom:14px;line-height:1.6;}
+.pc-grade-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pc-grade-btn{background:var(--surface);border:1.5px solid var(--border);
+  border-radius:10px;padding:16px 14px;cursor:pointer;text-align:center;
+  transition:all .2s;font-family:"Noto Sans JP",sans-serif;}
+.pc-grade-btn.b3{border-color:var(--accent);}
+.pc-grade-btn.b2{border-color:var(--purple);}
+.pc-grade-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.pc-grade-btn.b3:hover{border-color:var(--accent);}
+.pc-grade-btn.b2:hover{border-color:var(--purple);}
+.pc-gb-badge{display:inline-block;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:4px;color:#fff;margin-bottom:6px;
+  font-family:"DM Mono",monospace;}
+.pc-gb-badge.b3{background:var(--accent);}
+.pc-gb-badge.b2{background:var(--purple);}
+.pc-gb-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.pc-gb-sub{font-size:11px;color:var(--text-sub);line-height:1.5;}
+.pc-gb-badge{display:inline-block;font-size:10px;font-weight:700;color:#fff;padding:2px 8px;border-radius:8px;margin-bottom:6px;}
+
+
+
+/* ─── タブ説明文 ─── */
+.tab-desc{font-size:11px;color:var(--text-dim);padding:5px 16px 0;
+  line-height:1.7;border-top:0.5px solid var(--border);background:var(--surface);}
+.tab-desc span{color:var(--text-sub);}
+.tab-desc strong{color:var(--accent);font-weight:500;}
+
+
+/* ─── ビュータブ（ペルソナ・級選択後に表示） ─── */
+.view-tabs-wrap{background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+.view-tabs{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;margin-bottom:14px;width:fit-content;}
+.vtab{padding:10px 28px;font-size:15px;font-weight:700;cursor:pointer;
+  border:none;background:none;color:var(--text-sub);
+  font-family:"Noto Sans JP",sans-serif;transition:all .2s;}
+.vtab.active{background:var(--accent);color:#fff;}
+.view-tabs-desc{font-size:13px;color:var(--text);line-height:2.0;}
+.view-tabs-desc .vd-label{font-size:14px;font-weight:700;color:var(--accent);}
+.view-tabs-desc .vd-note{font-size:12px;color:var(--text-sub);line-height:1.8;
+  margin-left:4em;margin-top:2px;margin-bottom:8px;}
+.view-tabs-desc .vd-link{color:var(--accent);font-weight:600;text-decoration:none;}
+.fcm-lp-a{color:#4B7BF5 !important;font-weight:600 !important;text-decoration:none !important;font-style:normal !important;font-size:12px !important;display:inline-block;}
+.fcm-lp-a:hover{text-decoration:underline !important;}
+.view-tabs-desc .vd-link:hover{text-decoration:underline;}
+
+
+/* ─── 学習モード説明 ─── */
+.study-guide-box{background:var(--card);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 16px;margin-bottom:14px;}
+.sgb-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.sgb-body{font-size:12px;color:var(--text-sub);line-height:2.0;}
+.sgb-tab{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);
+  background:rgba(75,123,245,.12);padding:1px 8px;border-radius:4px;margin-right:4px;}
+
+/* ─── PERSONA SELECT ─── */
+.persona-select-screen{padding:16px 0;}
+.ps-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+.ps-sub{font-size:12px;color:var(--text-sub);margin-bottom:16px;line-height:1.6;}
+.persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:20px;}
+.persona-card{border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;
+  transition:all .2s;background:var(--card);text-align:left;}
+.persona-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.persona-card.selected{border-width:2px;}
+.pc-icon{font-size:24px;margin-bottom:6px;}
+.pc-name{font-size:12px;font-weight:700;line-height:1.4;}
+.pc-sub{font-size:11px;color:var(--text-sub);margin-top:4px;line-height:1.4;}
+
+/* ─── GUIDE MAP ─── */
+.guide-map-wrap{display:none;}
+.guide-toggle-box{margin-top:10px;padding:14px 16px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.08));border:1px solid rgba(139,92,246,.3);border-radius:10px;}
+.guide-toggle-desc{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.6;}
+.guide-toggle-btn-main{font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#6366F1,#8B5CF6);border:none;border-radius:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;padding:11px 22px;box-shadow:0 2px 8px rgba(139,92,246,.35);transition:transform .15s,box-shadow .15s;}
+.guide-toggle-btn-main:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(124,58,237,.25);}
+
+.guide-map-wrap.open{display:block;animation:fadeIn .25s ease;}
+.gm-guide-intro{padding:14px 16px;margin-bottom:12px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:10px;text-align:center;}
+.gm-intro-text{font-size:14px;color:var(--text);margin-bottom:10px;font-weight:600;}
+.gm-check-btn{background:linear-gradient(135deg,#10B981,#059669);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,.3);transition:transform .15s,box-shadow .15s;}
+.gm-check-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(5,150,105,.2);}
+.gm-guide-bottom{padding:16px;text-align:center;margin-top:8px;}
+.gm-ch-count{font-size:11px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px;margin-left:auto;margin-right:8px;}
+
+.gm-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.gm-persona-name{font-size:16px;font-weight:700;}
+.gm-tabs{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.gm-tab{padding:7px 18px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:none;
+  color:var(--text-sub);font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+.gm-tab.active{background:var(--accent);color:#fff;}
+.gm-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.gm-lg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-sub);}
+.gm-dot{width:8px;height:8px;border-radius:50%;}
+
+.gm-note-2{background:rgba(133,79,11,.12);border:1px solid rgba(133,79,11,.4);border-radius:8px;
+  padding:10px 14px;font-size:12px;color:#C68A0A;line-height:1.7;margin-bottom:12px;}
+
+.gm-chapter{border:0.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px;}
+.gm-ch-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;user-select:none;}
+.gm-ch-icon{font-size:18px;flex-shrink:0;}
+.gm-ch-num{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.7);flex-shrink:0;}
+.gm-ch-title{font-size:13px;font-weight:700;color:#fff;flex:1;}
+.gm-ch-pages{font-size:11px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace;flex-shrink:0;}
+.gm-ch-arr{font-size:11px;color:rgba(255,255,255,.6);flex-shrink:0;transition:transform .2s;}
+.gm-ch-arr.open{transform:rotate(90deg);}
+.gm-scene{font-size:11px;color:rgba(255,255,255,.75);padding:0 12px 8px 42px;line-height:1.5;
+  font-style:italic;border-bottom:0.5px solid rgba(255,255,255,.15);}
+
+.gm-secs{display:none;}
+.gm-secs.open{display:block;}
+.gm-sec{display:flex;align-items:flex-start;gap:8px;padding:8px 12px 8px 18px;
+  border-top:0.5px solid var(--border);cursor:pointer;transition:background .18s;}
+.gm-sec:hover{background:var(--surface);}
+.gm-sec-pages{min-width:88px;font-size:10px;color:var(--text-dim);flex-shrink:0;font-family:'DM Mono',monospace;margin-top:1px;}
+.gm-sec-body{flex:1;}
+.gm-sec-name{font-size:12px;font-weight:500;margin-bottom:3px;line-height:1.4;}
+.gm-sec-note{font-size:11px;color:var(--text-sub);line-height:1.5;display:none;}
+.gm-sec-note.open{display:block;animation:fadeIn .15s ease;}
+.gm-badge{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.gm-arr{font-size:10px;color:var(--text-dim);flex-shrink:0;margin-top:2px;transition:transform .15s;}
+.gm-arr.open{transform:rotate(90deg);}
+
+.gm-to-check{margin-top:14px;text-align:center;}
+.gm-check-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 32px;
+  font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans JP',sans-serif;
+  transition:opacity .2s;box-shadow:0 4px 16px rgba(75,123,245,.4);}
+.gm-check-btn:hover{opacity:.88;}
+.gm-back{font-size:12px;color:var(--text-dim);background:none;border:none;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;padding:4px 8px;margin-right:8px;}
+.gm-back:hover{color:var(--text);}
+
+
+
+.gm-grade-select{margin-top:20px;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+.gm-grade-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text);}
+.gm-grade-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gm-grade-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;
+  cursor:pointer;text-align:left;transition:all .2s;font-family:"Noto Sans JP",sans-serif;}
+.gm-grade-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.gm-gb-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;
+  background:var(--accent);color:#fff;margin-bottom:6px;font-family:"DM Mono",monospace;}
+.gm-gb-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.gm-gb-sub{font-size:11px;color:var(--text-sub);line-height:1.5;}
+
+/* ─── ペルソナ専用冒頭画面 ─── */
+.persona-select-screen{padding:20px;max-width:640px;margin:0 auto;}
+.ps-tool-title{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:16px;text-align:center;}
+.ps-tool-desc{font-size:13px;color:var(--text-sub);line-height:1.8;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px;}
+.ps-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.ps-sub{font-size:12px;color:var(--text-sub);line-height:1.6;margin-bottom:16px;}
+/* ─── スマホ対応 ─── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{display:none !important;}
+  .sb-sec{display:none;}
+  .sidebar .legend{display:none;}
+  .main{padding:16px 20px;}
+  .hdr{padding:10px 16px;gap:8px;flex-wrap:wrap;}
+  .htitle{font-size:13px;}
+  .hsub{font-size:11px;width:100%;text-align:right;margin-left:0;}
+  #persona-grade-bar{flex-direction:column;gap:8px;padding:10px 16px;}
+  #persona-grade-bar>div:last-child{margin-left:0;width:100%;}
+  #persona-grade-bar button{font-size:13px !important;padding:8px 14px !important;}
+  .view-tabs-wrap{padding:16px 20px;}
+  .view-tabs{width:100%;}
+  .vtab{padding:10px 16px;font-size:15px;flex:1;text-align:center;}
+  .view-tabs-desc{font-size:14px;line-height:1.8;}
+  .vd-note{margin-left:0 !important;font-size:13px;}
+  .guide-toggle-box{padding:16px 20px;}
+  .guide-toggle-desc{font-size:14px;line-height:1.8;}
+  .guide-toggle-btn-main{font-size:15px;padding:14px 20px;width:100%;}
+  .gm-header{flex-direction:column;gap:8px;}
+  .gm-tabs{width:100%;}
+  .gm-tab{flex:1;text-align:center;padding:10px 14px;font-size:14px;}
+  .gm-legend{gap:8px;font-size:12px;}
+  .gm-ch-hdr{padding:14px 16px;min-height:48px;}
+  .gm-ch-title{font-size:14px;}
+  .gm-ch-pages{font-size:12px;}
+  .gm-sec{padding:14px 16px 14px 18px;min-height:48px;}
+  .gm-sec-pages{min-width:80px;font-size:11px;}
+  .gm-sec-name{font-size:14px;}
+  .gm-badge{font-size:11px;padding:3px 8px;}
+  .gm-guide-intro{padding:16px 20px;font-size:14px;line-height:1.8;}
+  .gm-check-btn{font-size:15px;padding:14px 20px;width:100%;}
+  .qc-card{padding:20px;}
+  .qc-q{font-size:15px;line-height:1.8;}
+  .qc-btns{grid-template-columns:1fr;gap:10px;}
+  .qc-btn{padding:16px 14px;font-size:15px;min-height:52px;line-height:1.6;}
+  .qc-nav{margin-top:16px;}
+  .qc-nav-btn{padding:10px 16px;min-height:48px;font-size:14px;}
+  .qr-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .qr-cell{padding:14px 16px;font-size:14px;}
+  .qr-action{flex-direction:column;gap:10px;}
+  .qr-btn-sub,.qr-btn-main{width:100%;text-align:center;min-height:48px;font-size:14px;}
+  .check-start-card{padding:20px;}
+  .check-start-card h2{font-size:16px;}
+  .check-start-card p{font-size:14px;line-height:1.8;}
+  .start-btn{width:100%;padding:16px;font-size:15px;}
+  .q-card{padding:20px;}
+  .q-text{font-size:15px;line-height:1.8;}
+  .q-btns{grid-template-columns:1fr;gap:10px;}
+  .q-btn{padding:16px 14px;font-size:14px;min-height:52px;line-height:1.6;}
+  .q-nav-btn{padding:10px 14px;min-height:48px;font-size:14px;}
+  .q-count{font-size:14px;}
+  .result-card{padding:16px 20px;}
+  .result-subj{font-size:15px;}
+  .ract-btn{padding:10px 14px;min-height:48px;font-size:14px;}
+  .sgrid{grid-template-columns:1fr;gap:12px;}
+  .scard{padding:16px 20px;}
+  .sc-name{font-size:15px;}
+  .sc-ess{font-size:13px;line-height:1.8;}
+  .sc-cnt{font-size:12px;}
+  .study-guide-box{padding:16px 20px;}
+  .sgb-body{font-size:13px;line-height:1.8;}
+  .dpanel .dp-hdr{padding:16px 20px;flex-direction:column;}
+  .dp-close{align-self:flex-end;width:36px;height:36px;font-size:18px;}
+  .dp-name{font-size:16px;}
+  .dp-ess{font-size:14px;padding:12px 14px;line-height:1.8;}
+  .inner-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .itab{padding:10px 14px;font-size:13px;min-width:max-content;}
+  .tab-pane{padding:20px;}
+  .skill-item{font-size:14px;line-height:1.8;padding:6px 0;}
+  .check-item{font-size:14px;padding:12px 0;min-height:48px;line-height:1.8;}
+  .cbox{width:24px;height:24px;border-radius:6px;font-size:14px;}
+  .kw-tag{font-size:14px;padding:10px 14px;min-height:44px;border-radius:8px;}
+  .kw-popup{max-width:300px;width:300px;left:10px !important;right:10px;font-size:14px;}
+  .q-item{font-size:14px;padding:12px 14px 12px 26px;line-height:1.8;}
+  .jitsu-card{padding:16px 20px;}
+  .jitsu-situation{font-size:14px;line-height:1.8;}
+  .jitsu-q{font-size:14px;line-height:1.8;}
+  .dp-foot{padding:16px 20px;flex-direction:column;gap:10px;align-items:flex-start;}
+  .rat-btns{flex-wrap:wrap;gap:6px;}
+  .rbt{padding:8px 12px;min-height:44px;font-size:13px;}
+  .pages-box{margin-left:0;font-size:13px;}
+  .pe-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .pe-table th,.pe-table td{font-size:13px;padding:10px 12px;}
+  .pe-table th:first-child,.pe-table td:first-child{min-width:120px;}
+  .flow-guide-note{font-size:14px;line-height:1.8;}
+  .flow-btn-primary{font-size:16px;padding:16px;}
+  .gm2-group-hdr{padding:14px 16px;font-size:15px;}
+  .gm2-ch{padding:12px 16px 12px 20px;font-size:14px;}
+  .pc-grade-btns{grid-template-columns:1fr;gap:12px;}
+  .pc-grade-btn{padding:20px 16px;}
+  .fcm-lp-a{font-size:14px !important;}
+  .persona-select-screen{padding:20px;}
+  .ps-tool-title{font-size:20px;}
+  .ps-tool-desc{font-size:14px;line-height:1.8;padding:20px;}
+  .ps-title{font-size:18px;}
+  .ps-sub{font-size:14px;line-height:1.8;}
+}
+
+.flow-guide-note{font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
+.flow-btn-primary{font-size:15px;font-weight:700;color:#fff;background:#059669;border:none;border-radius:10px;cursor:pointer;padding:14px 28px;width:100%;font-family:'Noto Sans JP',sans-serif;box-shadow:0 2px 8px rgba(5,150,105,.3);}
+.flow-btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(5,150,105,.4);}
+.flow-btn-secondary{font-size:13px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:8px;cursor:pointer;padding:10px 20px;font-family:'Noto Sans JP',sans-serif;}
+.gm2-group{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.gm2-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:var(--surface);font-size:14px;font-weight:700;}
+.gm2-group-hdr:hover{background:var(--card);}
+.gm2-group-hdr .gm2-arrow{font-size:12px;color:var(--text-dim);transition:transform .2s;}
+.gm2-group.open .gm2-arrow{transform:rotate(90deg);}
+.gm2-group-body{display:none;border-top:1px solid var(--border);}
+.gm2-group.open .gm2-group-body{display:block;}
+.gm2-ch{padding:10px 16px 10px 24px;border-bottom:1px solid var(--border);font-size:13px;}
+.gm2-ch:last-child{border-bottom:none;}
+
+</style>
+</head>
+<body>
+<header class="hdr">
+  <span class="hbadge" id="grade-badge" style="background: var(--purple);">FCM 2級</span>
+  <span class="htitle">🩹 柔道整復師のための FCM Web学習ナビ</span>
+  <div class="views" id="header-tabs" style="display:none">
+    <!-- v2 -->
+    
+  </div>
+  <span class="hsub" id="last-updated"></span>
+</header>
+
+<div id="persona-select-area" style="">
+      <div class="persona-select-screen">
+        <div class="ps-tool-title">🩹 柔道整復師のための FCM Web学習ナビ</div>
+        <div style="font-size:14px;color:var(--text);line-height:1.8;margin-bottom:16px;text-align:center;font-weight:500;">ようこそ！まず級を選んで、簡易チェック（10問・約2分）で<br>あなたの苦手な業務分野を見つけましょう。</div>
+        <div class="ps-tool-desc">スタジオ経営に必要なフロント・財務・労務の知識を、あなたの業務に沿って効率よく学べます。<br>
+          このWeb学習ナビは、公式テキスト（Basic・Intermediate）を業務に直結した形で効率よく学ぶためのナビゲーションです。<br>
+          受検予定がない方は、ガイドマップの◎業務直結の節のみご確認ください。</div>
+        <div class="ps-title">学ぶ級を選んでください</div>
+        <div class="ps-sub">テキストを手元に用意してから以下の手順で進めてください。<br>① 級を選ぶ　② 現状把握チェック　③ 弱点の節からテキストを開く</div>
+        <div class="pc-grade-wrap open" id="pc-grade-wrap" style="display:block; border-color: #0F6E56;">
+          <div class="pc-grade-title">🩹 <span style="color:#A32D2D;font-weight:700">柔道整復師</span>　学ぶ級を選んでください</div>
+          <div class="pc-grade-desc">次に学習する級を選ぶと、ガイドマップと現状把握チェックが表示されます。</div>
+          <div class="pc-grade-btns">
+            <button class="pc-grade-btn b3" onclick="startWithGrade(3)" style="display:block;padding:20px 14px;background:var(--surface);border:2px solid var(--accent);border-radius:10px;cursor:pointer;">
+              <div class="pc-gb-title" style="font-size:15px;font-weight:700;color:var(--text);">Basic　3級で学ぶ</div>
+              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">簡易チェック10問＋学習モード</div>
+            </button>
+            <button class="pc-grade-btn b2" onclick="startWithGrade(2)" style="display:block;padding:20px 14px;background:var(--surface);border:2px solid var(--purple);border-radius:10px;cursor:pointer;">
+              <div class="pc-gb-title" style="font-size:15px;font-weight:700;color:var(--text);">Intermediate　2級で学ぶ</div>
+              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">簡易チェック11問＋学習モード</div>
+            </button>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);line-height:1.6;text-align:center;">
+          本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>複写・転載・再配布を禁止します。
+        </div>
+      </div>
+    </div>
+
+<div class="layout" style="margin-top: 52px; display: none;">
+<aside class="sidebar">
+  <div class="sb-sec">
+    <div class="sb-lbl">全体進捗</div>
+    <div class="tp">
+      <div class="tp-row"><span style="font-size:11px;color:var(--text-sub)" id="progress-label">確認済み業務分野</span>
+        <span><span class="tp-val" id="good-count">1</span><span class="tp-unit" id="subject-total"> / 12</span></span></div>
+      <div class="ptrack"><div class="pfill" id="pfill" style="width: 10%;"></div></div>
+    </div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">ステータス</div>
+    <div class="legend">
+      <div class="li"><div class="ldot" style="background:var(--c-none)"></div><span style="color:var(--text-sub)">✗　未着手</span></div>
+      <div class="li"><div class="ldot" style="background:var(--c-weak)"></div><span style="color:var(--text-sub)">△　学習中</span></div>
+      <div class="li"><div class="ldot" style="background:var(--c-ok)"></div><span style="color:var(--text-sub)">○　理解できた</span></div>
+      <div class="li"><div class="ldot" style="background:var(--c-good)"></div><span style="color:var(--text-sub)">◎　問題で確認済み</span></div>
+    </div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">今日やること</div>
+    <div class="tlist" id="today-list"><div class="titem" onclick="switchView(&#39;study&#39;);setTimeout(()=&gt;toggleDetail(&#39;s01&#39;),100)"><span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span><span>健康づくり</span></div><div class="titem" onclick="switchView(&#39;study&#39;);setTimeout(()=&gt;toggleDetail(&#39;s02&#39;),100)"><span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span><span>運動トレーニングの基礎</span></div><div class="titem" onclick="switchView(&#39;study&#39;);setTimeout(()=&gt;toggleDetail(&#39;s03&#39;),100)"><span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span><span>フィットネス産業概論</span></div><div class="titem" onclick="switchView(&#39;study&#39;);setTimeout(()=&gt;toggleDetail(&#39;s04&#39;),100)"><span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span><span>店舗運営</span></div><div class="titem" onclick="switchView(&#39;study&#39;);setTimeout(()=&gt;toggleDetail(&#39;s05&#39;),100)"><span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span><span>イベント・企画運営（財務）</span></div></div>
+  </div>
+</aside>
+
+<main class="main" id="main-area">
+  <div id="view-check">
+    <div id="persona-grade-bar" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button onclick="clearPersona()" style="font-size:13px;color:var(--accent);
+        background:none;border:none;cursor:pointer;font-family:&#39;Noto Sans JP&#39;,sans-serif;text-decoration:underline;">
+        ← 級を選び直す
+      </button>
+      <span id="pgb-persona-name" style="font-size:14px;font-weight:700;">🩹 <span style="color:#A32D2D">柔道整復師</span></span></span>
+      <div style="display:flex;gap:0;background:var(--card);border:1px solid var(--border);
+        border-radius:8px;overflow:hidden;margin-left:auto;">
+        <button id="pgb-tab3" onclick="startWithGrade(3)" style="padding: 7px 18px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; font-family: &quot;Noto Sans JP&quot;, sans-serif; color: var(--text-sub); transition: 0.2s;">Basic　3級で学ぶ</button>
+        <button id="pgb-tab2" onclick="startWithGrade(2)" style="padding: 7px 18px; font-size: 13px; font-weight: 600; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: var(--purple); font-family: &quot;Noto Sans JP&quot;, sans-serif; color: rgb(255, 255, 255); transition: 0.2s;">Intermediate　2級で学ぶ</button>
+      </div>
+    </div>
+    <div id="view-tabs-area" style="">
+      <div class="view-tabs-wrap">
+        <!-- v2: tabs removed -->
+        <div id="flow-guide"><div class="flow-guide-note"><strong>📝 使い方（2ステップ）</strong><br>STEP 1：まず簡易チェックで苦手な業務分野を見つける（約2分）<br>STEP 2：苦手な業務分野からテキストを開いて学ぶ</div></div></div>
+        <div style="margin-top:10px;" id="guide-toggle-wrap">
+          <div class="guide-toggle-box">
+            <div class="guide-toggle-desc">📍 あなたの仕事に直結する業務分野が一目でわかります。まずはこちらで全体像を確認しましょう。</div>
+            <button onclick="toggleGuideMap()" id="guide-toggle-btn" class="guide-toggle-btn-main">▶ ガイドマップを開く</button>
+          </div>
+        </div>
+        <div id="fcm-lp-link-wrap" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);"><div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">24時間ジムにとってFCM技能検定がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div><a href="https://fia.or.jp/fcm-24-hourgym/" target="_blank" class="fcm-lp-a">→ 24時間ジムとFCM技能検定</a></div>
+      </div>
+    </div>
+    <div class="guide-map-wrap" id="guide-map-wrap">
+        <div class="gm-header">
+          <button class="gm-back" onclick="clearPersona()">← 級を選び直す</button>
+          <span class="gm-persona-name" id="gm-persona-name"></span>
+          <div class="gm-tabs">
+            <button class="gm-tab active" id="gm-tab3" onclick="startWithGrade(3)">Basic　3級で学ぶ</button>
+            <button class="gm-tab" id="gm-tab2" onclick="startWithGrade(2)">Intermediate　2級で学ぶ</button>
+          </div>
+        </div>
+        <div class="gm-legend" style="display:none;">
+          <div class="gm-lg"><div class="gm-dot" style="background:#1D9E75"></div>◎ 店舗マネジメントに直結</div>
+          <div class="gm-lg"><div class="gm-dot" style="background:#185FA5"></div>○ 戦略マネジメント</div>
+          <div class="gm-lg"><div class="gm-dot" style="background:#888780"></div>△ 指導系（標準装備）</div>
+          <div class="gm-lg"><div class="gm-dot" style="background:#E24B4A"></div>▽ 受検のために必要</div>
+        </div>
+        <div id="gm-note-2" class="gm-note-2" style="display:none">
+          ⚠️ <strong>2級（Intermediate）は、3級（Basic）の内容を理解していることを前提としています。</strong><br>
+          <strong>② 運動トレーニングの基礎</strong>はIntermediateテキストに独立した章が存在しません。<strong>2級試験でも出題されます。</strong><br>
+          3級タブに切り替えてBasic 第3章（P82〜P108）を確認してください。
+        </div>
+        <div id="gm-chapters"></div>
+
+      </div>
+    <div id="quick-check-area" style="">
+      <div id="qc-intro-card" style="text-align:center;padding:16px;"><button class="flow-btn-primary" onclick="startQuickCheck()">📝 簡易チェックを始める（10問・約2分）</button></div></div>
+      <div id="qc-quiz-area" style="display:none">
+        <div class="qc-card">
+          <div class="qc-header">
+            <span class="qc-title">簡易チェック</span>
+            <span class="qc-prog" id="qc-prog">1 / 10</span>
+          </div>
+          
+          <div class="qc-q" id="qc-q"></div>
+          <div class="qc-btns">
+            <button class="qc-btn" id="qcb-yes" onclick="answerQuick(&#39;yes&#39;)">◎ できる</button>
+            <button class="qc-btn" id="qcb-vague" onclick="answerQuick(&#39;vague&#39;)">△ あやふや</button>
+            <button class="qc-btn" id="qcb-no" onclick="answerQuick(&#39;no&#39;)">✗ できない</button>
+          </div>
+          <div class="qc-nav">
+            <button class="qc-nav-btn" id="qc-prev" onclick="prevQuick()" disabled="">← 前へ</button>
+          </div>
+        </div>
+      </div>
+      <div id="qc-result-area" style="display:none">
+        <div class="qr-wrap">
+          <div class="qr-title">簡易チェックの結果</div>
+          <div class="qr-grid" id="qr-grid"></div>
+          <div id="qr-message"></div>
+          <div class="qr-action" style="grid-column:1/-1;">
+            <!-- メール登録エリア（未登録の場合のみ表示） -->
+            <div id="mail-register-area" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;text-align:left;">
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">📩 公式テキストの更新情報をお知らせします</div>
+              <div style="font-size:12px;color:var(--text-sub);line-height:1.7;margin-bottom:14px;">公式テキストの内容に関わる法改正・業界動向・事例などが生じた場合、FCMのWebに掲載します。掲載時にメールでお知らせします。</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+                <input type="text" id="reg-name" placeholder="お名前" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
+                <input type="text" id="reg-org" placeholder="所属（会社名・スタジオ名等）" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
+                <input type="email" id="reg-email" placeholder="メールアドレス" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
+                <input type="email" id="reg-email2" placeholder="メールアドレス（確認用）" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
+              </div>
+              <div style="font-size:10px;color:var(--text-dim);margin-bottom:12px;">※ご登録いただいた情報は、上記のお知らせ等にのみ使用します。<br>※登録完了のメールは送信されません。更新情報がある場合にメールをお届けします。</div>
+              <button class="flow-btn-primary" onclick="submitRegistration()">登録して学習を始める →</button>
+              <div style="text-align:center;margin-top:10px;">
+                <button onclick="skipRegistration()" style="font-size:13px;color:var(--text-dim);background:none;border:none;cursor:pointer;text-decoration:underline;font-family:&#39;Noto Sans JP&#39;,sans-serif;">登録せずに学習を始める →</button>
+              </div>
+              <div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+                <button class="flow-btn-secondary" onclick="startQuickCheck()">もう一度チェック</button>
+              </div>
+            </div>
+            <!-- 登録済みの場合のボタン -->
+            <div id="already-registered" style="display:none;">
+              <button class="flow-btn-primary" onclick="showStudyFromResult()">苦手な業務分野から学習を始める →</button>
+              <div style="text-align:center;margin-top:12px;">
+                <button class="flow-btn-secondary" onclick="startQuickCheck()">もう一度チェック</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main></div>
+
+    <div id="check-start-view" style="display:none">
+      <div class="check-start-card">
+        <h2 id="check-start-title">🔑  まず現状を把握しましょう</h2>
+        <p id="check-start-desc"><strong>24時間ジム運営者</strong>　2級（Intermediate）<br>全12業務分野・74問に「できる・だいたいできる・あやふや・できない」で答えるだけ。<br>得意分野と苦手分野が一目でわかります。<br><span style="color:var(--accent3);font-size:11px;">⚠️ ② 運動トレーニングはBasicテキスト参照（3級タブで確認）</span></p>
+        <button class="start-btn" onclick="startCheck()">現状把握チェックを開始する</button>
+        <button class="gm-back" style="margin-top:10px;display:block;text-align:center" onclick="backToQuickCheck()">← 簡易チェックに戻る</button>
+      </div>
+      <div id="result-view" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-size:14px;font-weight:700;">現状把握の結果</div>
+          <div style="display:flex;gap:8px;">
+            <button class="ract-btn" onclick="startCheck()">再チェック</button>
+            <button class="ract-btn primary" onclick="switchView(&#39;study&#39;)">学習モードへ</button>
+          </div>
+        </div>
+        <div id="result-list"></div>
+      </div>
+    </div>
+    <div id="check-quiz-view" style="display:none">
+      <div class="check-prog">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+          <span style="font-size:12px;font-weight:500;" id="cp-subject"></span>
+          <span class="q-count" id="cp-count"></span>
+        </div>
+        <div class="cp-bar-wrap"><div class="cp-bar" id="cp-bar" style="width:0%"></div></div>
+      </div>
+      <div id="quiz-card-area"></div>
+    </div>
+  
+
+  <div id="view-study" style="display:none">
+    <div class="study-guide-box" style="padding:10px 16px;cursor:pointer;" onclick="var b=this.querySelector(&#39;.sgb-body&#39;);var a=this.querySelector(&#39;.sgb-arrow&#39;);if(b.style.display===&#39;none&#39;){b.style.display=&#39;&#39;;a.textContent=&#39;▲&#39;;}else{b.style.display=&#39;none&#39;;a.textContent=&#39;▶&#39;;}">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="sgb-title" style="margin-bottom:0;">使い方を見る</div>
+        <span class="sgb-arrow" style="font-size:12px;color:var(--text-dim);">▶</span>
+      </div>
+      <div class="sgb-body" style="display:none;margin-top:10px;">
+        各業務分野カードをクリックすると、以下の5つのタブで詳しく学習できます。<br>
+        <span class="sgb-tab">必要な技能</span>：この業務分野で身につける技能の一覧<br>
+        <span class="sgb-tab">チェックリスト</span>：自己確認用のチェック項目（クリックでチェック）<br>
+        <span class="sgb-tab">キーワード</span>：重要語句の定義と公式テキスト参照ページ<br>
+        <span class="sgb-tab">理解度質問</span>：記述式で答えられるか確認する問い<br>
+        <span class="sgb-tab">過去問</span>：過去の試験で出題された回と問番号
+      </div>
+    </div>
+    <div class="grid-hdr">
+      <button id="back-to-result-btn" onclick="updateFlowState()" style="display:none;font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:&#39;Noto Sans JP&#39;,sans-serif;text-decoration:underline;margin-bottom:8px;">← 結果に戻る</button>
+      <span class="grid-title" id="study-title">🔑 <span style="color:#185FA5">24時間ジム運営者</span>　2級（Intermediate）　業務分野一覧</span>
+      <button class="reset-btn" onclick="resetAll()">進捗をリセット</button>
+    </div>
+    <div class="dpanel" id="dpanel"></div>
+    <div class="sgrid" id="sgrid"></div>
+  </div>
+
+
+
+<div class="kw-popup" id="kw-popup">
+  <div class="kp-term"></div>
+  <div class="kp-page">📖 <span></span></div>
+  <div class="kp-multinote">（同じ語句が複数回記載されているので、代表的なページを表示しています。）</div>
+  <div class="kp-close-hint">クリックで閉じる / ESC</div>
+</div>
+<script>
+const PERSONAS_DEF = [
+  {id:'ju', label:'柔道整復師', icon:'🩹', color:'#A32D2D',
+   note3:'フィットネス施設との連携・自費メニュー導入・運動指導への拡張を目指す層。',
+   note2:'マーケティング・収支管理・HRMがフィットネス経営者視点で学べる。'},
+];
+
+// 3級 全章・節・ペルソナ別優先度
+const GUIDE3 = [
+  {ch:'第1章', title:'フィットネス産業', pages:'P8〜P44', icon:'🏢',
+   scene:'「この業界でどう働くか」を考えるとき——産業の全体像・商圏・業態の多様化',
+   secs:[
+     {name:'全体（産業概論・業界の歴史・商圏・業態多様化）', pages:'P8〜P44',
+      badges:{ju:'sec'},
+      notes:{ju:'フィットネス業界との連携・参入を理解するための業界構造の把握。'}}]},
+  {ch:'第2章', title:'健康施策の概要と動向', pages:'P44〜P82', icon:'❤️',
+   scene:'会員から「フレイルって何ですか？」と聞かれた——健康の定義・生活習慣病・介護予防',
+   secs:[
+     {name:'P44〜P63　健康の定義・健康日本21・生活習慣病・高齢者の健康づくり', pages:'P44〜P63',
+      badges:{ju:'pri'},
+      notes:{ju:'施術現場で毎日扱う概念（メタボ・ロコモ・フレイル）が体系的に整理される。'}},
+     {name:'P63〜P82　運動・栄養・休養の基礎知識・介護予防', pages:'P63〜P82',
+      badges:{ju:'pri'},
+      notes:{ju:'栄養・休養の知識は施術後の患者指導に活用できる。'}}]},
+  {ch:'第3章', title:'運動・トレーニングの基礎', pages:'P82〜P108', icon:'🏋️',
+   scene:'「なぜこのトレーニングが効果的なのか」を会員に説明するとき——筋肉・エネルギー・原理',
+   secs:[
+     {name:'P82〜P100　骨格筋・エネルギー代謝・加齢と不活動・トレーニングの原理原則', pages:'P82〜P100',
+      badges:{ju:'pri'},
+      notes:{ju:'施術知識と重なる部分が多く得意な分野のはず。「言語化・体系化」が目標。'}},
+     {name:'P100〜P108　事故予防・一次救命処置・AED', pages:'P100〜P108',
+      badges:{ju:'pri'},
+      notes:{ju:'施術現場での急変対応として直結。フィットネス施設の文脈での理解が必要。'}}]},
+  {ch:'第4章', title:'店舗運営', pages:'P108〜P163', icon:'🏪',
+   scene:'受付・ジム・スタジオ・プール・イベント——フロントから収支計算まで',
+   secs:[
+     {name:'1節　フロント業務（P109〜P121）', pages:'P109〜P121',
+      badges:{ju:'pri'},
+      notes:{ju:'接骨院の受付・予約管理との共通点が多い。フィットネス施設参入時の受付業務理解として。'}},
+     {name:'2節　ジム運営業務（P122〜P127）', pages:'P122〜P127',
+      badges:{ju:'tri'},
+      notes:{ju:'マシン安全管理の考え方は施術現場の機器管理にも応用できる。'}},
+     {name:'3節　スタジオ運営業務（P128〜P135）', pages:'P128〜P135',
+      badges:{ju:'tri'},
+      notes:{ju:'フィットネス施設でグループ指導を行う場合に必要。概念理解で十分。'}},
+     {name:'4節　プール運営業務（P136〜P141）', pages:'P136〜P141',
+      badges:{ju:'out'},
+      notes:{ju:'業務とは直接関係しない。試験では概念として出題されるため概要のみ理解。'}},
+     {name:'5節　スクール運営業務（P142〜P147）', pages:'P142〜P147',
+      badges:{ju:'tri'},
+      notes:{ju:'コース制の運動指導を導入する場合の参考として。概念理解で十分。'}},
+     {name:'6節　イベントの企画・運営・財務（P148〜P163）', pages:'P148〜P163',
+      badges:{ju:'pri'},
+      notes:{ju:'健康セミナー・体験施術イベントの収支管理として直結。'}}]},
+  {ch:'第5章', title:'顧客マネジメント', pages:'P164〜P186', icon:'🤝',
+   scene:'「また来てもらえるか」「いい口コミが広がるか」——継続率・LTV・クレーム対応',
+   secs:[
+     {name:'1節　顧客対応と接客の心構え（P165〜P174）', pages:'P165〜P174',
+      badges:{ju:'pri'},
+      notes:{ju:'患者への接遇・言葉遣い・クレーム対応は接骨院でも同様。'}},
+     {name:'2節　入会問い合わせ・見学者への対応（P175〜P176）', pages:'P175〜P176',
+      badges:{ju:'pri'},
+      notes:{ju:'施術体験への誘導として直結。'}},
+     {name:'3節　顧客対応と課題解決（P177〜P185）', pages:'P177〜P185',
+      badges:{ju:'pri'},
+      notes:{ju:'患者・クライアントの継続率管理・個人情報保護（医療記録）として直結。'}}]},
+  {ch:'第6章', title:'チームワークとコミュニケーション', pages:'P186〜P202', icon:'👥',
+   scene:'スタッフに仕事を任せるとき、チームで目標を達成するとき——報連相・PDCA・リーダーシップ',
+   secs:[
+     {name:'1節　組織と業務分担の考え方（P187〜P188）', pages:'P187〜P188',
+      badges:{ju:'pri'},
+      notes:{ju:'接骨院スタッフの育成・院内チームビルドに直結。'}},
+     {name:'2節　仕事の進め方（P189〜P193）　報連相・PDCAサイクル', pages:'P189〜P193',
+      badges:{ju:'pri'},
+      notes:{ju:'院内業務改善・スタッフ育成にPDCAを活用。'}},
+     {name:'3節　コミュニケーションの重要性（P194〜P196）　メラビアンの法則', pages:'P194〜P196',
+      badges:{ju:'pri'},
+      notes:{ju:'患者への説明・接遇での「伝え方」として直接活用できる。'}},
+     {name:'4節　リーダーの役割とフォロワーの役割（P197〜P201）', pages:'P197〜P201',
+      badges:{ju:'pri'},
+      notes:{ju:'院長としてのリーダーシップ・スタッフのフォロワーシップ育成として直結。'}}]},
+  {ch:'第7章', title:'施設・設備管理', pages:'P202〜P218', icon:'🔧',
+   scene:'設備が故障した、清掃が足りていない、動線が危険——施設を守るための知識',
+   secs:[
+     {name:'1節　総合クラブの施設内容（P203〜P210）　施設・設備の種類・動線', pages:'P203〜P210',
+      badges:{ju:'sec'},
+      notes:{ju:'院内の動線設計・設備管理・5Sによる清潔維持は接骨院でも直結。'}},
+     {name:'2節　管理の概念と基本（P211〜P217）　5S・補修・修繕・更新・再投資', pages:'P211〜P217',
+      badges:{ju:'sec'},
+      notes:{ju:'院内の5S・設備維持管理に直結。'}}]},
+  {ch:'第8章', title:'労働・安全衛生', pages:'P218〜P231', icon:'⚖️',
+   scene:'雇用・残業・社会保険・事故防止——働く権利と職場の安全を守るための知識',
+   secs:[
+     {name:'1節　労働者の保護（P219〜P224）　労働基準法・社会保険・雇用形態', pages:'P219〜P224',
+      badges:{ju:'pri'},
+      notes:{ju:'院スタッフの雇用管理・社会保険・労働時間管理は院長の法的義務。'}},
+     {name:'2節　職場の安全衛生の基本（P225〜P231）　ハインリッヒの法則・KYT・薬品管理', pages:'P225〜P231',
+      badges:{ju:'sec'},
+      notes:{ju:'ハインリッヒの法則は施術中の事故防止に直接応用できる。'}}]}
+];
+
+// 2級 全章タイトル
+const GUIDE2_CH = [
+  {key:'ch1', ch:'第1章', title:'フィットネス産業概論', pages:'P8〜P48', icon:'🏢',
+   scene:'フィットネス産業が社会の中でどう変わっているか——業態の多様化・公共施設・スポーツ産業'},
+  {key:'ch2', ch:'第2章', title:'健康施策（THP・健康経営・デジタルヘルス）', pages:'P49〜P60', icon:'🏥',
+   scene:'企業・自治体と連携するとき——THP・健康経営・データヘルスの知識が求められる'},
+  {key:'ch3', ch:'第3章', title:'店舗運営（3級より深い実務レベル）', pages:'P61〜P106', icon:'🏪',
+   scene:'品質管理・ICT活用・付帯事業——3級で学んだ店舗運営がより深い管理レベルへ'},
+  {key:'ch4', ch:'第4章', title:'マーケティング（2級で初登場）', pages:'P107〜P150', icon:'📣',
+   scene:'「なぜこのお客様が来てくれるか」を設計する——STP・4P・SNS・LTV経営'},
+  {key:'ch5', ch:'第5章', title:'売上収益管理（P/L・予実管理）', pages:'P151〜P172', icon:'💰',
+   scene:'数字で経営を語るとき——損益計算書・貸借対照表・予実管理・棚卸'},
+  {key:'ch6', ch:'第6章', title:'人的マネジメント（HRM・労働法規）', pages:'P173〜P212', icon:'👔',
+   scene:'スタッフを採用・育成・管理するとき——HRM・コーチング・シフト・36協定'},
+  {key:'ch7', ch:'第7章', title:'顧客管理（カスタマーサクセス・継続率）', pages:'P213〜P234', icon:'🤝',
+   scene:'「退会を防ぐ」から「成功を届ける」へ——CRM・継続率・コミュニティ形成'},
+  {key:'ch8', ch:'第8章', title:'施設・設備管理（法定点検・再投資）', pages:'P235〜P252', icon:'🔧',
+   scene:'施設を長く安全に使うために——法定点検・再投資計画・緊急時対応'},
+  {key:'ch9', ch:'第9章', title:'関連法規・リスク管理（2級で初登場）', pages:'P253〜P271', icon:'⚖️',
+   scene:'著作権・景品表示法・BCP——知らないと経営リスクになる法律の知識'},
+];
+
+// 2級 ペルソナ別優先度（節レベル）
+const GUIDE2_SECS = {
+  ju:{
+    ch1:[{pages:'P9〜P24',name:'1節　フィットネス産業',note:'フィットネス業界参入の全体像。メディカルフィットネスの可能性も含む。',badge:'sec'},{pages:'P37〜P39',name:'4節　介護予防',note:'介護予防×柔道整復の連携事業の根拠として。',badge:'pri'}],
+    ch2:[{pages:'P49〜P51',name:'1節　THP・データヘルス',note:'企業向け健康施術・産業保健との連携文脈として重要。',badge:'pri'},{pages:'P56〜P60',name:'3節　健康経営',note:'健康経営支援サービスとしての柔道整復師の位置づけとして。',badge:'pri'}],
+    ch3:[{pages:'P61〜P66',name:'1節　フロント運営業務',note:'フィットネス施設の受付管理の理解として。',badge:'sec'},{pages:'P67〜P73',name:'2節　ジム運営業務',note:'フィットネス施設との連携やジム内での運動指導を行う場合に必要。',badge:'sec'},{pages:'P84〜P88',name:'4節　プール運営業務',note:'直接関係しない。概念のみ。',badge:'out'}],
+    ch4:[{pages:'P107〜P112',name:'1節　マーケティング（STP・4P）',note:'接骨院の集客戦略・フィットネス事業参入時のマーケティングとして直結。',badge:'pri'},{pages:'P120〜P135',name:'3節　プロモーション・SNS・口コミ',note:'接骨院×フィットネスの集客プロモーション設計として直結。',badge:'pri'}],
+    ch5:[{pages:'P151〜P156',name:'1節　販売管理',note:'接骨院の売上管理・自費メニュー目標管理として直結。',badge:'pri'},{pages:'P164〜P172',name:'3節　収支管理（P/L・B/S）',note:'接骨院のP/L管理・フィットネス事業との複合収支管理として直結。',badge:'pri'}],
+    ch6:[{pages:'P173〜P183',name:'1〜3節　HRM・人材育成・コーチングスキル',note:'院スタッフ育成・コーチング技術として直結。',badge:'pri'},{pages:'P187〜P205',name:'5〜6節　要員管理・労働法規',note:'院スタッフの採用・労務管理・社会保険の義務として直結。',badge:'pri'}],
+    ch7:[{pages:'P213〜P234',name:'1〜3節　顧客管理・会員継続・コミュニティ',note:'患者・クライアントの継続率管理・リピート促進として直結。',badge:'pri'}],
+    ch8:[{pages:'P235〜P252',name:'1〜4節　施設管理・法定点検・事故防止',note:'フィットネス施設参入時の施設管理義務理解として。院内の設備管理にも応用。',badge:'sec'}],
+    ch9:[{pages:'P253〜P271',name:'1〜2節　関連法規・リスク管理',note:'医療法・個人情報保護・著作権（健康コンテンツ）・景品表示法は直結。',badge:'pri'}],
+  },
+};
+const BADGE_DEF = {
+  pri:{label:'◎ 店舗マネジメントに直結', bg:'#E1F5EE', color:'#065F46'},
+  sec:{label:'○ 試験頻出・理解必須', bg:'#E6F1FB', color:'#0C447C'},
+  tri:{label:'△ 概念理解で十分',   bg:'#F1EFE8', color:'#5F5E5A'},
+  out:{label:'▽ 受検に必要',       bg:'#FCEBEB', color:'#791F1F'},
+};
+// 新マーク定義（マネジメント目線・4段階）
+const GM_ORDER = {"ju": {"g3": [["接客心構え", "pri"], ["課題解決", "pri"], ["入会対応", "pri"], ["イベント", "pri"], ["フロント", "pri"], ["仕事進め方", "pri"], ["安全衛生", "pri"], ["事故予防", "pri"], ["管理概念5S", "pri"], ["労働者保護", "pri"], ["産業概論", "strat"], ["健康定義", "strat"], ["運動栄養", "strat"], ["骨格筋", "teach"], ["ジム運営", "exam"], ["スタジオ", "exam"], ["スクール", "exam"], ["プール", "exam"], ["施設内容", "exam"], ["組織分担", "exam"], ["コミュ", "exam"]], "g2": [["マーケ", "pri"], ["プロモ", "pri"], ["収支管理", "pri"], ["販売管理", "pri"], ["顧客管理", "pri"], ["Webマーケ", "pri"], ["リスク管理", "pri"], ["HRM", "pri"], ["要員管理", "pri"], ["職場安全", "pri"], ["フロント運営", "pri"], ["産業概論", "strat"], ["介護予防", "strat"], ["THP", "strat"], ["健康経営", "strat"], ["施設管理", "exam"], ["スタジオ運営", "exam"], ["プール運営", "exam"], ["付帯事業", "exam"]]}};
+const GM_KEY3 = {"産業概論": "産業概論・業界の歴史", "健康定義": "健康の定義・健康日本21", "運動栄養": "運動・栄養・休養の基礎知識", "骨格筋": "骨格筋・エネルギー代謝", "事故予防": "事故予防・一次救命処置", "フロント": "フロント業務", "ジム運営": "ジム運営業務", "スタジオ": "スタジオ運営業務", "プール": "プール運営業務", "スクール": "スクール運営業務", "イベント": "イベントの企画・運営・財務", "接客心構え": "顧客対応と接客の心構え", "入会対応": "入会問い合わせ・見学者", "課題解決": "顧客対応と課題解決", "組織分担": "組織と業務分担", "仕事進め方": "仕事の進め方", "コミュ": "コミュニケーションの重要性", "リーダー役割": "リーダーの役割とフォロワー", "施設内容": "総合クラブの施設内容", "管理概念5S": "管理の概念と基本", "労働者保護": "労働者の保護", "安全衛生": "職場の安全衛生の基本"};
+const GM_KEY2 = {"産業概論": "フィットネス産業", "介護予防": "介護予防", "THP": "THP・データヘルス", "健康経営": "健康経営・デジタルヘルス", "フロント運営": "フロント運営業務", "スタジオ運営": "スタジオ運営業務", "プール運営": "プール運営業務", "付帯事業": "付帯事業", "マーケ": "マーケティング（STP", "プロモ": "プロモーション・NPS", "Webマーケ": "Webマーケティング", "販売管理": "販売管理", "収支管理": "収支管理", "HRM": "HRM・人材育成", "要員管理": "要員管理・労働法規", "職場安全": "職場の安全衛生", "顧客管理": "顧客管理・会員継続", "施設管理": "施設管理・法定点検", "リスク管理": "関連法規・リスク管理"};
+
+const FCM_LP = {
+  ju: {name:'柔道整復師', url:'https://fia.or.jp/fcm-judo/'},
+};
+// LPリンクのHTMLを生成（将来：urlに識別パラメータを付与する場合はここで付ける）
+function fcmLpLink(){
+  const lp = FCM_LP[selectedPersona];
+  if(!lp) return '';
+  return '<div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">'+
+         lp.name+'にとってFCM技能検定がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div>'+
+         '<a href="'+lp.url+'" target="_blank" class="fcm-lp-a">→ '+lp.name+'とFCM技能検定</a>';
+}
+
+const PERSONA_QC = {"ju": {"g3": {"s01": "利用者への健康づくりの案内で、平均寿命と健康寿命の違いを整理できますか。", "s02": "運動指導やプログラム作成の場面で、トレーニングの原理と原則について、それぞれ２つ挙げ、その内容を確認できますか。", "s03": "自分の事業環境や地域・商圏を考えるために、フィットネス産業の市場規模を売上・施設数・会員数から確認できますか。", "s04a": "接骨院・整骨院で予約・会計・利用者対応を想定して、会則を説明するときの留意点で注意すべき点を確認できますか。", "s04b": "自費メニューや運動指導の採算を見るために、損益分岐点の意味を確認できますか。", "s05": "接骨院・整骨院の施術所・運動指導スペースを管理するとき、５S活動について、５つのSを確認できますか。", "s06": "接骨院・整骨院で予約・会計・利用者対応を想定して、顧客満足度の要素を２つ挙げ、式で確認できますか。", "s07": "接骨院・整骨院で、クレーム対応で、エスカレーションすべき状況を確認できますか。", "s08": "接骨院・整骨院でスタッフや業務委託者との連携を行う場面で、PDCAサイクルを確認できますか。", "s09": "接骨院・整骨院の安全・リスク管理で、ハインリッヒの法則を確認できますか。"}, "g2": {"s02": "運動指導やプログラム作成の場面で、運動を規定する要素を、種類、強度のほかに挙げられますか。", "s04a": "接骨院・整骨院でサービスの質を口コミ・紹介につなげるために、NPS（ネットプロモータースコア）の活用を確認できますか。", "s04b": "接骨院・整骨院の集客・差別化を考えるために、マーケティングプロセス「R→STP→MM→I→C」を確認できますか。", "s04c": "接骨院・整骨院の収支管理で、損益計算書と貸借対照表の違いを整理できますか。", "s04e": "接骨院・整骨院でスタッフや業務委託者との連携を行う場面で、労働契約と業務委託契約の違いを整理できますか。", "s04f": "接骨院・整骨院の安全・リスク管理で、顧客情報の管理について、個人情報保護法の観点から注意すべき点を確認できますか。", "s05": "接骨院・整骨院で予約・会計・利用者対応を想定して、クラブの主な入会動機を５つ挙げられますか。", "s06": "接骨院・整骨院の安全・リスク管理で、ストレスチェック制度について確認できますか。", "s01": "利用者への健康支援を考えるために、THP（トータル・ヘルスプロモーション・プラン）の概要と活用を確認できますか。", "s03": "自分の事業環境を考えるために、健康経営の概要と、健康関連事業が担う役割を確認できますか。", "s04d": "接骨院・施術所の設備を管理するために、法定点検の種類と点検周期を確認できますか。"}}};
+
+const QC3_TO_GMKEY = {"s01": "健康定義", "s02": "骨格筋", "s03": "産業概論", "s04a": "フロント", "s04b": "イベント", "s05": "管理概念5S", "s06": "課題解決", "s07": "接客心構え", "s08": "組織分担", "s09": "安全衛生"};
+const QC2_TO_GMKEY = {"s01": "THP", "s02": null, "s03": "産業概論", "s04a": "フロント運営", "s04b": "マーケ", "s04c": "収支管理", "s04d": "施設管理", "s04e": "HRM", "s04f": "リスク管理", "s05": "顧客管理", "s06": "職場安全"};
+
+const BADGE_DEF2 = {
+  pri:  {label:'◎ 店舗マネジメントに直結', bg:'#E1F5EE', color:'#065F46', group:'店舗マネジメントに直結'},
+  strat:{label:'○ 戦略マネジメント',       bg:'#E6F1FB', color:'#0C447C', group:'戦略マネジメント（外部環境を読んで戦略に活かす）'},
+  teach:{label:'△ 指導系',                 bg:'#F1EFE8', color:'#5F5E5A', group:'指導系（指導系カリキュラムなどでカバーされる分野）'},
+  exam: {label:'▽ 受検のために必要',       bg:'#FCEBEB', color:'#791F1F', group:'受検のために必要（この仕事の実務では登場しない）'},
+};
+const SUBJECTS = [
+  {
+    id:"s01",num:"①",name:"健康づくり",
+    essence:"運動・休養・栄養の健康三原則。\n生活習慣病予防及び高齢者の健康づくりの基本。",
+    skills:["健康に関する基本的な情報を把握している","高齢化社会と健康の課題について把握している","運動・栄養・休養について全体像を把握している"],
+    checklist:["健康の定義を理解している","健康と運動の関連性及び運動の必要性を理解している","健康と栄養の関連性及び栄養の必要性を理解している","代表的な健康課題に関するキーワード（メタボ等）を理解している","運動の見える化ができる","健康と休養の関連性及び休養の必要性を理解している"],
+    hp_questions:["平均寿命と健康寿命の違いを説明することができますか。","メタボリックシンドロームを説明することができますか。","ロコモティブシンドロームを説明することができますか。","WHO憲章による健康の定義を述べることができますか。"],
+    keywords:[{label:"健康・疾病",terms:["健康寿命","平均寿命","WHO憲章","フレイル","サルコペニア","メタボリックシンドローム","ロコモティブシンドローム"]},{label:"運動・栄養・休養",terms:["メッツ（METs）","五大栄養素","基礎代謝量","積極的休養","消極的休養"]},{label:"政策",terms:["健康日本21","特定保健指導","介護保険"]}],
+    questions:["平均寿命と健康寿命の違いを説明しなさい","メタボリックシンドロームを説明しなさい","WHO憲章による健康の定義を述べなさい","フレイルとその予防対策について説明しなさい"],
+    practice:[],
+    pages:"Basic P44〜P82"
+  },
+  {
+    id:"s02",num:"②",name:"運動トレーニングの基礎",
+    essence:"業界で従事するための健康・運動・体力に関する最低限の基礎。\nトレーニング時の障害・事故予防の基本。",
+    skills:["運動生理学の基本的な情報を理解している","トレーニングについて基本的に理解している","トレーニングで起こりうるケガ等について初歩的な内容を理解している"],
+    checklist:["骨格筋の活動について理解している","エネルギー代謝について理解している","加齢や不活動の影響について理解している","トレーニングの原理原則を理解している","トレーニングで起こりうるケガを理解している"],
+    hp_questions:["筋肉の主な活動様式を３つ挙げ、それぞれ説明することができますか。","エネルギー代謝の主な系統を３つ挙げ、それぞれ説明することができますか。","サルコペニアについて説明することができますか。","トレーニングの原理と原則について、それぞれ２つ挙げ、説明することができますか。","健康づくりに主な必要なトレーニング4つについて、説明することができますか。"],
+    keywords:[{label:"筋肉の活動",terms:["等張性収縮","等尺性収縮","等速性収縮"]},{label:"エネルギー代謝",terms:["ATP-CP系","解糖系","有酸素系","乳酸閾値（LT）"]},{label:"トレーニングの原理・原則",terms:["過負荷の原理","特異性の原理","可逆性の原理","全面性の原則","個別性の原則"]},{label:"傷害・予防",terms:["外傷","障害","RICE処置","AED・一次救命処置"]}],
+    questions:["筋肉の主な活動様式を３つ挙げ、それぞれ説明しなさい","エネルギー代謝の主な系統を３つ挙げ、それぞれ説明しなさい","トレーニングの原理と原則についてそれぞれ２つ挙げ、説明しなさい"],
+    practice:[],
+    pages:"Basic P82〜P108"
+  },
+  {
+    id:"s03",num:"③",name:"フィットネス産業概論",
+    essence:"当概産業の構造・歴史・特徴。\n商圏内の外部環境。\n国家の代表的な健康・運動施策。",
+    skills:["フィットネス産業について定義・立ち位置・歴史・市場規模を理解している","フィットネス産業の特徴を理解している","日本の健康施策や日本人の健康を理解している"],
+    checklist:["フィットネス産業の定義・役割を理解している","産業の市場規模を理解している","業界の歴史について変遷を理解している","国の健康施策の必要性及び代表的な施策を理解している","商圏に関する基本知識を持っている"],
+    hp_questions:["総務省によるフィットネス産業の分類を説明することができますか。","フィットネス産業の市場規模を売上・施設数・会員数から説明することができますか。","業界の黎明期について説明することができますか。","店舗商圏の主な構成要素項目を3つ説明することができますか。","入会時の期待と退会理由について説明することができますか。","特定保健指導について説明することができますか。"],
+    keywords:[{label:"産業・市場",terms:["総合型フィットネスクラブ","24時間ジム","パーソナルトレーニングジム","業態の多様化","指定管理者制度"]},{label:"会員制ビジネス",terms:["入会動機","退会理由","継続率（リテンション）","LTV（顧客生涯価値）","商圏"]}],
+    questions:["フィットネス産業の市場規模を売上・施設数・会員数から説明しなさい","商圏の構成要素を3つ説明しなさい","入会時の期待と退会理由について説明しなさい"],
+    practice:[],
+    pages:"Basic P8〜P44"
+  },
+  {
+    id:"s04",num:"④-1",name:"店舗運営",
+    essence:"フロント・ジム・スタジオ・プール運営実務。\nスクール事業・付帯事業の基本。\n施設内緊急時対応。",
+    skills:["各部門の通常業務の特徴と実際を理解している","サービス部門とスクール部門の運営について理解している","付帯業務を理解している","緊急時対応ができる"],
+    checklist:["受付部門の通常業務を理解している","トレーニングジム部門の通常業務を理解している","プール部門の通常業務を理解している","スクール部門の通常業務を理解している","主な付帯事業の基本を理解している","緊急時対応を理解している"],
+    hp_questions:["会則の説明時の留意点を述べることができますか。","現金取り扱い時の留意点を述べることができますか。","クレジットカードの取り扱いの留意点を説明することができますか。","トレーニングジムで推進すべきマナーについて、２つ挙げ、説明することができますか。","スタジオプログラムの意義について述べることができますか。","プールでの安全管理について、説明することができますか。","付帯事業の目的と、種類を３つ挙げ、説明することができますか。","緊急対応すべき状況を３つ挙げることができますか。"],
+    keywords:[{label:"フロント",terms:["会則","イシューイング","キャッシュレス決済","現金管理"]},{label:"各部門",terms:["カーディオマシン","レジスタンスマシン","プレコリオ","水質管理","塩素濃度"]},{label:"緊急対応",terms:["AED","一次救命処置（BLS）","ハインリッヒの法則","5S","ヒヤリ・ハット"]}],
+    questions:["会則の説明時の留意点を述べなさい","緊急対応すべき状況を３つ挙げなさい","付帯事業の目的と種類を３つ挙げ、説明しなさい"],
+    practice:[],
+    pages:"Basic P108〜P148"
+  },
+  {
+    id:"s05",num:"④-2",name:"イベント・企画運営（財務）",
+    essence:"イベントの目的、企画運営方法。\nイベント損益管理の基本。\n★財務の核心：損益分岐点・固定費・変動費",
+    skills:["イベント企画・実施時の収支管理について理解している","固定費用・変動費用を把握し、損益分岐売上高を算出できる"],
+    checklist:["企画するイベントの売上項目・単価・費用内容を説明できる","費用内容を変動費と固定費に分けることができる","イベントの損益分岐点を計算できる","目標収支金額を設定できる"],
+    hp_questions:["イベントの代表的な売上項目は何か説明できますか。","売上と比例して増減する費用項目（変動費）を説明できますか。","定員内で増減しない費用項目（固定費）を説明できますか。","損益分岐点とは何か説明できますか。","損益分岐点の計算方法を説明することができますか。","同額の費用で損益分岐点参加者数を少なくする方法について説明することができますか。"],
+    keywords:[{label:"収支の基本",terms:["固定費","変動費","限界利益","損益分岐点"]},{label:"計算式",terms:["損益分岐点参加者数＝固定費÷1人あたり限界利益","変動費率＝変動費÷売上高"]},{label:"実務",terms:["イニシャルコスト","ランニングコスト","予実管理","キャッシュフロー"]}],
+    questions:["損益分岐点とは何か説明しなさい","損益分岐点の計算方法を説明しなさい","固定費と変動費の違いを例を挙げて説明しなさい"],
+    practice:[
+      {
+        label:"実技練習問題（令和4年度 第12回 類題）",
+        situation:"「親子スイミング体験会」を企画しています。\n参加費：1組5,100円　消耗品費（変動費）：1組あたり500円\n固定費：外部インストラクター費90,000円・会場設営費42,000円・プロモーション費15,000円",
+        q1:"① このイベントの1組あたりの限界利益を計算しなさい。",
+        q2:"② このイベントの固定費合計を計算しなさい。",
+        q3:"③ このイベントの損益分岐点参加組数を計算しなさい。",
+        answer:"① 1組あたりの限界利益\n　5,100円 − 500円 = 4,600円\n\n② 固定費合計\n　90,000 + 42,000 + 15,000 = 147,000円\n\n③ 損益分岐点参加組数\n　147,000 ÷ 4,600 ≈ 32組（切り上げ33組以上で黒字）",
+        calc:true
+      }
+    ],
+    pages:"Basic P148〜P163"
+  },
+  {
+    id:"s06",num:"⑤",name:"施設設備の安全確保",
+    essence:"運動施設における主な施設・設備。\n各種動線管理。\n施設メンテナンス（清掃・維持）の基本。",
+    skills:["施設の機器や設備の種類や役割を把握している","施設の動線の種類を把握している","5S活動を理解している","機器や内装の清掃およびメンテナンス方法の基本を把握している"],
+    checklist:["運動施設・機器の種類や役割を理解している","設備の種類（電気・給排水・空調）や役割を把握している","施設の動線の種類を把握している","5S活動について説明できる","機器や内装の清掃およびメンテナンス方法の基本を説明できる"],
+    hp_questions:["問１ フィットネスクラブにおける主な運動施設の種類を述べることができますか。","問２ 運動機器の種類を述べることができますか。","問３ 設備を３つに分けてそれぞれ具体的なものを一つ説明できますか。","問４ 施設の動線の種類を４つの観点から説明できますか。","問５ 施設・設備の管理業務について、４つの観点を説明できますか。","問６ ５S活動について、５つのSを説明できますか。","問７　施設、設備の清掃およびメンテナンス方法について、具体的なものを２つ挙げて説明できますか。"],
+    keywords:[{label:"設備",terms:["電気設備（動力・電灯）","給排水設備","空調設備（HVAC）"]},{label:"管理",terms:["5S（整理・整頓・清掃・清潔・躾）","補修","修繕","更新","再投資"]},{label:"水質",terms:["プール水質基準","塩素濃度（0.4〜1.0mg/L）","凝集剤（ポリ塩化アルミニウム）","レジオネラ菌","SDS（安全データシート）"]}],
+    questions:["施設の動線の種類を４つの観点から説明しなさい","5S活動について５つのSを説明しなさい","施設・設備管理業務について４つの観点を説明しなさい"],
+    practice:[],
+    pages:"Basic P202〜P218"
+  },
+  {
+    id:"s07",num:"⑥-1",name:"顧客マネジメント",
+    essence:"既存顧客満足・継続の視点。\n見込み客ニーズと対応。\nクレーム初期対応・個人情報保護の基本。",
+    skills:["顧客満足度の要素を理解している","見込み客のニーズを把握している","個人情報の保護と管理を理解している","クレーム対応の種類と基本を理解している"],
+    checklist:["顧客満足度の要素を理解し式で表すことができる","見学者・体験者等の見込み客のニーズをもとにした案内を理解している","利用継続に影響する要素を説明できる","個人情報の保護と管理を説明できる","クレーム対応の種類と基本を理解している"],
+    hp_questions:["顧客満足度の要素を２つ挙げ、式で表すことはできますか。","見学者・体験者等の見込み客のニーズを反映した具体的な対応を２つ挙げ、説明することができますか。","利用継続に影響する要素を２つ挙げることができますか。","個人情報の保護と管理について、入会時の注意点を述べることができますか。","クレームの種類を３つに分類し説明することができますか。","クレーム初期対応の基本的な手順を説明することができますか。"],
+    keywords:[{label:"顧客満足",terms:["顧客満足度＝提供価値÷期待値","ロイヤルティ","NPS（ネットプロモータースコア）","LTV（顧客生涯価値）"]},{label:"クレーム",terms:["クレーム3分類","クレーム発生時の4つの顧客心理","エスカレーション"]},{label:"個人情報",terms:["個人情報保護法","利用目的の通知","第三者提供の制限"]}],
+    questions:["顧客満足度の要素を２つ挙げ、式で表しなさい","クレームの種類を３つに分類しなさい","クレーム初期対応の基本的な手順を説明しなさい"],
+    practice:[],
+    pages:"Basic P164〜P178"
+  },
+  {
+    id:"s08",num:"⑥-2",name:"顧客対応",
+    essence:"接客応対の基本（心構え・身だしなみ・言葉遣い）。\n場面に合わせた接客応対。",
+    skills:["サービス業としての接客応対の基本を把握している","場面に合わせた接客応対を理解している"],
+    checklist:["接客応対の基本（心構え・身だしなみ・接客態度と言葉遣い）を理解している","予約対応・管理を把握している","忘れ物対応を実践することができる","クレーム対応におけるエスカレーションができる"],
+    hp_questions:["接客応対の心構えであるホスピタリティについて、述べることができますか。","接客応対の身だしなみについて、具体的な注意点を２つ挙げて説明することができますか。","言葉遣いについて、３種類の敬語を挙げ、説明することができますか。","問１ 言葉遣いについて、クッション言葉の例を2つ挙げることができますか。","問２ 電話対応について注意点を2つ挙げ、説明できますか。","問３ 予約対応時の注意点を、一つ述べることができますか。","問５ クレーム対応で、エスカレーションすべき状況を説明できますか。"],
+    keywords:[{label:"接客の基本",terms:["ホスピタリティ","身だしなみ（清潔感・機能性・品位）","接客の7大用語","お辞儀3種類"]},{label:"言葉遣い",terms:["尊敬語","謙譲語","丁寧語","クッション言葉","カスハラ（カスタマーハラスメント）"]},{label:"場面別",terms:["電話対応","忘れ物対応（3ヶ月保管）","クレーム対応4ステップ","エスカレーション"]}],
+    questions:["ホスピタリティについて述べなさい","お辞儀の３種類を説明しなさい","クレーム対応基本手順4ステップを述べなさい"],
+    practice:[],
+    pages:"Basic P178〜P186"
+  },
+  {
+    id:"s09",num:"⑦",name:"チームワーク・コミュニケーション",
+    essence:"組織・業務分担の考え方・仕事の進め方。\nコミュニケーションの重要性と方法。チームワーク。",
+    skills:["組織の存在意義を理解している","業務分担の考え方を理解している","仕事の進め方について理解している","コミュニケーションの重要性を理解している"],
+    checklist:["組織の存在意義を説明できる","業務分担の考え方を説明できる","仕事の進め方について説明できる","コミュニケーションの方法を説明できる","チームワークについて説明できる"],
+    hp_questions:["組織とは何かを説明することができますか。","業務分担のメリット・デメリットを説明することができますか。","報連相について説明し、その意義を述べることができますか。","PDCAサイクルを説明することができますか。","メラビアンの法則をもとに、コミュニケーションの種類と重要性について説明することができますか。","リーダーシップのあるべき姿について、述べることができますか。","フォロワーシップのあるべき姿について、述べることができますか。"],
+    keywords:[{label:"組織・業務",terms:["業務分掌","報連相（報告・連絡・相談）","PDCAサイクル","OJT / OFF-JT"]},{label:"コミュニケーション",terms:["メラビアンの法則（視覚55%・聴覚38%・言語7%）","バーバルコミュニケーション","ノンバーバルコミュニケーション"]},{label:"リーダーシップ",terms:["リーダーシップ","フォロワーシップ","PM理論","コーチング","ティーチング"]}],
+    questions:["報連相について説明し、その意義を述べなさい","PDCAサイクルを説明しなさい","メラビアンの法則をもとにコミュニケーションの種類と重要性を説明しなさい"],
+    practice:[],
+    pages:"Basic P186〜P202"
+  },
+  {
+    id:"s10",num:"⑧",name:"安全衛生",
+    essence:"労働者としての側面とその権利。\n職場としての安全衛生。",
+    skills:["労働基準法の基本を知っている","労働安全衛生の基本を把握している"],
+    checklist:["労働基準法の目的を理解している","労働時間について理解している","社会保険の基本について理解している","労働安全衛生の基本を理解している"],
+    hp_questions:["労働基準法が定められている目的を述べることができますか。","労働時間の原則を説明することができますか。","社会保険の種類を４つ述べることができますか。","非正規の従業員の契約形態を説明することができますか。","ハインリッヒの法則を説明することができますか。","プールの水質管理時の薬品取り扱い業務について、注意点を述べることができますか。"],
+    keywords:[{label:"労働基準法",terms:["法定労働時間（1日8時間・週40時間）","所定労働時間","36協定","有給休暇","法定休日","非正規雇用"]},{label:"社会保険4種",terms:["健康保険","厚生年金保険","雇用保険","労働者災害補償保険（労災）"]},{label:"安全衛生",terms:["ハインリッヒの法則（1:29:300の法則）","危険予知トレーニング（KYT）","ストレスチェック制度","SDS（安全データシート）"]}],
+    questions:["労働時間の原則を説明しなさい","社会保険の種類を４つ述べなさい","ハインリッヒの法則を説明しなさい"],
+    practice:[
+      {
+        label:"実技練習問題（令和5年度 第14回 類題）",
+        situation:"ある週の実績：月〜金で計45時間勤務。所定労働時間：1日8時間（週40時間）。36協定締結済み（月45時間まで）。",
+        q1:"① この週の時間外労働時間は何時間か答えなさい。",
+        q2:"② 社会保険のうち「全額事業主負担」のものを答えなさい（1つ）。",
+        q3:"③ ハインリッヒの法則に基づいて、職場の安全管理で取り組むべきことを1つ述べなさい。",
+        answer:"① 時間外労働時間\n　45時間 − 40時間 = 5時間\n\n② 全額事業主負担の社会保険\n　労働者災害補償保険（労災）\n\n③ 取り組み例\n　ヒヤリハット報告書を日常的に記録・共有し、300件のヒヤリハットを撲滅することで29件の軽微な事故・1件の重大事故を未然に防ぐ。",
+        calc:false
+      }
+    ],
+    pages:"Basic P218〜P231"
+  }
+];
+
+// ════════════════════════════════════════════════════════
+// KW_DB（キーワード説明）
+// ════════════════════════════════════════════════════════
+const SUBJECTS_2 = [
+  {
+    id:"s01",num:"①",name:"健康づくり",
+    scene:"「運動すると生活習慣病を予防できると聞きましたが」——生活習慣病・高齢者の健康づくり・フィットネスクラブの役割",
+    essence:"運動における生活習慣病予防及び高齢者の健康づくりの効果と留意点。フィットネスクラブの役割。",
+    skills:["適度な運動が効果的な生活習慣病を説明できる","高齢者の健康づくりのための運動の留意点を説明できる","フィットネスクラブが担う健康づくりの役割を説明できる"],
+    checklist:["生活習慣病と運動の関連性を説明できる","高齢者の運動指導時の留意点を理解している","フィットネスクラブの社会的役割を説明できる"],
+    hp_questions:[
+      "適度な運動が、その予防や改善に効果的な生活習慣病を５つ挙げることができますか。",
+      "高齢者の健康づくりのための運動の留意点を説明することができますか。",
+      "フィットネスクラブが担う健康づくりの役割を説明することができますか。"
+    ],
+    keywords:[{label:"生活習慣病・予防",terms:["生活習慣病","フレイル","ロコモティブシンドローム","健康日本21","特定保健指導"]},{label:"高齢者の運動",terms:["サルコペニア","介護予防","THP（トータル・ヘルスプロモーション）"]}],
+    questions:["適度な運動が予防や改善に効果的な生活習慣病を５つ挙げなさい","高齢者の健康づくりのための運動の留意点を説明しなさい"],
+    practice:[],
+    pages:"Basic P46〜P59（3級参照）"
+  },
+  {
+    id:"s02",num:"②",name:"運動トレーニングの基礎",
+    scene:"「お客様の目的に合わせたトレーニングを提案するとき」——年代別・目的別トレーニングの方法・効果・留意点",
+    essence:"年代別・目的別の身体トレーニングに関する基礎的な知識（方法・効果・留意点）。※Intermediateテキストに独立した章なし→Basicテキスト第3章参照。",
+    skills:["運動を規定する要素（種類・強度以外）を説明できる","筋トレーニングの効果と留意点を説明できる","年代別・目的別トレーニングの特性を説明できる","ウォーキング・ジョギングの留意点を説明できる"],
+    checklist:["運動の種類・強度以外の規定要素を理解している","筋トレーニングの効果と留意点を理解している","年代別トレーニングの特性を理解している"],
+    hp_questions:[
+      "運動を規定する要素を、種類、強度のほかに挙げることができますか。",
+      "筋トレーニングの効果と留意点を説明することができますか。",
+      "高齢者の筋力トレーニングの留意点を説明することができますか。",
+      "有酸素トレーニングの効果と留意点を説明することができますか。",
+      "ウォーキング・ジョギングの留意点を説明することができますか。",
+      "身体年齢別トレーニングの特性を述べることができますか。"
+    ],
+    keywords:[{label:"トレーニングの規定要素",terms:["運動の頻度","運動の持続時間","FITT原則","漸進性の原則"]},{label:"種類別",terms:["筋トレーニング","有酸素トレーニング","柔軟性トレーニング","バランストレーニング"]}],
+    questions:["運動を規定する要素を種類・強度以外で挙げなさい","筋トレーニングの効果と留意点を説明しなさい"],
+    practice:[],
+    pages:"Basic P72〜P77（3級テキスト参照）⚠️Intermediateテキストに独立した章なし"
+  },
+  {
+    id:"s03",num:"③",name:"フィットネス産業概論",
+    scene:"「フィットネス産業がどう変化しているか」——国の健康政策・業界の変遷・スポーツ産業・公共施設との連携",
+    essence:"フィットネス産業の歴史・現状・課題。健康政策との連携。スポーツ産業の概要。",
+    skills:["国の健康づくり対策の変遷を説明できる","健康日本21（第二次）の結果と課題を説明できる","フィットネス産業の現状と課題を説明できる","スポーツ産業の概要を説明できる","公共施設との連携について説明できる"],
+    checklist:["国の健康づくり対策の変遷を理解している","健康日本21の成果と課題を理解している","フィットネス産業の規模と特性を理解している","スポーツ産業の概要を理解している"],
+    hp_questions:[
+      "これまでの国の健康づくり対策を挙げることができますか。",
+      "健康日本２１（第二次）の結果、悪化した項目を挙げることができますか。",
+      "フィットネスクラブの現状と課題を説明することができますか。",
+      "スポーツ産業の概要を説明することができますか。",
+      "公共施設とフィットネスクラブの連携について説明することができますか。",
+      "指定管理者制度について説明することができますか。",
+      "THP（トータル・ヘルスプロモーション・プラン）について説明することができますか。",
+      "健康経営の概要を説明することができますか。",
+      "データヘルス計画について説明することができますか。",
+      "コラボヘルスについて説明することができますか。",
+      "スポーツ庁の役割と主な施策について説明することができますか。"
+    ],
+    keywords:[{label:"健康政策の変遷",terms:["健康日本21（第一次・第二次）","THP","データヘルス計画","コラボヘルス","スポーツ庁"]},{label:"産業・施設",terms:["フィットネス産業","指定管理者制度","PFI","PPP","パーソナルジム"]}],
+    questions:["国の健康づくり対策の変遷を説明しなさい","健康日本21（第二次）で悪化した項目を挙げなさい","指定管理者制度を説明しなさい"],
+    practice:[],
+    pages:"Intermediate P41〜P50"
+  },
+  {
+    id:"s04a",num:"④-1",name:"店舗運営（品質管理）",
+    scene:"「サービス品質をどう測り・維持するか」——提供サービスの品質基準・測定・維持管理",
+    essence:"提供サービスの品質基準・測定・維持管理（プログラム・コミュニケーション・人的サービス）。",
+    skills:["トレーニング機器の安全性の要素を説明できる","ロッカーエリアの快適性の要素を説明できる","サービス品質の測定方法を説明できる","サービスリカバリーの方法を説明できる","顧客接点の品質管理を説明できる"],
+    checklist:["トレーニング機器の安全管理基準を理解している","各施設エリアの品質管理ポイントを理解している","サービス品質の測定と改善サイクルを理解している"],
+    hp_questions:[
+      "提供するトレーニング機器について、安全性の観点から必要な要素を２つ挙げることができますか。",
+      "ロッカーエリアについて、快適性の観点から必要な要素を２つ挙げることができますか。",
+      "スタジオプログラムの品質管理について、具体的な取り組みを説明することができますか。",
+      "サービスリカバリーの手順を説明することができますか。",
+      "NPS（ネットプロモータースコア）について説明することができますか。"
+    ],
+    keywords:[{label:"品質管理",terms:["サービス品質","NPS（ネットプロモータースコア）","サービスリカバリー","QC（品質管理）"]},{label:"施設管理",terms:["トレーニング機器の安全管理","スタジオ品質管理","ロッカー管理"]}],
+    questions:["トレーニング機器について安全性の観点から必要な要素を２つ挙げなさい","NPS（ネットプロモータースコア）を説明しなさい"],
+    practice:[],
+    pages:"Intermediate P149〜P154"
+  },
+  {
+    id:"s04b",num:"④-2",name:"店舗運営（マーケティング）",
+    scene:"「新規会員をどう集めるか・何を売るか」——マーケティングプロセス・4P・4C・SNS・プロモーション",
+    essence:"マーケティングプロセス・4P/4C・購買プロセスの理解。販売促進・プロモーション手法。",
+    skills:["マーケティングプロセスを説明できる","4Pと4Cの違いを説明できる","プロモーション手法を説明できる","SNSマーケティングの特徴を説明できる","顧客購買プロセスを説明できる"],
+    checklist:["マーケティングプロセスR→STP→MM→I→Cを理解している","4Pと4Cの違いを理解している","プロモーション手法の種類を理解している","顧客購買プロセスを理解している"],
+    hp_questions:[
+      "マーケティングプロセス「R→STP→MM→I→C」を説明することができますか。",
+      "マーケティングの４P、４Cと、２つの違いを説明することができますか。",
+      "プロモーション手法について、２つ挙げて説明することができますか。",
+      "SNSマーケティングの特徴とメリット・デメリットを説明することができますか。",
+      "顧客購買プロセスの各段階を説明することができますか。"
+    ],
+    keywords:[{label:"マーケティング",terms:["STP（セグメンテーション・ターゲティング・ポジショニング）","4P（製品・価格・流通・プロモーション）","4C","マーケティングプロセス"]},{label:"プロモーション",terms:["SNSマーケティング","WEBマーケティング","SEO","LTV（顧客生涯価値）"]}],
+    questions:["マーケティングプロセス「R→STP→MM→I→C」を説明しなさい","4Pと4Cの違いを説明しなさい"],
+    practice:[],
+    pages:"Intermediate P102〜P114"
+  },
+  {
+    id:"s04c",num:"④-3",name:"店舗運営（売上収益管理）",
+    scene:"「数字で経営を語るとき」——P/L・B/S・売上管理・予実管理・主要変動費",
+    essence:"財務諸表（P/L・B/S）の基本。部門予実管理。会員動向と売上計算。主要変動費管理。",
+    skills:["クラブ運営の売上項目を挙げられる","P/L（損益計算書）の基本を説明できる","B/S（貸借対照表）の基本を説明できる","予実管理の方法を説明できる","主要変動費を説明できる"],
+    checklist:["売上項目と計上タイミングを理解している","P/Lの構造を理解している","B/Sの構造を理解している","予実管理の仕組みを理解している"],
+    hp_questions:[
+      "クラブ運営にかかわる売上項目を挙げ、それぞれの単価を挙げることができますか。",
+      "売上項目ごとの計上タイミングを説明することができますか。",
+      "損益計算書（P/L）の基本構造を説明することができますか。",
+      "貸借対照表（B/S）の基本構造を説明することができますか。",
+      "予実管理の方法と差異分析のプロセスを説明することができますか。",
+      "クラブ運営における主要変動費を説明することができますか。"
+    ],
+    keywords:[{label:"財務",terms:["損益計算書（P/L）","貸借対照表（B/S）","予実管理","変動費","固定費"]},{label:"売上管理",terms:["入会金","月会費","LTV（顧客生涯価値）","退会率","継続率"]}],
+    questions:["クラブ運営にかかわる売上項目を挙げ、それぞれの単価を挙げなさい","P/L（損益計算書）の基本構造を説明しなさい"],
+    practice:[
+      {
+        label:"財務計算練習（P/L基礎）",
+        situation:"あるフィットネスクラブの月次データ：\n会員数1,500人・月会費8,000円・入会金平均10,000円（月20件）\n固定費合計：人件費600万円・家賃150万円・設備費50万円\n変動費：売上の15%",
+        q1:"① 月間売上合計を計算しなさい。",
+        q2:"② 月間変動費を計算しなさい。",
+        q3:"③ 月間営業利益を計算しなさい。",
+        answer:"① 月間売上合計\n　月会費：1,500人×8,000円＝12,000,000円\n　入会金：20件×10,000円＝200,000円\n　合計：12,200,000円\n\n② 月間変動費\n　12,200,000円×15%＝1,830,000円\n\n③ 月間営業利益\n　売上12,200,000円－変動費1,830,000円－固定費8,000,000円＝2,370,000円",
+        calc:true
+      }
+    ],
+    pages:"Intermediate P147〜P161"
+  },
+  {
+    id:"s04d",num:"④-4",name:"店舗運営（施設設備管理）",
+    scene:"「設備の点検・緊急時対応・水質管理」——主要施設・設備・備品の操作・保守・緊急時対応",
+    essence:"主要施設・設備・備品の操作・保守・緊急時対応。提供サービス施設設備品質の測定・維持管理。",
+    skills:["ろ過機の逆洗を説明できる","動力と電灯の違いと役割を説明できる","施設・設備の保守管理基準を説明できる","緊急時対応フローを説明できる","法定点検の種類を説明できる"],
+    checklist:["ろ過機の逆洗について理解している","動力・電灯の違いを理解している","法定点検の種類と周期を理解している","施設緊急時対応フローを理解している"],
+    hp_questions:[
+      "ろ過機の逆洗について説明することができますか。",
+      "動力と電灯について違いと役割を説明することができますか。",
+      "法定点検の種類と点検周期について説明することができますか。",
+      "施設内での緊急時対応フローを説明することができますか。",
+      "空調設備（HVAC）の管理上の留意点を説明することができますか。",
+      "給排水設備の管理上の留意点を説明することができますか。",
+      "プールの水質管理基準について説明することができますか。"
+    ],
+    keywords:[{label:"設備管理",terms:["ろ過機（逆洗）","動力・電灯","空調設備（HVAC）","給排水設備","法定点検"]},{label:"水質管理",terms:["遊離残留塩素（0.4〜1.0mg/L）","凝集剤（PAC）","レジオネラ菌","SDS（安全データシート）"]}],
+    questions:["ろ過機の逆洗について説明しなさい","動力と電灯の違いと役割を説明しなさい","法定点検の種類と点検周期について説明しなさい"],
+    practice:[],
+    pages:"Intermediate P215〜P225"
+  },
+  {
+    id:"s04e",num:"④-5",name:"店舗運営（人事・労務管理）",
+    scene:"「スタッフを雇う・育てる・管理するとき」——雇用形態・勤怠管理・要員計画・モチベーション管理",
+    essence:"雇用者・業務委託者の勤怠管理。要員計画・配置・管理。人材能力・モチベーションマネジメント。",
+    skills:["労働契約と業務委託契約の違いを説明できる","法定労働時間と所定労働時間を説明できる","勤怠管理の方法を説明できる","要員計画の立て方を説明できる","モチベーション理論を説明できる","コーチングとティーチングの違いを説明できる","OJT・OFF-JTを説明できる","解雇・退職の種類と留意点を説明できる"],
+    checklist:["労働契約と業務委託契約の違いを理解している","法定労働時間・所定労働時間・残業管理を理解している","要員管理の基本を理解している","モチベーション理論を理解している"],
+    hp_questions:[
+      "労働契約と業務委託契約の違いを説明することができますか。",
+      "労働基準法の法定労働時間と所定労働時間を説明することができますか。",
+      "時間外労働（残業）の管理方法と36協定について説明することができますか。",
+      "要員計画の立て方と考え方を説明することができますか。",
+      "モチベーション理論（マズロー・ハーズバーグ等）を説明することができますか。",
+      "コーチングとティーチングの違いを説明することができますか。",
+      "OJTとOFF-JTの違いと効果的な活用方法を説明することができますか。",
+      "解雇の種類と留意点を説明することができますか。",
+      "業務委託者の契約解除に関する留意点を説明することができますか。",
+      "人事評価制度の基本と運用上の留意点を説明することができますか。",
+      "コンピテンシーについて説明することができますか。",
+      "HRM（ヒューマンリソースマネジメント）の概念を説明することができますか。"
+    ],
+    keywords:[{label:"労働法規",terms:["労働契約","業務委託契約","法定労働時間","36協定","有給休暇"]},{label:"人材管理",terms:["要員計画","OJT / OFF-JT","コーチング","ティーチング","HRM（ヒューマンリソースマネジメント）","コンピテンシー"]}],
+    questions:["労働契約と業務委託契約の違いを説明しなさい","法定労働時間と所定労働時間を説明しなさい","コーチングとティーチングの違いを説明しなさい"],
+    practice:[],
+    pages:"Intermediate P184〜P212"
+  },
+  {
+    id:"s04f",num:"④-6",name:"店舗運営（リスク管理）",
+    scene:"「顧客情報・金銭・館内事故・従業員不法行為」——個人情報管理・金銭管理・館内リスク対応",
+    essence:"個人情報（顧客・従事者）管理。金銭・財貨管理。館内事故・事件の応急対処。従業員不法行為防止。",
+    skills:["個人情報保護法の観点から顧客情報管理の留意点を説明できる","従事者の情報管理の留意点を説明できる","金銭管理の基本を説明できる","館内事故発生時の対応を説明できる","従業員不法行為防止策を説明できる"],
+    checklist:["個人情報保護法の基本を理解している","顧客情報・従事者情報の管理基準を理解している","館内事故対応フローを理解している","金銭管理の基本を理解している"],
+    hp_questions:[
+      "顧客管理の情報管理について、個人情報保護法の観点から具体的な留意点を２つ述べることができますか。",
+      "従事者の情報管理について、個人情報保護法の観点から具体的な留意点を２つ述べることができますか。",
+      "金銭管理における不正防止のための内部統制の考え方を説明することができますか。",
+      "館内事故発生時の対応フローを説明することができますか。",
+      "従業員による不法行為（横領・ハラスメント等）の防止策を説明することができますか。",
+      "個人情報漏洩発生時の対応手順を説明することができますか。"
+    ],
+    keywords:[{label:"個人情報",terms:["個人情報保護法","利用目的の通知","第三者提供の制限","安全管理措置"]},{label:"リスク管理",terms:["館内事故対応","金銭管理（内部統制）","従業員不法行為防止","BCP（事業継続計画）"]}],
+    questions:["顧客情報管理について個人情報保護法の観点から留意点を２つ述べなさい","館内事故発生時の対応フローを説明しなさい"],
+    practice:[],
+    pages:"Intermediate P238〜P239、P157〜P158"
+  },
+  {
+    id:"s05",num:"⑤",name:"顧客マネジメント",
+    scene:"「退会を防ぐ・継続率を上げる・口コミを生む」——入会動機・見込み客獲得・会員継続・クレーム対応",
+    essence:"顧客（見込み・既存）管理（ライフサイクル・ロイヤルティ等）。クレーム対応。",
+    skills:["クラブの主な入会動機を説明できる","見込み客獲得メディアを説明できる","カスタマーサクセスの仕組みを説明できる","会員継続管理の方法を説明できる","クレーム対応のエスカレーション手順を説明できる"],
+    checklist:["入会動機5項目を理解している","見込み客獲得メディアを理解している","カスタマーサクセスの概念を理解している","会員継続管理の手法を理解している","クレーム対応フローを理解している"],
+    hp_questions:[
+      "クラブの主な入会動機を５つ挙げることができますか。",
+      "見込み客を獲得するためのメディアについて、３つ挙げて説明することができますか。",
+      "カスタマーサクセスの仕組みを説明することができますか。",
+      "会員継続管理の主な取り組みを説明することができますか。"
+    ],
+    keywords:[{label:"顧客管理",terms:["入会動機","LTV（顧客生涯価値）","カスタマーサクセス","顧客ライフサイクル","ロイヤルティ"]},{label:"見込み客・継続",terms:["見込み客獲得メディア","オンボーディング","退会防止","NPS（ネットプロモータースコア）"]}],
+    questions:["クラブの主な入会動機を５つ挙げなさい","見込み客を獲得するためのメディアを３つ挙げて説明しなさい","カスタマーサクセスの仕組みを説明しなさい"],
+    practice:[],
+    pages:"Intermediate P197〜P213"
+  },
+  {
+    id:"s06",num:"⑥",name:"関連法規",
+    scene:"「法律に関わる場面で判断を求められるとき」——育児介護法・公衆浴場法・消防法・景品法・著作権",
+    essence:"最低限の労働基準法・消防法・建築基準法・景品法・知的財産法・個人情報保護法・育児介護法。",
+    skills:["育児介護法の概要を説明できる","公衆浴場法に基づくレジオネラ菌予防を説明できる","消防法の基本を説明できる","著作権法の基本を説明できる","景品表示法の基本を説明できる"],
+    checklist:["育児介護法の主要内容を理解している","公衆浴場法の基本を理解している","消防法の基本を理解している","著作権法の基本を理解している","景品表示法の基本を理解している"],
+    hp_questions:[
+      "育児介護法について概要を説明することができますか。",
+      "公衆浴場法に基づいて、レジオネラ菌症の予防方法を説明することができますか。",
+      "消防法に基づくフィットネスクラブの義務を説明することができますか。",
+      "著作権法におけるスタジオプログラムの音楽使用の留意点を説明することができますか。",
+      "景品表示法の基本と違反事例を説明することができますか。"
+    ],
+    keywords:[{label:"労働関連",terms:["育児介護休業法","労働基準法","36協定"]},{label:"施設関連",terms:["公衆浴場法","消防法","建築基準法"]},{label:"知財・消費者",terms:["著作権法（JASRAC）","景品表示法","個人情報保護法"]}],
+    questions:["育児介護法の概要を説明しなさい","公衆浴場法に基づくレジオネラ菌症の予防方法を説明しなさい","著作権法におけるスタジオプログラムの音楽使用の留意点を説明しなさい"],
+    practice:[],
+    pages:"Intermediate P184〜P191、P237〜P243"
+  },
+  {
+    id:"s07",num:"⑦",name:"安全衛生",
+    scene:"「従業員を守る・職場を安全に保つ」——事業者の義務・危険薬品管理・メンタルヘルス・ストレスチェック",
+    essence:"職場環境管理。従業員の健康（身体・精神）ケア。",
+    skills:["従業員の安全衛生に対する事業者の主な義務を説明できる","クラブで使用する危険薬品の管理方法を説明できる","ストレスチェック制度を説明できる","メンタルヘルスケアの4つのケアを説明できる"],
+    checklist:["安全衛生法の事業者義務を理解している","危険薬品の管理方法を理解している","ストレスチェック制度を理解している","メンタルヘルスケアの4つのケアを理解している"],
+    hp_questions:[
+      "従業員の安全衛生に対する事業者の主な義務を述べることができますか。",
+      "クラブで使用する危険薬品等を３つ挙げ、その管理方法を説明することができますか。",
+      "ストレスチェック制度の概要と実施義務について説明することができますか。",
+      "メンタルヘルスケアの4つのケアを説明することができますか。"
+    ],
+    keywords:[{label:"安全衛生",terms:["労働安全衛生法","ストレスチェック制度","メンタルヘルスケア（4つのケア）","SDS（安全データシート）"]},{label:"薬品管理",terms:["次亜塩素酸ナトリウム（塩素剤）","ポリ塩化アルミニウム（凝集剤）","化学物質の管理","GHS（世界調和システム）"]}],
+    questions:["従業員の安全衛生に対する事業者の主な義務を述べなさい","クラブで使用する危険薬品を３つ挙げ管理方法を説明しなさい","ストレスチェック制度の概要を説明しなさい"],
+    practice:[],
+    pages:"Intermediate P229〜P235"
+  }
+];
+const KW_DB_3 = {"一次救命処置（BLS）": {"page": "Basic P106", "ref": false}, "凝集剤（ポリ塩化アルミニウム）": {"page": "Basic P207", "ref": false}, "イシューイング": {"page": "Basic P80", "ref": false}, "固定費": {"page": "Basic P152", "ref": false}, "クッション言葉": {"page": "Basic P168", "ref": false}, "フォロワーシップ": {"page": "Basic P198", "ref": false}, "フレイル": {"page": "Basic P78", "ref": false}, "基礎代謝量": {"page": "Basic P68", "ref": false}, "変動費": {"page": "Basic P120", "ref": false}, "メッツ（METs）": {"page": "Basic P69", "ref": false}, "リーダーシップ": {"page": "Basic P197", "ref": false}, "AED": {"page": "Basic P106", "ref": false}, "サルコペニア": {"page": "Basic P88", "ref": false}, "健康寿命": {"page": "Basic P57", "ref": false}, "給排水設備": {"page": "Basic P215", "ref": false}, "電気設備（動力・電灯）": {"page": "Basic P215", "ref": false}, "業務分掌": {"page": "Basic P188", "ref": false}, "カスハラ（カスタマーハラスメント）": {"page": "Basic P183", "ref": false}, "ホスピタリティ": {"page": "Basic P165", "ref": false}, "ストレスチェック制度": {"page": "Basic P229", "ref": false}, "ハインリッヒの法則": {"page": "Basic P227", "ref": false}, "健康日本21": {"page": "Basic P56", "ref": false}, "報連相（報告・連絡・相談）": {"page": "Basic P190", "ref": false}, "メラビアンの法則（視覚55%・聴覚38%・言語7%）": {"page": "Basic P194", "ref": false}, "ハインリッヒの法則（1:29:300の法則）": {"page": "Basic P227", "ref": false}, "水質管理": {"page": "Basic P215", "ref": false}, "丁寧語": {"page": "Basic P168", "ref": false}, "メタボリックシンドローム": {"page": "Basic P64", "ref": false}, "介護保険": {"page": "Basic P77", "ref": false}, "ロコモティブシンドローム": {"page": "Basic P67", "ref": false}, "ノンバーバルコミュニケーション": {"page": "Basic P194", "ref": false}, "バーバルコミュニケーション": {"page": "Basic P194", "ref": false}, "危険予知トレーニング（KYT）": {"page": "Basic P227", "ref": false}, "法定労働時間（1日8時間・週40時間）": {"page": "Basic P222", "ref": false}, "SDS（安全データシート）": {"page": "Basic P228", "ref": false}};
+const KW_DB_2 = {"健康日本21（第一次・第二次）": {"page": "", "ref": true}, "労働安全衛生法": {"page": "Intermediate P246", "ref": false}, "固定費": {"page": "Intermediate P169", "ref": false}, "フレイル": {"page": "Intermediate P39", "ref": false}, "変動費": {"page": "Intermediate P169", "ref": false}, "指定管理者制度": {"page": "Intermediate P25", "ref": false}, "継続率": {"page": "Intermediate P223", "ref": false}, "サルコペニア": {"page": "", "ref": true}, "凝集剤（PAC）": {"page": "Intermediate P247", "ref": false}, "給排水設備": {"page": "", "ref": true}, "NPS（ネットプロモータースコア）": {"page": "Intermediate P159", "ref": false}, "メンタルヘルスケア（4つのケア）": {"page": "Intermediate P206", "ref": false}, "予実管理": {"page": "Intermediate P170", "ref": false}, "法定点検": {"page": "", "ref": true}, "PFI": {"page": "Intermediate P26", "ref": false}, "カスタマーサクセス": {"page": "", "ref": true}, "個人情報保護法": {"page": "Intermediate P255", "ref": false}, "ストレスチェック制度": {"page": "Intermediate P208", "ref": false}, "健康日本21": {"page": "", "ref": true}, "法定労働時間": {"page": "", "ref": true}, "THP（トータル・ヘルスプロモーション）": {"page": "Intermediate P49", "ref": false}, "ポリ塩化アルミニウム（凝集剤）": {"page": "", "ref": true}, "PPP": {"page": "Intermediate P25", "ref": false}, "著作権法（JASRAC）": {"page": "Intermediate P260", "ref": false}, "景品表示法": {"page": "Intermediate P269", "ref": false}, "マーケティングプロセス": {"page": "Intermediate P108", "ref": false}, "労働基準法": {"page": "Intermediate P195", "ref": false}, "STP（セグメンテーション・ターゲティング・ポジショニング）": {"page": "Intermediate P109", "ref": false}, "ロコモティブシンドローム": {"page": "", "ref": true}, "コンピテンシー": {"page": "Intermediate P176", "ref": false}, "オンボーディング": {"page": "Intermediate P215", "ref": false}, "業務委託契約": {"page": "Intermediate P194", "ref": false}, "消防法": {"page": "Intermediate P253", "ref": false}, "公衆浴場法": {"page": "Intermediate P253", "ref": false}, "退会率": {"page": "Intermediate P222", "ref": false}, "要員計画": {"page": "Intermediate P188", "ref": false}, "貸借対照表（B/S）": {"page": "Intermediate P170", "ref": false}, "労働契約": {"page": "Intermediate P194", "ref": false}, "損益計算書（P/L）": {"page": "Intermediate P167", "ref": false}, "次亜塩素酸ナトリウム（塩素剤）": {"page": "", "ref": true}, "THP": {"page": "Intermediate P49", "ref": false}, "SDS（安全データシート）": {"page": "Intermediate P248", "ref": false}};
+function getKWDB(){ return selectedGrade===2 ? KW_DB_2 : KW_DB_3; }
+
+// ─── 統合版STATE（ペルソナ×級） ─────────────────────────────────────────────
+let selectedPersona = 'ju';
+let selectedGrade   = null;
+let guideTab        = 3;
+
+function getCurrentSubjects(){ return selectedGrade===2 ? SUBJECTS_2 : SUBJECTS; }
+function lsKey(t){ return 'fcm_'+(selectedPersona||'x')+'_'+(selectedGrade||3)+'_'+t; }
+function lds(){ try{return JSON.parse(localStorage.getItem(lsKey('status'))||'{}')}catch{return{}}}
+function ldc(){ try{return JSON.parse(localStorage.getItem(lsKey('checks'))||'{}')}catch{return{}}}
+function ldcr(){ try{return JSON.parse(localStorage.getItem(lsKey('check_results'))||'{}')}catch{return{}}}
+function svs(s){ localStorage.setItem(lsKey('status'),JSON.stringify(s)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
+function svc(c){ localStorage.setItem(lsKey('checks'),JSON.stringify(c)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
+function svcr(r){ localStorage.setItem(lsKey('check_results'),JSON.stringify(r)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
+function updLU(){
+  if(!selectedGrade){ document.getElementById('last-updated').textContent=''; return; }
+  const ts=localStorage.getItem(lsKey('updated'));
+  if(!ts){ document.getElementById('last-updated').textContent=''; return; }
+  const d=new Date(ts);
+  document.getElementById('last-updated').textContent=
+    '最終更新：'+d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
+function startWithGrade(grade){
+  selectedGrade=grade;
+  // ガイドマップを確実に閉じてタブを先頭に表示
+  document.getElementById('guide-map-wrap').classList.remove('open');
+  try{ status=JSON.parse(localStorage.getItem(lsKey('status'))||'{}'); }catch{ status={}; }
+  try{ checks=JSON.parse(localStorage.getItem(lsKey('checks'))||'{}'); }catch{ checks={}; }
+  try{ checkResults=JSON.parse(localStorage.getItem(lsKey('check_results'))||'{}'); }catch{ checkResults={}; }
+  const badge=document.getElementById('grade-badge');
+  if(grade===3){ badge.textContent='FCM 3級'; badge.style.background='var(--accent)'; }
+  else{ badge.textContent='FCM 2級'; badge.style.background='var(--purple)'; }
+  const subs=getCurrentSubjects();
+  document.getElementById('subject-total').textContent=' / '+subs.length;
+  const ptitle=PERSONAS_DEF.find(x=>x.id===selectedPersona);
+  document.getElementById('study-title').innerHTML=
+    (ptitle?ptitle.icon+' <span style="color:'+ptitle.color+'">'+ptitle.label+'</span>　':'')+
+    (grade===3?'3級（Basic）':'2級（Intermediate）')+'　業務分野一覧';
+
+  document.getElementById('persona-select-area').style.display='none';
+  document.querySelector('.layout').style.display = '';
+  document.getElementById('guide-map-wrap').classList.remove('open');
+  // 職種・級バーを表示
+  const pgBar=document.getElementById('persona-grade-bar');
+  pgBar.style.display='flex';
+  // fixed barの高さ分だけコンテンツをずらす（約52px）
+  document.querySelector('.layout').style.marginTop='52px';
+  const pp=PERSONAS_DEF.find(x=>x.id===selectedPersona);
+  document.getElementById('pgb-persona-name').innerHTML=
+    (pp?pp.icon+' ':'')+'<span style="color:'+(pp?pp.color:'var(--accent)')+'">'+
+    (pp?pp.label:'')+'</span>';
+  // 選択中の級タブをハイライト
+  document.getElementById('pgb-tab3').style.background=grade===3?'var(--accent)':'';
+  document.getElementById('pgb-tab3').style.color=grade===3?'#fff':'var(--text-sub)';
+  document.getElementById('pgb-tab2').style.background=grade===2?'var(--purple)':'';
+  document.getElementById('pgb-tab2').style.color=grade===2?'#fff':'var(--text-sub)';
+  document.getElementById('view-tabs-area').style.display='';
+  // タブ説明・ガイドマップトグルを再表示（級選択直後は案X：見せる）
+  const _desc=document.getElementById('view-tabs-desc');
+  const _gt=document.getElementById('guide-toggle-wrap');
+  if(_desc) _desc.style.display='';
+  if(_gt) _gt.style.display='';
+  // ガイドマップトグルの文言を「開く」にリセット（級選択直後は閉じている）
+  const _gtbtn=document.getElementById('guide-toggle-btn');
+  if(_gtbtn) _gtbtn.textContent='▶ ガイドマップを開く';
+  // FCM技能検定LPリンク（ペルソナ別）をタブ説明エリアに表示
+  const _lpwrap=document.getElementById('fcm-lp-link-wrap');
+  if(_lpwrap){ _lpwrap.innerHTML=fcmLpLink(); _lpwrap.style.display=''; }
+  const _gmw=document.getElementById('guide-map-wrap');
+  if(_gmw) _gmw.classList.remove('open');
+  document.getElementById('quick-check-area').style.display='';
+  // タブエリアを最上部にスクロール
+  setTimeout(()=>document.getElementById('view-tabs-area')
+    .scrollIntoView({behavior:'smooth',block:'start'}),100);
+  document.getElementById('qc-intro-card').style.display='';
+  document.getElementById('qc-quiz-area').style.display='none';
+  document.getElementById('qc-result-area').style.display='none';
+  document.getElementById('check-start-view').style.display='none';
+  const p=PERSONAS_DEF.find(x=>x.id===selectedPersona);
+  const totalQ=subs.reduce((a,s)=>a+s.hp_questions.length,0);
+  document.getElementById('check-start-title').textContent=(p?p.icon+' ':'')+' まず現状を把握しましょう';
+  document.getElementById('check-start-desc').innerHTML=
+    '<strong>'+(p?p.label:'')+'</strong>　'+(grade===3?'3級（Basic）':'2級（Intermediate）')+'<br>'+
+    '全'+subs.length+'業務分野・'+totalQ+'問に「できる・だいたいできる・あやふや・できない」で答えるだけ。<br>'+
+    '得意分野と苦手分野が一目でわかります。'+
+    (grade===2?'<br><span style="color:var(--accent3);font-size:11px;">⚠️ ② 運動トレーニングはBasicテキスト参照（3級タブで確認）</span>':'');
+  if(Object.keys(checkResults).length>0){
+    document.getElementById('result-view').style.display='';
+    renderResults();
+  }
+  renderSidebar();
+  // fixed barがあるのでscrollToでトップに移動
+  updateFlowState();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function backToGuide(){
+  selectedGrade=null;
+  document.getElementById('check-start-view').style.display='none';
+  document.getElementById('quick-check-area').style.display='none';
+  document.getElementById('persona-grade-bar').style.display='none';
+  document.getElementById('view-tabs-area').style.display='none';
+  document.querySelector('.layout').style.marginTop='0';
+  document.getElementById('persona-select-area').style.display='';
+  document.querySelector('.layout').style.display = 'none';
+  if(selectedPersona){
+    document.getElementById('pc-grade-wrap').classList.add('open');
+  }
+}
+
+
+let status=lds(), checks=ldc(), checkResults=ldcr();
+let openId=null, activeTab='skills', currentView='check';
+
+// チェックモード用
+let allQuestions=[]; // {sid, subject, q, idx}
+let currentQIndex=0;
+let sessionAnswers={}; // {sid: {qidx: 'yes'|'mostly'|'vague'|'no'}}
+
+// ════════════════════════════════════════════════════════
+// VIEW SWITCHER
+// ════════════════════════════════════════════════════════
+// v2: 3状態フロー
+function setFlowState(state){
+  var fg=document.getElementById('flow-guide');
+  var gt=document.getElementById('guide-toggle-wrap');
+  var lp=document.getElementById('fcm-lp-link-wrap');
+  var gm=document.getElementById('guide-map-wrap');
+  var qi=document.getElementById('qc-intro-card');
+  var qq=document.getElementById('qc-quiz-area');
+  var qr=document.getElementById('qc-result-area');
+  var qa=document.getElementById('quick-check-area');
+  var vta=document.getElementById('view-tabs-area');
+  var vc=document.getElementById('view-check');
+  var vs=document.getElementById('view-study');
+  var cs=document.getElementById('check-start-view');
+  var cq=document.getElementById('check-quiz-view');
+  var br=document.getElementById('back-to-result-btn');
+  // 全部隠す
+  [fg,gt,lp,qi,qq,qr,qa,vs,cs,cq].forEach(function(el){if(el)el.style.display='none';});
+  if(gm)gm.classList.remove('open');
+  if(br)br.style.display='none';
+  var allBtn=document.getElementById('show-all-chapters-btn');if(allBtn)allBtn.style.display='none';
+  if(vta)vta.style.display='none';
+  var pgb=document.getElementById('persona-grade-bar');
+  vc.style.display='';
+  
+  if(state==='A'){
+    // 初回：導線＋ガイドマップ＋チェック開始ボタン
+    if(vta)vta.style.display='';
+    if(fg)fg.style.display='';if(gt)gt.style.display='';if(lp)lp.style.display='';
+    if(qa)qa.style.display='';if(qi)qi.style.display='';
+    if(pgb)pgb.style.display='';
+  }else if(state==='B'){
+    // チェック中
+    if(qa)qa.style.display='';if(qq)qq.style.display='';
+    if(pgb)pgb.style.display='';
+  }else if(state==='C'){
+    // チェック完了：結果＋学習カード
+    if(qa)qa.style.display='';if(qr)qr.style.display='';
+    if(pgb)pgb.style.display='';
+    checkRegistrationStatus();
+  }else if(state==='D'){
+    // 詳細チェック導入
+    if(cs)cs.style.display='';
+  }else if(state==='E'){
+    // 詳細チェック実施中
+    if(cq)cq.style.display='';
+  }else if(state==='F'){
+    // 学習一覧：view-checkを完全に隠してview-studyだけ表示
+    vc.style.display='none';
+    if(vs){vs.style.display='';renderStudy();}
+    if(br)br.style.display='';
+    if(pgb)pgb.style.display='';
+    // 苦手な業務分野（✗苦手・△あやふや）だけ表示、それ以外は非表示
+    document.querySelectorAll('#sgrid .scard').forEach(function(el){
+      var qc=el.getAttribute('data-qc');
+      if(qc==='no'||qc==='vague'){
+        el.style.display='';
+      } else {
+        el.style.display='none';
+      }
+    });
+  }
+}
+function switchView(v){
+  currentView=v;
+  var qcDone=Object.keys(quickAnswers).length>0;
+  setFlowState(qcDone?'C':'A');
+}
+function showStudyFromResult(){
+  setFlowState('F');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// メール登録
+function submitRegistration(){
+  var name=document.getElementById('reg-name').value.trim();
+  var org=document.getElementById('reg-org').value.trim();
+  var email=document.getElementById('reg-email').value.trim();
+  if(!name){alert('お名前を入力してください。');return;}
+  if(!org){alert('所属を入力してください。');return;}
+  if(!email||email.indexOf('@')<1){alert('正しいメールアドレスを入力してください。');return;}
+  var email2=document.getElementById('reg-email2').value.trim();
+  if(email!==email2){alert('メールアドレスが一致しません。もう一度ご確認ください。');return;}
+  // Googleフォームに送信（URLはFIAが設定）
+  var formUrl='https://docs.google.com/forms/d/e/1FAIpQLSeeuTYHyZSUWxlLTEGv65FBz9VSHluilo9NlidgMTgDaiA6JQ/formResponse';
+  var persona=selectedPersona||'py';
+  var grade=selectedGrade===2?'Intermediate 2級':'Basic 3級';
+  var data=new URLSearchParams();
+  data.append('entry.278115486',name);
+  data.append('entry.1725521625',org);
+  data.append('entry.1778140340',email);
+  data.append('entry.763997121',persona);
+  data.append('entry.868883860',grade);
+  if(formUrl!=='YOUR_GOOGLE_FORM_URL'){
+    fetch(formUrl,{method:'POST',mode:'no-cors',body:data}).catch(function(){});
+  }
+  localStorage.setItem('fcm_registered','1');
+  document.getElementById('mail-register-area').style.display='none';
+  document.getElementById('already-registered').style.display='';
+  alert('ご登録ありがとうございます。学習を始めましょう！');
+  showStudyFromResult();
+}
+function skipRegistration(){
+  showStudyFromResult();
+}
+function checkRegistrationStatus(){
+  if(localStorage.getItem('fcm_registered')==='1'){
+    var reg=document.getElementById('mail-register-area');
+    var done=document.getElementById('already-registered');
+    if(reg)reg.style.display='none';
+    if(done)done.style.display='';
+  }
+}
+function showAllChapters(){
+  document.querySelectorAll('#sgrid .scard').forEach(function(el){el.style.display='';});
+  var btn=document.getElementById('show-all-chapters-btn');
+  if(btn)btn.style.display='none';
+  var btnTop=document.getElementById('show-all-chapters-btn-top');
+  if(btnTop)btnTop.style.display='none';
+}
+function updateFlowState(){
+  var qcDone=Object.keys(quickAnswers).length>0;
+  document.getElementById('view-check').style.display='';
+  setFlowState(qcDone?'C':'A');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ════════════════════════════════════════════════════════
+// 現状把握チェック
+// ════════════════════════════════════════════════════════
+function startCheck(){
+  setFlowState('E');
+  // 全質問を生成（HP質問をそのまま使用）
+  allQuestions=[];
+  getCurrentSubjects().forEach(s=>{
+    s.hp_questions.forEach((q,i)=>{
+      allQuestions.push({sid:s.id, subject:`${s.name}`, q, qidx:i});
+    });
+  });
+  currentQIndex=0;
+  sessionAnswers={};
+  
+  document.getElementById('check-start-view').style.display='none';
+  document.getElementById('check-quiz-view').style.display='';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const total=allQuestions.length;
+  const item=allQuestions[currentQIndex];
+  const pct=Math.round(currentQIndex/total*100);
+  
+  document.getElementById('cp-subject').textContent=item.subject;
+  document.getElementById('cp-count').textContent=`${currentQIndex+1} / ${total}`;
+  document.getElementById('cp-bar').style.width=pct+'%';
+  
+  const prev=sessionAnswers[item.sid]?.[item.qidx];
+  
+  document.getElementById('quiz-card-area').innerHTML=`
+  <div class="q-card">
+    <div class="q-subject">${item.subject}</div>
+    <div class="q-text">${item.q}</div>
+    <div class="q-btns">
+      <button class="q-btn ${prev==='yes'?'sel':''}" data-v="yes" onclick="answerQ('yes')">◎ できる</button>
+      <button class="q-btn ${prev==='mostly'?'sel':''}" data-v="mostly" onclick="answerQ('mostly')">○ だいたいできる</button>
+      <button class="q-btn ${prev==='vague'?'sel':''}" data-v="vague" onclick="answerQ('vague')">△ あやふや</button>
+      <button class="q-btn ${prev==='no'?'sel':''}" data-v="no" onclick="answerQ('no')">✗ できない</button>
+    </div>
+    <div class="q-nav">
+      <button class="q-nav-btn" onclick="prevQ()" ${currentQIndex===0?'disabled':''}>← 前へ</button>
+      <span class="q-count">${currentQIndex+1} / ${total}</span>
+      <button class="q-nav-btn" id="next-btn" onclick="nextQ()" ${currentQIndex===total-1?'':''}>次へ →</button>
+    </div>
+  </div>`;
+}
+
+function answerQ(val){
+  const item=allQuestions[currentQIndex];
+  if(!sessionAnswers[item.sid]) sessionAnswers[item.sid]={};
+  sessionAnswers[item.sid][item.qidx]=val;
+  // ビジュアルフィードバック
+  document.querySelectorAll('.q-btn').forEach(b=>{
+    b.classList.toggle('sel', b.dataset.v===val);
+  });
+  // 自動で次へ（0.3秒後）
+  setTimeout(()=>nextQ(),300);
+}
+
+function prevQ(){
+  if(currentQIndex>0){currentQIndex--;renderQuestion();}
+}
+
+function nextQ(){
+  const total=allQuestions.length;
+  if(currentQIndex<total-1){
+    currentQIndex++;
+    renderQuestion();
+  } else {
+    finishCheck();
+  }
+}
+
+function finishCheck(){
+  // 分野別に集計してステータスを更新
+  const newStatus={};
+  getCurrentSubjects().forEach(s=>{
+    const ans=sessionAnswers[s.id]||{};
+    const total=s.hp_questions.length;
+    if(total===0) return;
+    let score=0;
+    Object.values(ans).forEach(v=>{
+      if(v==='yes') score+=2;
+      else if(v==='mostly') score+=1.5;
+      else if(v==='vague') score+=0.5;
+    });
+    const pct=score/(total*2);
+    if(pct>=0.8) newStatus[s.id]='good';
+    else if(pct>=0.5) newStatus[s.id]='ok';
+    else if(pct>0) newStatus[s.id]='weak';
+    else newStatus[s.id]='none';
+  });
+  
+  status={...status,...newStatus};
+  checkResults=sessionAnswers;
+  svs(status);
+  svcr(checkResults);
+  
+  // 結果画面表示
+  document.getElementById('check-quiz-view').style.display='none';
+  document.getElementById('check-start-view').style.display='';
+  document.getElementById('result-view').style.display='';
+  renderResults();
+  renderSidebar();
+}
+
+function renderResults(){
+  const list=document.getElementById('result-list');
+  // 苦手順に並べ替え（none→weak→ok→good）
+  const order={none:0,weak:1,ok:2,good:3};
+  const sorted=[...getCurrentSubjects()].sort((a,b)=>order[status[a.id]||'none']-order[status[b.id]||'none']);
+  
+  list.innerHTML=sorted.map(s=>{
+    const st=status[s.id]||'none';
+    const ans=checkResults[s.id]||{};
+    const total=s.hp_questions.length;
+    let score=0;
+    Object.values(ans).forEach(v=>{
+      if(v==='yes') score+=2;
+      else if(v==='mostly') score+=1.5;
+      else if(v==='vague') score+=0.5;
+    });
+    const pct=total>0?Math.round(score/(total*2)*100):0;
+    const fillColor=st==='good'?'var(--c-good)':st==='ok'?'var(--c-ok)':st==='weak'?'var(--c-weak)':'var(--c-none)';
+    const statusLabel={none:'✗ 未着手',weak:'△ 学習中',ok:'○ おおむねOK',good:'◎ 理解できた'};
+    
+    // 各質問の回答バッジ
+    const qBadges=s.hp_questions.map((q,i)=>{
+      const a=ans[i];
+      const cls=a==='yes'?'good':a==='mostly'?'ok':a==='vague'?'weak':'none';
+      const label=a==='yes'?'◎':a==='mostly'?'○':a==='vague'?'△':'✗';
+      return `<span class="res-q ${cls}" title="${q.substring(0,30)}...">${label}</span>`;
+    }).join('');
+    
+    return `<div class="result-card">
+      <div class="result-hdr">
+        <div class="result-subj">${s.name}</div>
+        <div class="result-score" style="color:${fillColor}">${statusLabel[st]}　${pct}%</div>
+      </div>
+      <div class="result-bar"><div class="result-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+      <div class="result-detail">${qBadges}</div>
+      <div class="result-action">
+        <button class="ract-btn primary" onclick="switchView('study');setTimeout(()=>toggleDetail('${s.id}'),100)">この業務分野を学習する</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// STUDY MODE
+// ════════════════════════════════════════════════════════
+const SL={none:'✗ 未着手',weak:'△ 学習中',ok:'○ 理解できた',good:'◎ 確認済み'};
+const SC={none:'st-none',weak:'st-weak',ok:'st-ok',good:'st-good'};
+
+function renderStudy(){renderGrid();renderDetail();renderSidebar();}
+
+function renderGrid(){
+  const subs = getCurrentSubjects();
+  const lvKey = selectedGrade===2 ? 'g2' : 'g3';
+  const order = (GM_ORDER[selectedPersona]||{})[lvKey];
+  const subjToQc3 = {s01:'s01',s02:'s02',s03:'s03',s04:'s04a',s05:'s04b',s06:'s05',s07:'s06',s08:'s07',s09:'s08',s10:'s09'};
+  const qcToSubj3 = {}; Object.entries(subjToQc3).forEach(([k,v])=>qcToSubj3[v]=k);
+  const qcMap = selectedGrade===2 ? QC2_TO_GMKEY : QC3_TO_GMKEY;
+  const chapRef3 = {s01:'Basic 第2章',s02:'Basic 第3章',s03:'Basic 第1章',s04:'Basic 第4章',s05:'Basic 第4章',s06:'Basic 第7章',s07:'Basic 第5章',s08:'Basic 第5章',s09:'Basic 第6章',s10:'Basic 第8章'};
+      const secRef3 = {s01:'Basic 第2章 全体（健康の定義・運動・栄養・休養）',s02:'Basic 第3章（骨格筋・代謝・トレーニングの原理原則）',s03:'Basic 第1章 全体',s04:'Basic 第4章 1〜5節（フロント・ジム・スタジオ・プール・スクール）',s05:'Basic 第4章 6節　イベントの企画・運営・財務',s06:'Basic 第7章 1〜2節（施設内容・管理・5S）',s07:'Basic 第5章 2〜3節（入会・見学者対応／課題解決）',s08:'Basic 第5章 1節　接客の心構え',s09:'Basic 第6章 1〜4節',s10:'Basic 第8章 1〜2節（労働者の保護・職場の安全衛生）'};
+      
+  const secRef2 = {s01:'Basic 第2章＋Int 第2章（健康施策・THP・健康経営・デジタルヘルス）',s02:'Basic 第3章 参照（3級・Int独立章なし）',s03:'Int 第1章 4節　介護予防（一般介護予防事業）',s04a:'Int 第3章 運営業務全般（フロント/ジム/スタジオ/プール/スクール/付帯）＋第5章2節 商品・サービス管理',s04b:'Int 第4章 全体（マーケ・商圏・プロモ・Web）',s04c:'Int 第5章 1・3節（販売管理・収支管理）',s04d:'Int 第8章 2・4節（設備点検・事故防止/緊急時対応）',s04e:'Int 第6章 1〜6節（HRM・人材育成・コーチング・要員・労働法規一般）',s04f:'Int 第9章 2節　リスク管理',s05:'Int 第7章 全体（顧客管理・会員継続・コミュニティ）',s06:'Int 第9章 1節　主な法律',s07:'Int 第6章 7節　職場の安全衛生'};
+      const chapRef2 = {s01:'Basic（3級参照）',s02:'Basic（3級参照）',s03:'Int. 第1章',s04a:'Int. 第3章',s04b:'Int. 第4章',s04c:'Int. 第5章',s04d:'Int. 第8章',s04e:'Int. 第6章',s04f:'Int. 第9章',s05:'Int. 第7章',s06:'Int. 第9章',s07:'Int. 第6章'};
+  const chapRef = selectedGrade===2 ? chapRef2 : chapRef3;
+  const priMap = {pri:0, strat:1, teach:2, exam:3};
+  const priBadge = {
+    pri: {label:'◎ 業務直結', bg:'#D1FAE5', color:'#065F46'},
+    strat:{label:'○ 戦略', bg:'#DBEAFE', color:'#1E40AF'},
+    teach:{label:'△ 指導系', bg:'#F3F4F6', color:'#4B5563'},
+    exam: {label:'▽ 受検用', bg:'#FEE2E2', color:'#991B1B'},
+  };
+  const chPri = {};
+  const sortOrder = [];
+  if(order){
+    const badgeMap = {};
+    order.forEach(([key, badge])=>{ badgeMap[key] = badge; });
+    const gmToQc = {};
+    Object.entries(qcMap).forEach(([qcId, gmKey])=>{ if(gmKey) gmToQc[gmKey] = qcId; });
+    order.forEach(([gmKey, badge])=>{
+      const qcId = gmToQc[gmKey];
+      if(!qcId) return;
+      const subjId = selectedGrade===2 ? qcId : (qcToSubj3[qcId]||qcId);
+      if(!chPri[subjId]){
+        chPri[subjId] = badge;
+        sortOrder.push(subjId);
+      }
+    });
+    subs.forEach(s=>{ if(!sortOrder.includes(s.id)){ sortOrder.push(s.id); chPri[s.id]='exam'; }});
+  }
+  const qcRank={'no':0,'vague':1,'yes':2};
+  const getQcId=(sid)=>(selectedGrade!==2&&subjToQc3[sid])?subjToQc3[sid]:sid;
+  const gmSorted=sortOrder.length>0?sortOrder.map(id=>subs.find(s=>s.id===id)).filter(Boolean):subs;
+  const sorted=Object.keys(quickAnswers).length>0
+    ?[...gmSorted].sort((a,b)=>{const ra=qcRank[quickAnswers[getQcId(a.id)]]??1.5;const rb=qcRank[quickAnswers[getQcId(b.id)]]??1.5;return ra-rb;})
+    :gmSorted;
+  const hasQR=Object.keys(quickAnswers).length>0;
+  const descHtml=hasQR
+    ?`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">簡易チェックで「苦手」と「あやふや」だった業務分野を表示しています。<br>学習したい業務分野をタップしてください。<div style="margin-top:10px;"><button id="show-all-chapters-btn-top" onclick="showAllChapters()" style="font-size:13px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:8px;padding:8px 20px;cursor:pointer;">得意な業務分野も含めてすべて見る ▼</button></div></div>`
+    :`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">あなたの業務に直結する章から並べています。<br><span style="color:#065F46">◎業務直結</span> → <span style="color:#1E40AF">○戦略</span> → <span style="color:#4B5563">△指導系</span> → <span style="color:#991B1B">▽受検用</span> の順です。</div>`;
+  // v2: 優先度グループ別に全章表示
+  const priGroups = {pri:[], strat:[], teach:[], exam:[]};
+  sorted.forEach(s => {
+    const pri = chPri[s.id] || 'exam';
+    priGroups[pri].push(s);
+  });
+  const priLabel = {pri:'◎ 業務直結', strat:'○ 戦略', teach:'△ 指導系', exam:'▽ 受検用'};
+  const priColor = {pri:'#059669', strat:'#2563EB', teach:'#6B7280', exam:'#DC2626'};
+  const qcLabel = {'no':'✗ 苦手','vague':'△ あやふや','yes':'◎ できる'};
+  const qcColor = {'no':'#991B1B','vague':'#92400E','yes':'#065F46'};
+
+  let cardsHtml = descHtml;
+  ['pri','strat','teach','exam'].forEach(pri => {
+    const group = priGroups[pri];
+    if(group.length === 0) return;
+    const doneCount = group.filter(s => status[s.id]==='good'||status[s.id]==='ok').length;
+    const progressText = doneCount > 0 ? `　✅ ${doneCount}/${group.length}分野 確認済み` : '';
+    cardsHtml += `<div style="grid-column:1/-1;font-size:13px;font-weight:700;color:${priColor[pri]};padding:12px 0 6px 0;border-bottom:1px solid var(--border);margin-bottom:4px;">${priLabel[pri]}（${group.length}分野）<span style="font-size:11px;font-weight:400;color:var(--text-dim);">${progressText}</span></div>`;
+    group.forEach(s => {
+      const st=status[s.id]||'none';
+      const cl=checks[s.id]||[];
+      const done=cl.filter(Boolean).length;
+      const badge = chPri[s.id] ? priBadge[chPri[s.id]] : null;
+      const chap = (selectedGrade===2) ? ((typeof secRef2!=='undefined' && secRef2[s.id]) ? secRef2[s.id] : (chapRef[s.id]||'')) : ((typeof secRef3!=='undefined' && secRef3[s.id]) ? secRef3[s.id] : (chapRef[s.id]||''));
+      const qcA=quickAnswers[getQcId(s.id)];
+      const qcBadge = qcA ? `<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${qcA==='no'?'#FEE2E2':qcA==='vague'?'#FEF3C7':'#D1FAE5'};color:${qcColor[qcA]||'#6B7280'};font-weight:600;">${qcLabel[qcA]||''}</span>` : '';
+      cardsHtml += `<div class="scard" data-id="${s.id}" data-status="${st}" data-qc="${qcA||"none"}" onclick="toggleDetail('${s.id}')">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+          <span style="font-size:11px;color:var(--text-dim);font-weight:500;">${chap}</span>
+          <span style="margin-left:auto;">${qcBadge}</span>
+        </div>
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-foot">
+          <span class="sc-cnt">${done}/${s.checklist.length} チェック</span>
+          <span class="sbadge ${SC[st]}">${SL[st]}</span>
+        </div>
+      </div>`;
+    });
+  });
+  document.getElementById('sgrid').innerHTML = cardsHtml;
+}
+
+function renderSidebar(){
+  const goodCnt=getCurrentSubjects().filter(s=>status[s.id]==='good').length;
+  document.getElementById('good-count').textContent=goodCnt;
+  document.getElementById('pfill').style.width=(goodCnt/10*100)+'%';
+  const tl=document.getElementById('today-list');
+  const weak=getCurrentSubjects().filter(s=>(status[s.id]||'none')==='weak');
+  const none=getCurrentSubjects().filter(s=>(status[s.id]||'none')==='none');
+  const items=[...weak,...none].slice(0,5);
+  if(items.length===0){tl.innerHTML='<div class="tnone" style="color:var(--accent2)">◎ 全業務分野を学習中！</div>';return;}
+  tl.innerHTML=items.map(s=>{
+    const st=status[s.id]||'none';
+    const badge=st==='weak'?`<span class="tbadge" style="background:var(--s-weak);color:var(--c-weak);">△</span>`:`<span class="tbadge" style="background:var(--s-none);color:var(--c-none);">✗</span>`;
+    return`<div class="titem" onclick="switchView('study');setTimeout(()=>toggleDetail('${s.id}'),100)">${badge}<span>${s.name}</span></div>`;
+  }).join('');
+}
+
+function renderDetail(){
+  const panel=document.getElementById('dpanel');
+  if(!openId){panel.classList.remove('open');return;}
+  const s=getCurrentSubjects().find(x=>x.id===openId);
+  if(!s)return;
+  const st=status[s.id]||'none';
+  const cl=checks[s.id]||Array(s.checklist.length).fill(false);
+  const hasPractice=s.practice&&s.practice.length>0;
+  const kwCount=s.keywords.reduce((a,g)=>a+g.terms.filter(t=>getKWDB()[t]).length,0);
+
+  const hasPastExam = !!(getPastExamData(s.id));
+  const innerTabsHtml=`<div class="inner-tabs">
+    <div class="itab ${activeTab==='skills'?'active':''}" onclick="switchTab('skills')">必要な技能</div>
+    <div class="itab ${activeTab==='check'?'active':''}" onclick="switchTab('check')">チェックリスト<span class="itab-badge">${s.checklist.length}</span></div>
+    <div class="itab ${kwCount===0?'disabled':''} ${activeTab==='keywords'?'active':''}" ${kwCount>0?`onclick="switchTab('keywords')"`:'style="opacity:0.4;cursor:default;"'}>キーワード${kwCount>0?`<span class="itab-badge purple">${kwCount}</span>`:''}</div>
+    <div class="itab ${activeTab==='questions'?'active':''}" onclick="switchTab('questions')">理解度質問<span class="itab-badge">${s.questions.length}</span></div>
+    ${''}
+    ${hasPastExam?`<div class="itab ${activeTab==='pastexam'?'active':''}" onclick="switchTab('pastexam')">過去問</div>`:''}
+  </div>`;
+
+  const skillsHtml=`<div class="tab-pane ${activeTab==='skills'?'active':''}">
+    ${s.skills.map(sk=>`<div class="skill-item"><div class="skill-dot"></div><div>${sk}</div></div>`).join('')}
+    <div style="margin-top:12px;font-size:11px;color:var(--text-dim);padding:8px 12px;
+      background:var(--surface);border-radius:7px;line-height:1.7;border-left:2px solid var(--border);">
+      公式テキストのpage番号が表示されますが、詳細確認は公式テキストの購入が必要となります。<br>
+      <a href="https://fia.or.jp/fcm_textbook/textset/" target="_blank"
+        style="color:var(--accent);font-weight:600;text-decoration:none;">→ 公式テキストを購入する</a>
+    </div>
+  </div>`;
+
+  const checkHtml=`<div class="tab-pane ${activeTab==='check'?'active':''}">
+    ${s.checklist.map((item,i)=>`<div class="check-item ${cl[i]?'checked':''}" onclick="toggleCheck('${s.id}',${i})">
+      <div class="cbox">${cl[i]?'✓':''}</div><div>${item}</div>
+    </div>`).join('')}
+  </div>`;
+
+  const kwHtml=`<div class="tab-pane ${activeTab==='keywords'?'active':''}">
+    ${kwCount===0?'<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:14px;">この業務分野にはキーワードが登録されていません。</div>':`<div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;padding:5px 9px;background:rgba(75,123,245,.07);border-radius:6px;border-left:2px solid var(--accent);">💡 <strong style="color:var(--accent)">ⓘ</strong>マーク付きをクリック → 出典ページを表示</div>
+    ${s.keywords.map(g=>{
+      const shown=g.terms.filter(t=>getKWDB()[t]);
+      if(shown.length===0) return '';
+      return `<div class="kw-section">
+      <div class="kw-section-title">${g.label}</div>
+      <div class="kw-grid">${shown.map(t=>{
+        return`<span class="kw-tag has-def" data-term="${t}">${t}</span>`;
+      }).join('')}</div>
+    </div>`;
+    }).join('')}
+    `}
+  </div>`;
+
+  const qHtml=`<div class="tab-pane ${activeTab==='questions'?'active':''}">
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">記述式で答えられるかが合否の分かれ目です。</div>
+    ${s.questions.map(q=>`<div class="q-item">${q}</div>`).join('')}
+  </div>`;
+
+  const pastExamHtml=hasPastExam?`<div class="tab-pane ${activeTab==='pastexam'?'active':''}">
+    ${renderPastExamTab(s.id)}
+  </div>`:'';
+  const practiceHtml=hasPractice?`<div class="tab-pane ${activeTab==='practice'?'active':''}">
+    ${s.practice.map((p,pi)=>`<div class="jitsu-card">
+      <div class="jitsu-label">${p.label}</div>
+      <div class="jitsu-situation">${p.situation.replace(/\n/g,'<br>')}</div>
+      <div class="jitsu-q">${p.q1}</div>
+      <textarea class="jitsu-input" placeholder="ここに答えを書いてください..." rows="2"></textarea>
+      <div class="jitsu-q" style="margin-top:8px">${p.q2}</div>
+      <textarea class="jitsu-input" placeholder="ここに答えを書いてください..." rows="2"></textarea>
+      <div class="jitsu-q" style="margin-top:8px">${p.q3}</div>
+      <textarea class="jitsu-input" placeholder="ここに答えを書いてください..." rows="2"></textarea>
+      <button class="jitsu-answer-btn" onclick="toggleAnswer(this)">解答を見る ▼</button>
+      <div class="jitsu-answer">
+        <div class="answer-label">模範解答</div>
+        ${p.calc?`<div class="calc-box">${p.answer.replace(/\n/g,'<br>')}</div>`:p.answer.replace(/\n/g,'<br>')}
+      </div>
+    </div>`).join('')}
+  </div>`:'';
+
+  const ratingHtml=['none','weak','ok','good'].map((v,i)=>{
+    const labels=['✗ 未着手','△ 学習中','○ 理解できた','◎ 確認済み'];
+    return`<button class="rbt ${st===v?'active':''}" data-val="${v}" onclick="setStatus('${s.id}','${v}')">${labels[i]}</button>`;
+  }).join('');
+
+  panel.innerHTML=`
+  <div class="dp-hdr">
+    <div class="dp-meta">
+      <div class="dp-name">${s.name}</div>
+      <div class="dp-ess">${s.essence.replace(/\n/g,'<br>')}</div>
+    </div>
+    <button class="dp-close" onclick="closeDetail()">✕</button>
+  </div>
+  ${innerTabsHtml}
+  <div>${skillsHtml}${checkHtml}${kwHtml}${qHtml}${pastExamHtml}</div>
+  <div class="dp-foot">
+    <span class="rat-lbl">自己評価：</span>
+    <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">○理解できた＝テキストを読んで理解　◎確認済み＝問題で正解できた</div>
+    <div class="rat-btns">${ratingHtml}</div>
+    <div class="pages-box">${s.pages}</div>
+  </div>`;
+  panel.classList.add('open');
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+function toggleDetail(id){
+  if(openId===id){closeDetail();return;}
+  openId=id;activeTab='skills';
+  // v2: 一覧を隠して選んだ章だけ表示
+  var sgbox=document.querySelector('.study-guide-box');if(sgbox)sgbox.style.display='none';
+  var ghdr=document.querySelector('.grid-hdr');if(ghdr)ghdr.style.display='none';
+  var sg=document.getElementById('sgrid');if(sg)sg.style.display='none';
+  // 「一覧に戻る」ボタン
+  var nb=document.getElementById('detail-back-btn');
+  if(!nb){
+    nb=document.createElement('button');
+    nb.id='detail-back-btn';
+    nb.style.cssText='font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;text-decoration:underline;padding:8px 0;margin-bottom:8px;display:block;';
+    nb.textContent='← 章の一覧に戻る';
+    nb.onclick=function(){closeDetail();};
+    document.getElementById('dpanel').before(nb);
+  }
+  nb.style.display='';
+  renderStudy();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function closeDetail(){
+  openId=null;
+  // v2: 一覧を復帰
+  var sgbox=document.querySelector('.study-guide-box');if(sgbox)sgbox.style.display='';
+  var ghdr=document.querySelector('.grid-hdr');if(ghdr)ghdr.style.display='';
+  var sg=document.getElementById('sgrid');if(sg)sg.style.display='';
+  var nb=document.getElementById('detail-back-btn');if(nb)nb.style.display='none';
+  if(currentView==='study')renderStudy();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchTab(tab){activeTab=tab;renderDetail();}
+function setStatus(id,val){status[id]=val;svs(status);renderStudy();}
+function toggleCheck(id,idx){
+  const s=getCurrentSubjects().find(x=>x.id===id);
+  if(!checks[id])checks[id]=Array(s.checklist.length).fill(false);
+  checks[id][idx]=!checks[id][idx];
+  svc(checks);
+  // v2: チェック状況で自己評価を自動更新
+  const checked=checks[id].filter(Boolean).length;
+  const total=checks[id].length;
+  if(checked===0 && (status[id]==='weak'||!status[id])){
+    status[id]='none';svs(status);
+  } else if(checked>0 && checked<total && status[id]!=='ok' && status[id]!=='good'){
+    status[id]='weak';svs(status);
+  } else if(checked===total){
+    status[id]='good';svs(status);
+  }
+  renderDetail();renderGrid();renderSidebar();
+}
+function toggleAnswer(btn){
+  const ans=btn.nextElementSibling;
+  ans.classList.toggle('open');
+  btn.textContent=ans.classList.contains('open')?'解答を閉じる ▲':'解答を見る ▼';
+}
+function resetAll(){
+  if(!confirm('この職種・級の進捗をリセットしますか？'))return;
+  status={};checks={};checkResults={};
+  quickAnswers={};
+  [lsKey('status'),lsKey('checks'),lsKey('check_results'),lsKey('updated')]
+    .forEach(k=>localStorage.removeItem(k));
+  openId=null;updLU();renderStudy();
+  document.getElementById('result-view').style.display='none';
+}
+
+// ─── KWポップアップ ───────────────────────────────────
+(function(){
+  const pop=document.getElementById('kw-popup');
+  let open=false,curTag=null;
+  function show(tag){
+    const term=tag.dataset.term;
+    const info=getKWDB()[term];
+    if(!info)return;
+    pop.querySelector('.kp-term').textContent=term;
+    const pageEl=pop.querySelector('.kp-page');
+    const noteEl=pop.querySelector('.kp-multinote');
+    if(info.ref){
+      // 2級でInter索引になくBasic索引にある語 → 3級で確認案内
+      pageEl.innerHTML='📖 <span>この用語はBasicテキスト、またはWeb学習ナビの「3級で学ぶ」で確認してください。</span>';
+      noteEl.style.display='none';
+    } else {
+      pageEl.innerHTML='📖 <span>'+info.page+'</span>';
+      noteEl.style.display='';
+    }
+    const r=tag.getBoundingClientRect();
+    const pw=320,ph=160;
+    let left=r.left,top=r.bottom+10;
+    if(left+pw>window.innerWidth-12)left=window.innerWidth-pw-12;
+    if(top+ph>window.innerHeight-12)top=r.top-ph-10;
+    if(left<8)left=8;
+    pop.style.cssText=`left:${left}px;top:${top}px;`;
+    pop.classList.add('visible');open=true;curTag=tag;
+  }
+  function hide(){pop.classList.remove('visible');open=false;curTag=null;}
+  document.addEventListener('click',function(e){
+    const tag=e.target.closest('.kw-tag');
+    if(tag&&tag.dataset.term&&getKWDB()[tag.dataset.term]){
+      e.stopPropagation();
+      if(open&&curTag===tag){hide();}else{show(tag);}
+      return;
+    }
+    if(open)hide();
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&open)hide();});
+})();
+
+// ─── ペルソナ選択・ガイドマップ ──────────────────────────────────────────────
+
+function initPersonaSelect(){
+  const grid = document.getElementById('persona-grid');
+  grid.innerHTML = PERSONAS_DEF.map(p=>`
+    <div class="persona-card" id="pc-${p.id}" onclick="selectPersona('${p.id}')"
+         style="border-color:${p.color}20">
+      <div class="pc-icon">${p.icon}</div>
+      <div class="pc-name">${p.label}</div>
+      <div class="pc-sub">${p.note3.substring(0,40)}…</div>
+    </div>`).join('');
+}
+
+function selectPersona(pid){
+  selectedPersona = pid;
+  selectedGrade = null;
+  const p = PERSONAS_DEF.find(x=>x.id===pid);
+  // カード選択ビジュアル
+  document.querySelectorAll('.persona-card').forEach(c=>{
+    c.classList.remove('selected');
+    const q = PERSONAS_DEF.find(x=>'pc-'+x.id===c.id);
+    c.style.borderColor = q ? q.color+'20' : '';
+    c.style.background = '';
+  });
+  const card = document.getElementById('pc-'+pid);
+  card.classList.add('selected');
+  card.style.borderColor = p.color;
+  card.style.background = p.color+'18';
+  // ガイドマップは開かない
+  document.getElementById('guide-map-wrap').classList.remove('open');
+  // 級選択ボタンをカード直下に表示
+  document.getElementById('pc-grade-persona-name').innerHTML =
+    `${p.icon} <span style="color:${p.color};font-weight:700">${p.label}</span>　学ぶ級を選んでください`;
+  const wrap = document.getElementById('pc-grade-wrap');
+  wrap.classList.add('open');
+  // wa・li はメイン/サブの案内を出す
+  const gb3sub = document.querySelector('#pc-grade-wrap .pc-grade-btn.b3 .pc-gb-sub');
+  const gb2sub = document.querySelector('#pc-grade-wrap .pc-grade-btn.b2 .pc-gb-sub');
+  const gb3 = document.querySelector('#pc-grade-wrap .pc-grade-btn.b3');
+  const gb2 = document.querySelector('#pc-grade-wrap .pc-grade-btn.b2');
+  // バッジを一旦消す
+  document.querySelectorAll('#pc-grade-wrap .pc-gb-badge').forEach(e=>e.remove());
+  gb3.style.outline=''; gb2.style.outline='';
+  if(pid==='wa'){
+    gb3sub.innerHTML='あなたの今の業務に直結（メイン）';
+    gb2sub.innerHTML='将来リーダーを目指すときの予習に';
+    gb3.insertAdjacentHTML('afterbegin','<span class="pc-gb-badge" style="background:#10B981">メイン</span>');
+    gb3.style.outline='2px solid #10B981';
+  } else if(pid==='li'){
+    gb3sub.innerHTML='基礎の確認・部下が学ぶ内容の把握に';
+    gb2sub.innerHTML='あなたのマネジメント業務に直結（メイン）';
+    gb2.insertAdjacentHTML('afterbegin','<span class="pc-gb-badge" style="background:#10B981">メイン</span>');
+    gb2.style.outline='2px solid #10B981';
+  } else {
+    gb3sub.innerHTML='簡易チェック10問＋学習モード';
+    gb2sub.innerHTML='簡易チェック11問＋学習モード';
+  }
+  wrap.style.borderColor = p.color;
+  setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}), 100);
+}
+
+
+function switchGuideTab(tab){
+  guideTab=tab;
+  document.getElementById('gm-tab3').classList.toggle('active',tab===3);
+  document.getElementById('gm-tab2').classList.toggle('active',tab===2);
+  document.getElementById('gm-note-2').style.display = tab===2?'block':'none';
+  renderGM_v2();
+}
+
+
+// ===== ガイドマップ並び順（価値順）描画用ヘルパー =====
+// 3級：キーワードで節を検索して節データを返す
+
+function renderGM_v2(){
+  var wrap=document.getElementById('gm-chapters');
+  var lvKey=selectedGrade===2?'g2':'g3';
+  var order=(GM_ORDER[selectedPersona]||{})[lvKey];
+  if(!order){wrap.innerHTML='';return;}
+  var gmKey=selectedGrade===2?GM_KEY2:GM_KEY3;
+  var findFn=selectedGrade===2?function(k){return gmFindSec2(selectedPersona,k);}:function(k){return gmFindSec3(k);};
+  var bL={pri:'◎ 業務直結',strat:'○ 戦略',teach:'△ 指導系',exam:'▽ 受検用'};
+  var bC={pri:'#059669',strat:'#2563EB',teach:'#6B7280',exam:'#DC2626'};
+  var groups={},chOrd={};
+  order.forEach(function(item){var key=item[0],badge=item[1];
+    var found=findFn(key);if(!found)return;
+    var ck=found.chNum||'';
+    if(!groups[badge]){groups[badge]={};chOrd[badge]=[];}
+    if(!groups[badge][ck]){groups[badge][ck]={chNum:ck,chTitle:found.chTitle||'',secs:[]};chOrd[badge].push(ck);}
+    groups[badge][ck].secs.push(gmKey[key]||key);
+  });
+  var pfx=selectedGrade===2?'Int.':'Basic';
+  var out='';
+  ['pri','strat','teach','exam'].forEach(function(badge){
+    if(!groups[badge])return;
+    var chs=chOrd[badge].map(function(ck){return groups[badge][ck];});
+    out+='<div class="gm2-group"><div class="gm2-group-hdr" onclick="this.parentElement.classList.toggle(\'open\')"><span style="color:'+bC[badge]+'">'+bL[badge]+' <span style="font-size:11px;font-weight:400;color:var(--text-dim)">（'+chs.length+'章）</span></span><span class="gm2-arrow">▶</span></div><div class="gm2-group-body">';
+    chs.forEach(function(ch){
+      out+='<div class="gm2-ch"><div style="font-weight:500;">'+pfx+' '+ch.chNum+'　'+ch.chTitle+'</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px;">'+ch.secs.join(' / ')+'</div></div>';
+    });
+    out+='</div></div>';
+  });
+  wrap.innerHTML=out;
+}
+
+function gmFindSec3(key){
+  const kw = GM_KEY3[key];
+  if(!kw) return null;
+  for(const ch of GUIDE3){
+    for(const sec of ch.secs){
+      if(sec.name.includes(kw)){
+        return {sec, chNum:ch.ch, chTitle:ch.title};
+      }
+    }
+  }
+  return null;
+}
+// 2級：キーワードで節を検索（GUIDE2_SECS[persona][chKey]の配列）
+const GUIDE2_CHKEY = {ch1:'第1章',ch2:'第2章',ch3:'第3章',ch4:'第4章',ch5:'第5章',ch6:'第6章',ch7:'第7章',ch8:'第8章',ch9:'第9章'};
+function gmFindSec2(persona, key){
+  const kw = GM_KEY2[key];
+  if(!kw) return null;
+  const pdata = GUIDE2_SECS[persona];
+  if(!pdata) return null;
+  for(const chKey of Object.keys(pdata)){
+    for(const sec of pdata[chKey]){
+      if(sec.name.includes(kw)){
+        const chMeta = GUIDE2_CH.find(c=>c.key===chKey);
+        return {sec, chNum:GUIDE2_CHKEY[chKey]||'', chTitle:chMeta?chMeta.title:''};
+      }
+    }
+  }
+  return null;
+}
+// 章名称を短縮（括弧内を除く）
+function gmShortTitle(t){ return t.replace(/（.*?）/g,'').trim(); }
+
+function renderGuideMap(){
+  if(!selectedPersona) return;
+  const p = PERSONAS_DEF.find(x=>x.id===selectedPersona);
+  const wrap = document.getElementById('gm-chapters');
+  wrap.innerHTML='';
+
+  const lvKey = (guideTab===2) ? 'g2' : 'g3';
+  const order = (GM_ORDER[selectedPersona]||{})[lvKey];
+
+  // 2級は冒頭にBasic参照（運動トレーニング）案内を表示
+  if(guideTab===2){
+    const basicRef=document.createElement('div');
+    basicRef.className='gm-chapter';
+    basicRef.innerHTML=`
+      <div class="gm-ch-hdr" style="background:#854F0B" onclick="toggleChapter(this)">
+        <span class="gm-ch-icon">🏋️</span>
+        <span class="gm-ch-num">3級参照</span>
+        <span class="gm-ch-title">② 運動トレーニングの基礎　——　Basicテキスト 第3章</span>
+        <span class="gm-ch-pages">Basic P82〜P108</span>
+        <span class="gm-ch-arr">▶</span>
+      </div>
+      <div class="gm-scene" style="background:#854F0Bdd">2級テキストにこの業務分野の独立した章は存在しない。2級試験でも出題されるためBasicテキストで必ず確認する。</div>`;
+    wrap.appendChild(basicRef);
+  }
+
+  // 一律ペルソナ（wa等）：従来の章ごと表示にフォールバック
+  if(!order || order==='uniform'){
+    renderGuideMapByChapter(p);
+    return;
+  }
+
+  // 価値順：マーク区分(pri/strat/teach/exam)ごとにグループ化して表示
+  const findFn = (guideTab===2) ? (k)=>gmFindSec2(selectedPersona,k) : (k)=>gmFindSec3(k);
+  const groupOrder = ['pri','strat','teach','exam'];
+  const grouped = {pri:[],strat:[],teach:[],exam:[]};
+  order.forEach(([key,badge])=>{
+    const found = findFn(key);
+    if(found) grouped[badge].push(found);
+  });
+
+  // 誘導文＋上部チェックボタン
+  const topGuide=document.createElement('div');
+  topGuide.className='gm-guide-intro';
+  topGuide.innerHTML=`
+    <div class="gm-intro-text">📍 あなたの仕事に直結する業務分野です。まず全体像を確認しましょう。</div>
+    <button class="gm-check-btn" onclick="goToQuickCheck()">📝 簡易チェックで現状を把握する →</button>`;
+  wrap.appendChild(topGuide);
+
+  groupOrder.forEach(g=>{
+    const list = grouped[g];
+    if(!list.length) return;
+    const bd = BADGE_DEF2[g];
+    const grpEl=document.createElement('div');
+    grpEl.className='gm-chapter';
+    const hdrColor = g==='pri'?p.color : g==='strat'?'#185FA5' : g==='teach'?'#888780' : '#B0524F';
+    // ◎(pri)だけ最初から開く。○△▽は閉じる
+    const isOpen = (g==='pri');
+    grpEl.innerHTML=`
+      <div class="gm-ch-hdr${isOpen?' open':''}" style="background:${hdrColor}" onclick="toggleChapter(this)">
+        <span class="gm-ch-icon">${bd.label.charAt(0)}</span>
+        <span class="gm-ch-title" style="font-weight:700">${bd.group}</span>
+        <span class="gm-ch-count">${list.length}分野</span>
+        <span class="gm-ch-arr">▶</span>
+      </div>
+      <div class="gm-secs${isOpen?' open':''}">
+        ${list.map(({sec,chNum,chTitle})=>{
+          const note=sec.notes ? (sec.notes[selectedPersona]||'') : (sec.note||'');
+          const shortT=gmShortTitle(chTitle);
+          const gradeLabel=(guideTab===2)?'Int.':'Basic';
+          return`<div class="gm-sec" onclick="toggleSecNote(this)">
+            <span class="gm-sec-pages">${sec.pages||''}</span>
+            <div class="gm-sec-body">
+              <div class="gm-sec-name">${sec.name}　<span style="color:#8A8F98;font-size:11px;font-weight:600">（${gradeLabel} ${chNum} ${shortT}）</span></div>
+              <div class="gm-sec-note">${note}</div>
+            </div>
+            <span class="gm-badge" style="background:${bd.bg};color:${bd.color}">${bd.label}</span>
+            <span class="gm-arr">▶</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    wrap.appendChild(grpEl);
+  });
+
+  // 下部チェックボタン
+  const botBtn=document.createElement('div');
+  botBtn.className='gm-guide-bottom';
+  botBtn.innerHTML=`<button class="gm-check-btn" onclick="goToQuickCheck()">📝 簡易チェックで現状を把握する →</button>`;
+  wrap.appendChild(botBtn);
+}
+
+// ガイドマップから簡易チェックへ（問題を即スタート）
+function goToQuickCheck(){
+  switchView('check');
+  const gm=document.getElementById('guide-map-wrap');
+  if(gm) gm.classList.remove('open');
+  // 簡易チェックの問題を即開始（導入カードを飛ばす）
+  startQuickCheck();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// 一律ペルソナ用：従来の章ごと表示
+function renderGuideMapByChapter(p){
+  const wrap = document.getElementById('gm-chapters');
+  if(guideTab===2){
+    // 2級：章ごとに節を表示（一律ペルソナ wa 等のサブ級）
+    GUIDE2_CH.forEach(chMeta=>{
+      const pdata=GUIDE2_SECS[selectedPersona];
+      if(!pdata||!pdata[chMeta.key]) return;
+      const chEl=document.createElement('div');
+      chEl.className='gm-chapter';
+      const priCount=pdata[chMeta.key].filter(s=>s.badge==='pri').length;
+      const hdrColor=priCount>0?p.color:'#4A5270';
+      chEl.innerHTML=`
+        <div class="gm-ch-hdr" style="background:${hdrColor}" onclick="toggleChapter(this)">
+          <span class="gm-ch-icon">${chMeta.icon||'📘'}</span>
+          <span class="gm-ch-num">${chMeta.ch}</span>
+          <span class="gm-ch-title">${chMeta.title}</span>
+          <span class="gm-ch-pages">${chMeta.pages||''}</span>
+          <span class="gm-ch-arr">▶</span>
+        </div>
+        <div class="gm-scene" style="background:${hdrColor}dd">${chMeta.scene||''}</div>
+        <div class="gm-secs">
+          ${pdata[chMeta.key].map(sec=>{
+            const b=BADGE_DEF[sec.badge]||BADGE_DEF.tri;
+            return`<div class="gm-sec" onclick="toggleSecNote(this)">
+              <span class="gm-sec-pages">${sec.pages||''}</span>
+              <div class="gm-sec-body">
+                <div class="gm-sec-name">${sec.name}</div>
+                <div class="gm-sec-note">${sec.note||''}</div>
+              </div>
+              <span class="gm-badge" style="background:${b.bg};color:${b.color}">${b.label}</span>
+              <span class="gm-arr">▶</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+      wrap.appendChild(chEl);
+    });
+    return;
+  }
+  if(guideTab===3){
+    GUIDE3.forEach((ch)=>{
+      const chEl=document.createElement('div');
+      chEl.className='gm-chapter';
+      const priCount=ch.secs.filter(s=>s.badges[selectedPersona]==='pri').length;
+      const secCount=ch.secs.filter(s=>s.badges[selectedPersona]==='sec').length;
+      const hdrColor = priCount>0?p.color : secCount>0?'#185FA5' : '#4A5270';
+      chEl.innerHTML=`
+        <div class="gm-ch-hdr" style="background:${hdrColor}" onclick="toggleChapter(this)">
+          <span class="gm-ch-icon">${ch.icon}</span>
+          <span class="gm-ch-num">${ch.ch}</span>
+          <span class="gm-ch-title">${ch.title}</span>
+          <span class="gm-ch-pages">${ch.pages}</span>
+          <span class="gm-ch-arr">▶</span>
+        </div>
+        <div class="gm-scene" style="background:${hdrColor}dd">${ch.scene}</div>
+        <div class="gm-secs">
+          ${ch.secs.map(sec=>{
+            const b=BADGE_DEF[sec.badges[selectedPersona]]||BADGE_DEF.tri;
+            const note=sec.notes[selectedPersona]||'';
+            return`<div class="gm-sec" onclick="toggleSecNote(this)">
+              <span class="gm-sec-pages">${sec.pages}</span>
+              <div class="gm-sec-body">
+                <div class="gm-sec-name">${sec.name}</div>
+                <div class="gm-sec-note">${note}</div>
+              </div>
+              <span class="gm-badge" style="background:${b.bg};color:${b.color}">${b.label}</span>
+              <span class="gm-arr">▶</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+      wrap.appendChild(chEl);
+    });
+  }
+}
+function toggleChapter(hdr){
+  const arr=hdr.querySelector('.gm-ch-arr');
+  // 親要素内の .gm-secs を直接探す（gm-scene の有無に依存しない）
+  const parent=hdr.parentElement;
+  const secs=parent?parent.querySelector('.gm-secs'):null;
+  if(!secs) return;
+  arr.classList.toggle('open');
+  secs.classList.toggle('open');
+  hdr.classList.toggle('open');
+}
+
+function toggleSecNote(sec){
+  const note=sec.querySelector('.gm-sec-note');
+  const arr=sec.querySelector('.gm-arr');
+  if(!note) return;
+  note.classList.toggle('open');
+  if(arr) arr.classList.toggle('open');
+}
+
+function clearPersona(){
+  selectedPersona = 'ju'; selectedGrade=null;
+  document.getElementById('guide-map-wrap').classList.remove('open');
+  document.getElementById('pc-grade-wrap').classList.add('open');
+  document.getElementById('persona-grade-bar').style.display='none';
+  document.getElementById('view-tabs-area').style.display='none';
+  document.querySelector('.layout').style.marginTop='0';
+  document.getElementById('check-start-view').style.display='none';
+  document.getElementById('quick-check-area').style.display='none';
+  document.getElementById('check-quiz-view').style.display='none';
+  document.getElementById('persona-select-area').style.display='';
+  document.querySelector('.layout').style.display = 'none';
+  document.querySelectorAll('.persona-card').forEach(c=>{
+    c.classList.remove('selected');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleGuideMap(){
+  const gm = document.getElementById('guide-map-wrap');
+  const btn = document.getElementById('guide-toggle-btn');
+  const isOpen = gm.classList.contains('open');
+  if(isOpen){
+    gm.classList.remove('open');
+    btn.textContent = '▶ ガイドマップを開く';
+  } else {
+    // ペルソナ名をガイドヘッダーに反映
+    const p = PERSONAS_DEF.find(x=>x.id===selectedPersona);
+    if(p){
+      document.getElementById('gm-persona-name').innerHTML =
+        p.icon+' <span style="color:'+p.color+'">'+p.label+'</span>';
+    }
+    gm.classList.add('open');
+    switchGuideTab(selectedGrade||3);
+    btn.textContent = '▲ ガイドマップを閉じる';
+    setTimeout(()=>gm.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }
+}
+
+
+// ════════════════════════════════════════════════════════
+// 簡易チェック（10/11問）
+// ════════════════════════════════════════════════════════
+const QUICK_Q3 = [
+  {sid:'s01', num:'① 健康づくり',
+   q:'平均寿命と健康寿命の違いを説明することができますか。'},
+  {sid:'s02', num:'② 運動トレーニングの基礎',
+   q:'トレーニングの原理原則（過負荷・特異性・可逆性）を説明することができますか。'},
+  {sid:'s03', num:'③ フィットネス産業概論',
+   q:'フィットネス産業の市場規模と主な業態を説明することができますか。'},
+  {sid:'s04a',num:'④-1 店舗運営（フロント）',
+   q:'フィットネスクラブの会則に含まれる主な内容を説明することができますか。'},
+  {sid:'s04b',num:'④-2 店舗運営（財務）',
+   q:'損益分岐点の考え方と計算方法を説明することができますか。'},
+  {sid:'s05', num:'⑤ 施設設備',
+   q:'5S（整理・整頓・清掃・清潔・躾）の意味と施設管理における役割を説明することができますか。'},
+  {sid:'s06', num:'⑥-1 顧客マネジメント',
+   q:'顧客満足度の要素を２つ挙げ、式で表すことはできますか。'},
+  {sid:'s07', num:'⑥-2 顧客対応',
+   q:'クレーム対応の基本ステップ（4段階）を説明することができますか。'},
+  {sid:'s08', num:'⑦ チームワーク',
+   q:'PDCAサイクルの各段階と職場での活用方法を説明することができますか。'},
+  {sid:'s09', num:'⑧ 安全衛生',
+   q:'ハインリッヒの法則（1:29:300）とヒヤリハット活動の意義を説明することができますか。'},
+];
+
+const QUICK_Q2_BASE = [
+  {sid:'s01', num:'① 健康づくり',
+   q:'THP（トータル・ヘルスプロモーション・プラン）の概要と職場での活用を説明することができますか。'},
+  {sid:'s02', num:'② 運動トレーニングの基礎',
+   q:'運動を規定する要素を、種類、強度のほかに挙げることができますか。'},
+  {sid:'s03', num:'③ フィットネス産業概論',
+   q:'健康経営の概要と、フィットネスクラブが担う役割を説明することができますか。'},
+  {sid:'s04a',num:'④-1 店舗運営（品質管理）',
+   q:'NPS（ネットプロモータースコア）の概念とサービス品質管理への活用を説明することができますか。'},
+  {sid:'s04b',num:'④-2 店舗運営（マーケティング）',
+   q:'マーケティングプロセス「R→STP→MM→I→C」を説明することができますか。'},
+  {sid:'s04c',num:'④-3 店舗運営（収支管理）',
+   q:'損益計算書（P/L）の基本構造（売上高→売上総利益→営業利益）を説明することができますか。'},
+  {sid:'s04d',num:'④-4 店舗運営（施設設備）',
+   q:'法定点検の種類と点検周期について説明することができますか。',
+   pool_q:'プールの水質管理基準（遊離残留塩素0.4〜1.0mg/L等）について説明することができますか。',
+   pool_personas:['ko','wa','li']},
+  {sid:'s04e',num:'④-5 店舗運営（人事・労務）',
+   q:'労働契約と業務委託契約の違いを説明することができますか。'},
+  {sid:'s04f',num:'④-6 店舗運営（リスク管理）',
+   q:'個人情報保護法の基本（利用目的の通知・第三者提供の制限）を説明することができますか。'},
+  {sid:'s05', num:'⑤ 顧客マネジメント',
+   q:'クラブの主な入会動機を５つ挙げることができますか。'},
+  {sid:'s06', num:'⑥⑦ 関連法規・安全衛生',
+   q:'ストレスチェック制度の概要と実施義務（50人以上）について説明することができますか。'},
+];
+
+function getQuickQ2(){
+  return QUICK_Q2_BASE.map(item => {
+    if(item.pool_personas && item.pool_personas.includes(selectedPersona)){
+      return {...item, q: item.pool_q};
+    }
+    return item;
+  });
+}
+function getQuickQuestions(){
+  const base = selectedGrade===2 ? getQuickQ2() : QUICK_Q3;
+  // ペルソナ別の質問文があれば差し替える（なければ共通のqを使う）
+  const lvKey = selectedGrade===2 ? 'g2' : 'g3';
+  const pq = (PERSONA_QC[selectedPersona]||{})[lvKey];
+  const applied = base.map(item=>{
+    if(pq && pq[item.sid]) return {...item, q: pq[item.sid]};
+    return item;
+  });
+  return sortQuickByGuideMap(applied);
+}
+
+// 簡易チェックの出題順を、ガイドマップ（GM_ORDER）と同じ業務直結順に並べ替える
+function sortQuickByGuideMap(items){
+  const lvKey = selectedGrade===2 ? 'g2' : 'g3';
+  const order = (GM_ORDER[selectedPersona]||{})[lvKey];
+  if(!order || order==='uniform') return items;
+  const qcMap = selectedGrade===2 ? QC2_TO_GMKEY : QC3_TO_GMKEY;
+  // マーク区分の優先度（◎○△▽の順）
+  const badgeRank = {pri:0, strat:1, teach:2, exam:3};
+  // GM_ORDER内での各節キーの位置を記録
+  const keyPos = {};
+  order.forEach(([key,badge],i)=>{ if(!(key in keyPos)) keyPos[key]={badge,idx:i}; });
+  // 各簡易チェック項目に、対応する節キーのマーク区分・順位を付与
+  const scored = items.map((item,origIdx)=>{
+    const gmKey = qcMap[item.sid];
+    let rank=99, sub=origIdx;
+    if(gmKey && keyPos[gmKey]){
+      rank = badgeRank[keyPos[gmKey].badge] ?? 9;
+      sub = keyPos[gmKey].idx;
+    } else if(gmKey===null){
+      // 2級の運動トレーニング等：指導系扱いで後ろ
+      rank = 2; sub = 900+origIdx;
+    }
+    return {item, rank, sub, origIdx};
+  });
+  // マーク区分→GM内順位→元の順 で安定ソート
+  scored.sort((a,b)=> a.rank-b.rank || a.sub-b.sub || a.origIdx-b.origIdx);
+  return scored.map(s=>s.item);
+}
+
+let quickIndex = 0;
+let quickAnswers = {};
+
+function startQuickCheck(){
+  setFlowState('B');
+  quickIndex = 0;
+  quickAnswers = {};
+  document.getElementById('qc-intro-card').style.display = 'none';
+  document.getElementById('qc-quiz-area').style.display = '';
+  document.getElementById('qc-result-area').style.display = 'none';
+  // 問題開始時はタブ説明・ガイドマップトグルを隠し、問題を上部に
+  const _desc=document.getElementById('view-tabs-desc');
+  const _gt=document.getElementById('guide-toggle-wrap');
+  const _lp=document.getElementById('fcm-lp-link-wrap');
+  if(_desc) _desc.style.display='none';
+  if(_gt) _gt.style.display='none';
+  if(_lp) _lp.style.display='none';
+  const _gm=document.getElementById('guide-map-wrap');
+  if(_gm) _gm.classList.remove('open');
+  renderQuickQ();
+  // 問題を画面上部にスクロール
+  setTimeout(()=>{ window.scrollTo({top:0,behavior:'smooth'}); },50);
+}
+
+function renderQuickQ(){
+  const qs = getQuickQuestions();
+  const total = qs.length;
+  const item = qs[quickIndex];
+  document.getElementById('qc-prog').textContent = (quickIndex+1)+' / '+total;
+  // v2: removed
+  document.getElementById('qc-q').textContent = item.q;
+  const prev = quickAnswers[item.sid];
+  ['yes','vague','no'].forEach(v=>{
+    const btn = document.getElementById('qcb-'+v);
+    btn.className = 'qc-btn' + (prev===v ? ' sel-'+v : '');
+  });
+  document.getElementById('qc-prev').disabled = quickIndex===0;
+}
+
+function answerQuick(val){
+  const qs = getQuickQuestions();
+  const item = qs[quickIndex];
+  quickAnswers[item.sid] = val;
+  ['yes','vague','no'].forEach(v=>{
+    document.getElementById('qcb-'+v).className =
+      'qc-btn' + (v===val ? ' sel-'+v : '');
+  });
+  setTimeout(()=>{
+    if(quickIndex < qs.length-1){ quickIndex++; renderQuickQ(); }
+    else { finishQuickCheck(); }
+  }, 300);
+}
+
+function prevQuick(){ if(quickIndex>0){ quickIndex--; renderQuickQ(); } }
+function nextQuick(){
+  const qs = getQuickQuestions();
+  if(quickIndex < qs.length-1){ quickIndex++; renderQuickQ(); }
+  else { finishQuickCheck(); }
+}
+
+function finishQuickCheck(){
+  document.getElementById('qc-quiz-area').style.display='none';
+  setFlowState('C');
+  renderQuickResult();
+}
+
+function renderQuickResult(){
+  const qs = getQuickQuestions();
+  const grid = document.getElementById('qr-grid');
+  const msg = document.getElementById('qr-message');
+  const labelMap = {yes:'◎ できる', vague:'△ あやふや', no:'✗ できない'};
+  const classMap = {yes:'ok', vague:'vague', no:'weak'};
+  const valMap   = {yes:'v-ok', vague:'v-vague', no:'v-no'};
+
+  grid.innerHTML = qs.map(item=>{
+    const ans = quickAnswers[item.sid]||'no';
+    const name = item.num.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]+[-\d]*\s*/,'');
+    return '<div class="qr-cell '+classMap[ans]+'">'+
+      '<div class="qr-label">'+name+'</div>'+
+      '<div class="qr-val '+valMap[ans]+'">'+labelMap[ans]+'</div></div>';
+  }).join('');
+
+  const weak = qs.filter(item=>(quickAnswers[item.sid]||'no')==='no');
+  const vague = qs.filter(item=>quickAnswers[item.sid]==='vague');
+  const allOk = weak.length===0 && vague.length===0;
+
+  if(allOk){
+    msg.innerHTML = '<div class="qr-ok-box">'+
+      '<strong>全業務分野「できる」と回答しました。</strong><br>'+
+      '現在の知識レベルであれば、FCM技能検定'+(selectedGrade===2?'2級':'3級')+'の受検タイミングです。<br>'+
+      '最終確認として各業務分野のチェックリストを見直し、公式テキストで知識を固めてから受検申込へ進みましょう。</div>';
+  } else {
+    const totalQ = qs.length;
+    const weakCount = weak.length;
+    const vagueCount = vague.length;
+    const okCount = totalQ - weakCount - vagueCount;
+    msg.innerHTML = '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
+      'padding:12px 14px;background:var(--surface);border-radius:9px;margin-bottom:10px;">'+
+      '全'+totalQ+'分野中、<strong style="color:#DC2626">✗ 苦手 '+weakCount+'分野</strong>'+
+      (vagueCount>0?' ・ <strong style="color:#D97706">△ あやふや '+vagueCount+'分野</strong>':'')+
+      (okCount>0?' ・ <strong style="color:#059669">◎ できる '+okCount+'分野</strong>':'')+
+      '<br>下のボタンから、苦手な業務分野の一覧に進みます。学習したい業務分野を選んでください。'+
+      '<br><span style="font-size:11px;color:var(--text-dim);">※1つの章に複数の業務分野が含まれるため、章の数と業務分野の数は異なります。</span></div>';
+  }
+
+  const quickStatus = {};
+  qs.forEach(item=>{
+    const ans = quickAnswers[item.sid]||'no';
+    quickStatus[item.sid] = ans==='yes'?'ok':ans==='vague'?'weak':'none';
+  });
+  qs.forEach(item=>{
+    if(!status[item.sid]){ status[item.sid] = quickStatus[item.sid]; }
+  });
+  svs(status);
+  renderSidebar();
+}
+
+function goToFullCheck(){
+  setFlowState('D');
+  document.getElementById('quick-check-area').style.display='none';
+  document.getElementById('check-start-view').style.display='';
+  document.getElementById('check-start-view').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+const PAST_EXAM_DATA = {
+  g3: {
+    's01': {gakka:{'12':[1,21,22,26,27],'14':[4,27,28],'16':[1,21,22,25]}, jitsu:{}, sections:["2章1節健康とは", "2章2節健康施策の概要と動向", "2章3節生活習慣病とその予防", "2章4節運動休養", "2章5節栄養"]},
+    's02': {gakka:{'12':[2,23,24],'14':[5,29,33,34],'16':[3,23,24]}, jitsu:{}, sections:["3章1節運動生理学の基礎", "3章2節トレーニングの基礎", "3章3節事故・障害予防、緊急時対応の基礎"]},
+    's03': {gakka:{'12':[3,4,25],'14':[17,22,54,55],'16':[2,26,27]}, jitsu:{'14':[3,5],'16':[3]}, sections:["フィットネス産業のトレンド", "1章1節フィットネス産業の現状", "1章3節フィットネス産業の特徴"]},
+    's04a': {gakka:{'12':[5,8,9,10,11,13,14,28,35,36,37,38,39,40,41,42,43,44,45,46,47,48],'14':[1,2,6,7,8,9,14,15,21,30,31,32,35,44,45,46,47,48,49,51,52],'16':[5,6,7,8,9,10,15,17,28,31,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,53]}, jitsu:{'12':[1,2,5,7,10],'14':[1,7,9],'16':[1,9]}, sections:["4章1節フロント業務", "4章2節ジム運営業務", "4章3節スタジオ運営業務", "4章4節プール運営業務", "4章7節付帯事業など"]},
+    's04b': {gakka:{'12':[7,29,30,31],'14':[20,59,60],'16':[4,29,30]}, jitsu:{'12':[6],'14':[4],'16':[4]}, sections:["4章6節イベントの企画・運営"]},
+    's05': {gakka:{'12':[15,16,49,50],'14':[18,19,50,56,57,58],'16':[11,18,48]}, jitsu:{'14':[6,8],'16':[7,8]}, sections:["7章1節店舗の施設・設備概要", "7章2節管理の概念と基本"]},
+    's06': {gakka:{'12':[6,12,17,32,33,51],'14':[3,23,24,25,26,37],'16':[12,16,32,49,50,51]}, jitsu:{'12':[4],'14':[10],'16':[5]}, sections:["5章1節顧客対応と接客の心構え", "5章2節入会問い合わせ・見学者への対応"]},
+    's07': {gakka:{'12':[18,52,53,54,55],'14':[10,11,36,38,39],'16':[13,19,52,54]}, jitsu:{'12':[3,9],'14':[2],'16':[2,6,10]}, sections:["5章3節顧客対応と課題解決"]},
+    's08': {gakka:{'12':[19,56,57,58],'14':[13,40,43],'16':[20,55,56,57,58]}, jitsu:{'12':[8]}, sections:["6章1節組織と業務分担の考え方", "6章2節仕事の進め方", "6章3節コミュニケーションの重要性", "6章4節リーダーの役割とフォロワーの役割"]},
+    's09': {gakka:{'12':[20,34,59,60],'14':[16,34,35,53],'16':[14,59,60]}, jitsu:{}, sections:["8章1節労働者の保護", "8章2節職場の安全衛生の基本"]},
+  },
+  g2: {
+    's01': {gakka:{'12':[1,12,13,18],'14':[21,22,23,24],'16':[12,13,19]}, jitsu:{}, sections:["2章1節厚生労働省の健康政策", "2章3節生活習慣病とその予防", "2章5節健康づくりのための栄養", "2章6節高齢者の健康づくり"]},
+    's02': {gakka:{'12':[14,15,16],'14':[25,26,32],'16':[14,15,16]}, jitsu:{}, sections:["3章1節運動生理学の基礎", "3章2節トレーニングの基礎", "3章3節事故・障害予防、緊急時対応の基礎"]},
+    's03': {gakka:{'12':[11,17],'14':[1,11],'16':[17]}, jitsu:{}, sections:["1章1節フィットネス産業", "2章2節スポーツを通じた健康増進（スポーツ庁）"]},
+    's04a': {gakka:{'14':[43],'16':[38]}, jitsu:{'12':[5],'16':[2,8]}, sections:["3章2節ジム運営業務", "3章3節スタジオ運営業務"]},
+    's04b': {gakka:{'12':[3,22,23,24],'14':[6,28,29,30,31],'16':[2,22,23,24]}, jitsu:{'12':[7],'14':[7],'16':[4]}, sections:["4章1節マーケティング", "4章2節市場・商圏分析と店舗戦略", "4章3節プロモーション", "4章4節webマーケティング"]},
+    's04c': {gakka:{'12':[2,4,19,20,21,25,26,27,28,44],'14':[2,7,12,13,14,36,37,38,41],'16':[1,8,20,25,26,27,28]}, jitsu:{'12':[6,8],'14':[6,8],'16':[3]}, sections:["5章2節商品・サービス管理", "5章3節収支管理"]},
+    's04d': {gakka:{'12':[29,30,31,32],'14':[8,40,42,44,45,46,47],'16':[30,32,33,50]}, jitsu:{'12':[1],'14':[1,2],'16':[5]}, sections:["3章4節プール運営業務", "8章1節施設・設備管理の意義と重要性", "8章2節施設・設備点検業務"]},
+    's04e': {gakka:{'12':[6,33,34,35,49],'14':[3,15,16,17],'16':[9,35,36,37]}, jitsu:{'12':[9],'14':[9],'16':[6,7]}, sections:["6章1節ヒューマンリソースマネジメント", "6章5節要員管理", "6章6節労働法規一般"]},
+    's04f': {gakka:{'12':[5,10,50],'14':[39],'16':[29,31,34,49]}, jitsu:{'12':[2,10],'14':[10],'16':[9,10]}, sections:["8章4節事故・トラブル防止、緊急時対応", "9章2節リスク管理"]},
+    's05': {gakka:{'12':[7,8,39,40,41,42,43,45,46],'14':[5,10,20,33,34,35,48,49,50],'16':[4,5,21,41,42,43,44,45,46]}, jitsu:{'12':[3,4],'14':[3,4,5],'16':[1]}, sections:["5章1節顧客対応と接客の心構え", "5章3節顧客対応と課題解決", "7章1節顧客管理", "7章2節会員継続", "7章3節会員コミュニティ"]},
+    's06': {gakka:{'12':[9,36,37,38,47,48],'14':[4,9,18,19],'16':[3,6,7,39,40,47,48]}, jitsu:{}, sections:["9章1節フィットネスクラブ運営に関わる主な法律"]},
+    's07': {gakka:{'16':[10,11]}, jitsu:{}, sections:["6章7節職場の安全衛生"]},
+  },
+};
+
+// ── 過去問タブ ──────────────────────────────────────────────────────────────
+function getPastExamData(sid){
+  const key = selectedGrade===2 ? 'g2' : 'g3';
+  return PAST_EXAM_DATA[key] && PAST_EXAM_DATA[key][sid] ? PAST_EXAM_DATA[key][sid] : null;
+}
+
+function renderPastExamTab(sid){
+  const d = getPastExamData(sid);
+  if(!d) return '<div class="pe-empty">この業務分野の過去問データはありません。</div>';
+
+  const kaiLabel = {'12':'第12回（令和4年度）','14':'第14回（令和5年度）','16':'第16回（令和6年度）'};
+  const kaiClass = {'12':'pe-k12','14':'pe-k14','16':'pe-k16'};
+
+  let html = '<div class="pe-wrap">';
+  if(d.sections && d.sections.length){
+    html += '<div class="pe-section">📖 対応テキスト節：' + d.sections.join('・') + '</div>';
+  }
+
+  const hasGakka = Object.keys(d.gakka).some(k=>d.gakka[k].length>0);
+  if(hasGakka){
+    html += '<div class="pe-block"><div class="pe-label">学科問題</div>';
+    html += '<table class="pe-table"><tr><th>回</th><th>問番号</th></tr>';
+    ['12','14','16'].forEach(kai=>{
+      if(!d.gakka[kai] || !d.gakka[kai].length) return;
+      const nums = d.gakka[kai].map(n=>'問'+String(n).padStart(2,'0')).join('　');
+      html += '<tr><td><span class="pe-badge '+kaiClass[kai]+'">'+kaiLabel[kai]+'</span></td>';
+      html += '<td class="pe-nums">'+nums+'</td></tr>';
+    });
+    html += '</table></div>';
+  }
+
+  const hasJitsu = Object.keys(d.jitsu).some(k=>d.jitsu[k].length>0);
+  if(hasJitsu){
+    html += '<div class="pe-block"><div class="pe-label">実技問題</div>';
+    html += '<table class="pe-table"><tr><th>回</th><th>問番号</th></tr>';
+    ['12','14','16'].forEach(kai=>{
+      if(!d.jitsu[kai] || !d.jitsu[kai].length) return;
+      const nums = d.jitsu[kai].map(n=>'問'+String(n).padStart(2,'0')).join('　');
+      html += '<tr><td><span class="pe-badge '+kaiClass[kai]+'">'+kaiLabel[kai]+'</span></td>';
+      html += '<td class="pe-nums">'+nums+'</td></tr>';
+    });
+    html += '</table></div>';
+  }
+
+  if(!hasGakka && !hasJitsu){
+    html += '<div class="pe-empty">この業務分野からの出題データはありません。</div>';
+  }
+
+  html += '<div class="pe-cta">';
+  html += '印刷版「<strong>過去問解説集（令和版 VOL.2）</strong>」をお持ちの方は、<br>';
+  html += '上記の回・問番号のページを開いて実際に解いてみましょう。<br>';
+  html += '解答・解説を確認することで理解が深まります。<br><br>';
+  html += 'まだお持ちでない方は、テキストとのセット購入がお得です。<br>';
+  html += '<a href="https://fia.or.jp/fcm_textbook/textset/" target="_blank" ';
+  html += 'style="color:var(--accent);font-weight:700;text-decoration:none;">→ 過去問解説集を購入する</a>';
+  html += '</div></div>';
+  return html;
+}
+
+
+
+function backToQuickCheck(){
+  document.getElementById('check-start-view').style.display='none';
+  document.getElementById('quick-check-area').style.display='';
+  document.getElementById('qc-intro-card').style.display='';
+  document.getElementById('qc-quiz-area').style.display='none';
+  if(Object.keys(quickAnswers).length>0){
+    document.getElementById('qc-intro-card').style.display='none';
+    document.getElementById('qc-result-area').style.display='';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── 初期化 ─────────────────────────────────────────────────────────────────
+// py専用版：ペルソナ固定
+selectedPersona = 'ju';
+updLU();
+renderSidebar();
+document.getElementById('persona-select-area').style.display = '';
+document.querySelector('.layout').style.display = 'none';
+</script>
+
+<footer style="text-align:center;padding:20px 16px;font-size:11px;color:var(--text-dim);line-height:1.6;border-top:1px solid var(--border);margin-top:24px;">
+  本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>複写・転載・再配布を禁止します。
+</footer>
+</body></html>
