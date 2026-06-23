@@ -1834,11 +1834,11 @@ function renderGrid(){
       const badge = chPri[s.id] ? priBadge[chPri[s.id]] : null;
       const chap = (selectedGrade===2) ? ((typeof secRef2!=='undefined' && secRef2[s.id]) ? secRef2[s.id] : (chapRef[s.id]||'')) : ((typeof secRef3!=='undefined' && secRef3[s.id]) ? secRef3[s.id] : (chapRef[s.id]||''));
       const qcA=quickAnswers[getQcId(s.id)];
-      const qcBadge = qcA ? `<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${qcA==='no'?'#FEE2E2':qcA==='vague'?'#FEF3C7':'#D1FAE5'};color:${qcColor[qcA]||'#6B7280'};font-weight:600;">${qcLabel[qcA]||''}</span>` : '';
+      const qcBadge = qcA ? `<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${qcA==='no'?'#FEE2E2':qcA==='vague'?'#FEF3C7':'#D1FAE5'};color:${qcColor[qcA]||'#6B7280'};font-weight:600;white-space:nowrap;">${qcLabel[qcA]||''}</span>` : '';
       cardsHtml += `<div class="scard" data-id="${s.id}" data-status="${st}" data-qc="${qcA||"none"}" onclick="toggleDetail('${s.id}')">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
-          <span style="font-size:11px;color:var(--text-dim);font-weight:500;">${chap}</span>
-          <span style="margin-left:auto;">${qcBadge}</span>
+        <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:2px;">
+          <span style="font-size:11px;color:var(--text-dim);font-weight:500;flex:1;min-width:0;">${chap}</span>
+          <span style="margin-left:auto;flex-shrink:0;">${qcBadge}</span>
         </div>
         <div class="sc-name">${s.name}</div>
         <div class="sc-foot">
@@ -2663,6 +2663,13 @@ function renderQuickResult(){
     +'<strong style="color:#C2620C;">📘 まずは3級から学ぶのがおすすめです。</strong><br>'
     +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">2級の正答率が70%未満でした。土台となる3級（Basic）から固めると、2級の理解がスムーズになります。</span><br>'
     +'<button onclick="startWithGrade(3)" style="margin-top:9px;background:#C2620C;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 3級のFCM簡易チェックに進む</button></div>') : '';
+  // 級横断の誘導が出ないケース向けの「継続学習」コメント（苦手分野が残っている場合のみ＝else分岐で使用）
+  const stay3 = (selectedGrade!==2 && !show2kyu) ? ('<div style="background:#F0FDF4;border:1px solid #15803D;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<strong style="color:#15803D;">📗 引き続き3級（Basic）の学習を進めましょう。</strong><br>'
+    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">苦手な業務分野が残っています。下の一覧から、苦手分野に対応する公式テキストの範囲を確認して固めていきましょう。</span></div>') : '';
+  const stay2 = (selectedGrade===2 && !show3kyu) ? ('<div style="background:#EEF6FF;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<strong style="color:#185FA5;">📘 引き続き2級（Intermediate）の学習を進めましょう。</strong><br>'
+    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">苦手な業務分野を、公式テキストの該当範囲で固めて受検準備を整えましょう。</span></div>') : '';
 
   if(allOk){
     msg.innerHTML = scoreBox + promo2 + promo3 + '<div class="qr-ok-box">'+
@@ -2674,7 +2681,7 @@ function renderQuickResult(){
     const weakCount = weak.length;
     const vagueCount = vague.length;
     const okCount = totalQ - weakCount - vagueCount;
-    msg.innerHTML = scoreBox + promo2 + promo3 + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
+    msg.innerHTML = scoreBox + promo2 + promo3 + stay3 + stay2 + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
       'padding:12px 14px;background:var(--surface);border-radius:9px;margin-bottom:10px;">'+
       '全'+totalQ+'分野中、<strong style="color:#DC2626">✗ 苦手 '+weakCount+'分野</strong>'+
       (vagueCount>0?' ・ <strong style="color:#D97706">△ あやふや '+vagueCount+'分野</strong>':'')+
