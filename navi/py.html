@@ -232,7 +232,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   color:var(--text-sub);line-height:1.7;}
 .pe-cta strong{color:var(--text);}
 
-/* ─── 簡易チェック ─── */
+/* ─── FCM簡易チェック ─── */
 .qc-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
   padding:18px 20px;margin-bottom:16px;}
 .qc-header{display:flex;align-items:center;justify-content:space-between;
@@ -558,6 +558,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .gm2-ch:last-child{border-bottom:none;}
 
 </style>
+<meta name="referrer" content="no-referrer-when-downgrade">
 </head>
 <body>
 <header class="hdr">
@@ -573,23 +574,24 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 <div id="persona-select-area" style="">
       <div class="persona-select-screen">
         <div class="ps-tool-title">🧘 ピラティス・ヨガ指導者のための FCM Web学習ナビ</div>
-        <div style="font-size:14px;color:var(--text);line-height:1.8;margin-bottom:16px;text-align:center;font-weight:500;">ようこそ！まず級を選んで、簡易チェック（10問・約2分）で<br>あなたの苦手な業務分野を見つけましょう。</div>
+        <div style="font-size:14px;color:var(--text);line-height:1.8;margin-bottom:16px;text-align:center;font-weight:500;">ようこそ！まず級を選んで、FCM簡易チェック（約2分）で<br>あなたの苦手な業務分野を見つけましょう。</div>
         <div class="ps-tool-desc">スタジオ経営に必要なフロント・財務・労務の知識を、あなたの業務に沿って効率よく学べます。<br>
           このWeb学習ナビは、公式テキスト（Basic・Intermediate）を業務に直結した形で効率よく学ぶためのナビゲーションです。<br>
           受検予定がない方は、ガイドマップの◎業務直結の節のみご確認ください。</div>
         <div class="ps-title">学ぶ級を選んでください</div>
-        <div class="ps-sub">テキストを手元に用意してから以下の手順で進めてください。<br>① 級を選ぶ　② 現状把握チェック　③ 弱点の節からテキストを開く</div>
+        <div class="ps-sub">以下の手順で進めましょう。<br>① 学ぶ級を選ぶ　② FCM簡易チェックで苦手な業務分野を見つける　③ 苦手な業務分野に対応する公式テキストの範囲を確認する</div>
+        <div style="font-size:12.5px;color:var(--text-sub);line-height:1.7;margin:4px 0 14px;text-align:center;background:var(--surface);border-radius:8px;padding:9px 12px;">💡 どの級を選べばよいか迷う場合は、まず <b>Basic（3級）</b> の FCM簡易チェックを受けてください。結果の点数から、3級・2級のどちらが目安かが分かります。</div>
         <div class="pc-grade-wrap open" id="pc-grade-wrap" style="display:block; border-color: #0F6E56;">
           <div class="pc-grade-title">🧘 <span style="color:#0F6E56;font-weight:700">ピラティス・ヨガ指導者</span>　学ぶ級を選んでください</div>
           <div class="pc-grade-desc">次に学習する級を選ぶと、ガイドマップと現状把握チェックが表示されます。</div>
           <div class="pc-grade-btns">
             <button class="pc-grade-btn b3" onclick="startWithGrade(3)" style="display:block;padding:20px 14px;background:var(--surface);border:2px solid var(--accent);border-radius:10px;cursor:pointer;">
               <div class="pc-gb-title" style="font-size:15px;font-weight:700;color:var(--text);">Basic　3級で学ぶ</div>
-              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">簡易チェック10問＋学習モード</div>
+              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">FCM簡易チェック10問＋学習モード</div>
             </button>
             <button class="pc-grade-btn b2" onclick="startWithGrade(2)" style="display:block;padding:20px 14px;background:var(--surface);border:2px solid var(--purple);border-radius:10px;cursor:pointer;">
               <div class="pc-gb-title" style="font-size:15px;font-weight:700;color:var(--text);">Intermediate　2級で学ぶ</div>
-              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">簡易チェック11問＋学習モード</div>
+              <div class="pc-gb-sub" style="font-size:12px;color:var(--text-sub);margin-top:6px;">FCM簡易チェック11問＋学習モード</div>
             </button>
           </div>
         </div>
@@ -641,14 +643,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div id="view-tabs-area" style="">
       <div class="view-tabs-wrap">
         <!-- v2: tabs removed -->
-        <div id="flow-guide"><div class="flow-guide-note"><strong>📝 使い方（2ステップ）</strong><br>STEP 1：まず簡易チェックで苦手な業務分野を見つける（約2分）<br>STEP 2：苦手な業務分野からテキストを開いて学ぶ</div></div></div>
+        <div style="background:#0F6E56;color:#fff;font-weight:700;font-size:14px;padding:9px 14px;border-radius:8px;margin-bottom:10px;">現状把握<span style="font-weight:500;font-size:12px;margin-left:10px;opacity:.95;">FCM簡易チェックテスト</span></div>
+        <div id="flow-guide"><div class="flow-guide-note"><strong>📝 使い方（2ステップ）</strong><br>STEP 1：まずFCM簡易チェックで苦手な業務分野を見つける（約2分）<br>STEP 2：苦手な業務分野に対応する公式テキストの範囲を確認して学ぶ</div></div></div>
         <div style="margin-top:10px;" id="guide-toggle-wrap">
           <div class="guide-toggle-box">
             <div class="guide-toggle-desc">📍 あなたの仕事に直結する業務分野が一目でわかります。まずはこちらで全体像を確認しましょう。</div>
             <button onclick="toggleGuideMap()" id="guide-toggle-btn" class="guide-toggle-btn-main">▶ ガイドマップを開く</button>
           </div>
         </div>
-        <div id="fcm-lp-link-wrap" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);"><div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">24時間ジムにとってFCM技能検定がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div><a href="https://fia.or.jp/fcm-24-hourgym/" target="_blank" class="fcm-lp-a">→ 24時間ジムとFCM技能検定</a></div>
+        <div id="fcm-lp-link-wrap" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);"><div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">24時間ジムにとってFCM公式テキスト・過去問解説集がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div><a href="https://fia.or.jp/fcm-24-hourgym/" target="_blank" class="fcm-lp-a">→ 24時間ジム</a></div>
       </div>
     </div>
     <div class="guide-map-wrap" id="guide-map-wrap">
@@ -662,9 +665,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         </div>
         <div class="gm-legend" style="display:none;">
           <div class="gm-lg"><div class="gm-dot" style="background:#1D9E75"></div>◎ 店舗マネジメントに直結</div>
-          <div class="gm-lg"><div class="gm-dot" style="background:#185FA5"></div>○ 戦略マネジメント</div>
-          <div class="gm-lg"><div class="gm-dot" style="background:#888780"></div>△ 指導系（標準装備）</div>
-          <div class="gm-lg"><div class="gm-dot" style="background:#E24B4A"></div>▽ 受検のために必要</div>
+          <div class="gm-lg"><div class="gm-dot" style="background:#185FA5"></div>○ 業務補完</div>
+          <div class="gm-lg"><div class="gm-dot" style="background:#E24B4A"></div>▽ 業務拡張</div>
         </div>
         <div id="gm-note-2" class="gm-note-2" style="display:none">
           ⚠️ <strong>2級（Intermediate）は、3級（Basic）の内容を理解していることを前提としています。</strong><br>
@@ -675,11 +677,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 
       </div>
     <div id="quick-check-area" style="">
-      <div id="qc-intro-card" style="text-align:center;padding:16px;"><button class="flow-btn-primary" onclick="startQuickCheck()">📝 簡易チェックを始める（10問・約2分）</button></div></div>
+      <div id="qc-intro-card" style="text-align:center;padding:16px;"><button class="flow-btn-primary" id="qc-start-btn" onclick="startQuickCheck()">📝 FCM簡易チェックを始める（10問・約2分）</button></div></div>
       <div id="qc-quiz-area" style="display:none">
         <div class="qc-card">
           <div class="qc-header">
-            <span class="qc-title">簡易チェック</span>
+            <span class="qc-title">FCM簡易チェック</span>
             <span class="qc-prog" id="qc-prog">1 / 10</span>
           </div>
           
@@ -696,7 +698,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div id="qc-result-area" style="display:none">
         <div class="qr-wrap">
-          <div class="qr-title">簡易チェックの結果</div>
+          <div class="qr-title">FCM簡易チェックの結果</div>
           <div class="qr-grid" id="qr-grid"></div>
           <div id="qr-message"></div>
           <div class="qr-action" style="grid-column:1/-1;">
@@ -736,7 +738,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         <h2 id="check-start-title">🔑  まず現状を把握しましょう</h2>
         <p id="check-start-desc"><strong>24時間ジム運営者</strong>　2級（Intermediate）<br>全12業務分野・74問に「できる・だいたいできる・あやふや・できない」で答えるだけ。<br>得意分野と苦手分野が一目でわかります。<br><span style="color:var(--accent3);font-size:11px;">⚠️ ② 運動トレーニングはBasicテキスト参照（3級タブで確認）</span></p>
         <button class="start-btn" onclick="startCheck()">現状把握チェックを開始する</button>
-        <button class="gm-back" style="margin-top:10px;display:block;text-align:center" onclick="backToQuickCheck()">← 簡易チェックに戻る</button>
+        <button class="gm-back" style="margin-top:10px;display:block;text-align:center" onclick="backToQuickCheck()">← FCM簡易チェックに戻る</button>
       </div>
       <div id="result-view" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
@@ -949,8 +951,8 @@ function fcmLpLink(){
   const lp = FCM_LP[selectedPersona];
   if(!lp) return '';
   return '<div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">'+
-         lp.name+'にとってFCM技能検定がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div>'+
-         '<a href="'+lp.url+'" target="_blank" class="fcm-lp-a">→ '+lp.name+'とFCM技能検定</a>';
+         lp.name+'にとってFCM公式テキスト・過去問解説集がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div>'+
+         '<a href="'+lp.url+'" target="_blank" class="fcm-lp-a">→ '+lp.name+'</a>';
 }
 
 const PERSONA_QC = {"py": {"g3": {"s01": "利用者への健康づくりの案内で、平均寿命と健康寿命の違いを整理できますか。", "s02": "運動指導やプログラム作成の場面で、トレーニングの原理と原則について、それぞれ２つ挙げ、その内容を確認できますか。", "s03": "自分の事業環境や地域・商圏を考えるために、フィットネス産業の市場規模を売上・施設数・会員数から確認できますか。", "s04a": "スタジオで体験レッスン後の入会対応や継続支援を想定して、会則を説明するときの留意点で注意すべき点を確認できますか。", "s04b": "マシン投資や少人数レッスンの採算を見るために、損益分岐点の意味を確認できますか。", "s05": "スタジオのマット・リフォーマー・スタジオ設備を管理するとき、５S活動について、５つのSを確認できますか。", "s06": "スタジオで体験レッスン後の入会対応や継続支援を想定して、顧客満足度の要素を２つ挙げ、式で確認できますか。", "s07": "スタジオで、クレーム対応で、エスカレーションすべき状況を確認できますか。", "s08": "スタジオでインストラクターや受付スタッフとの連携を行う場面で、PDCAサイクルを確認できますか。", "s09": "スタジオの安全・リスク管理で、ハインリッヒの法則を確認できますか。"}, "g2": {"s01": "新しいプログラムや健康支援を考えるために、THP（トータル・ヘルスプロモーション・プラン）の概要と活用を確認できますか。", "s02": "運動指導やプログラム作成の場面で、運動を規定する要素を、種類、強度のほかに挙げられますか。", "s03": "自分の事業環境を考えるために、健康経営の概要と、フィットネスクラブが担う役割を確認できますか。", "s04a": "レッスンやサービスの質を口コミ・紹介につなげるために、NPS（ネットプロモータースコア）の活用を確認できますか。", "s04b": "スタジオの集客・差別化を考えるために、マーケティングプロセス「R→STP→MM→I→C」を確認できますか。", "s04c": "スタジオの収支管理で、損益計算書と貸借対照表の違いを整理できますか。", "s04d": "スタジオのマシン・設備を管理するために、法定点検の種類と点検周期を確認できますか。", "s04e": "スタジオでインストラクターや受付スタッフとの連携を行う場面で、労働契約と業務委託契約の違いを整理できますか。", "s04f": "スタジオの安全・リスク管理で、顧客情報の管理について、個人情報保護法の観点から注意すべき点を確認できますか。", "s05": "スタジオで体験レッスン後の入会対応や継続支援を想定して、クラブの主な入会動機を５つ挙げられますか。", "s06": "スタジオの安全・リスク管理で、ストレスチェック制度について確認できますか。"}}};
@@ -960,9 +962,9 @@ const QC2_TO_GMKEY = {"s01": "THP", "s02": null, "s03": "産業概論", "s04a": 
 
 const BADGE_DEF2 = {
   pri:  {label:'◎ 店舗マネジメントに直結', bg:'#E1F5EE', color:'#065F46', group:'店舗マネジメントに直結'},
-  strat:{label:'○ 戦略マネジメント',       bg:'#E6F1FB', color:'#0C447C', group:'戦略マネジメント（外部環境を読んで戦略に活かす）'},
-  teach:{label:'△ 指導系',                 bg:'#F1EFE8', color:'#5F5E5A', group:'指導系（指導系カリキュラムなどでカバーされる分野）'},
-  exam: {label:'▽ 受検のために必要',       bg:'#FCEBEB', color:'#791F1F', group:'受検のために必要（この仕事の実務では登場しない）'},
+  strat:{label:'○ 業務補完',       bg:'#E6F1FB', color:'#0C447C', group:'業務補完（外部環境を読んで戦略・業務に活かす）'},
+  teach:{label:'◎ 業務直結',                 bg:'#E1F5EE', color:'#065F46', group:'業務直結'},
+  exam: {label:'▽ 業務拡張',       bg:'#FCEBEB', color:'#791F1F', group:'業務拡張（受検・キャリア拡張に役立つ）'},
 };
 const SUBJECTS = [
   {
@@ -1370,6 +1372,8 @@ function updLU(){
 
 function startWithGrade(grade){
   selectedGrade=grade;
+  var _qsb=document.getElementById('qc-start-btn');
+  if(_qsb)_qsb.innerHTML='📝 FCM簡易チェックを始める（'+(grade===2?'11':'10')+'問・約2分）';
   // ガイドマップを確実に閉じてタブを先頭に表示
   document.getElementById('guide-map-wrap').classList.remove('open');
   try{ status=JSON.parse(localStorage.getItem(lsKey('status'))||'{}'); }catch{ status={}; }
@@ -1517,6 +1521,7 @@ function setFlowState(state){
   }else if(state==='F'){
     // 学習一覧：view-checkを完全に隠してview-studyだけ表示
     vc.style.display='none';
+    studyShowAll=false;
     if(vs){vs.style.display='';renderStudy();}
     if(br)br.style.display='';
     if(pgb)pgb.style.display='';
@@ -1582,6 +1587,7 @@ function checkRegistrationStatus(){
   }
 }
 function showAllChapters(){
+  studyShowAll=true;
   document.querySelectorAll('#sgrid .scard').forEach(function(el){el.style.display='';});
   var btn=document.getElementById('show-all-chapters-btn');
   if(btn)btn.style.display='none';
@@ -1751,7 +1757,8 @@ function renderResults(){
 const SL={none:'✗ 未着手',weak:'△ 学習中',ok:'○ 理解できた',good:'◎ 確認済み'};
 const SC={none:'st-none',weak:'st-weak',ok:'st-ok',good:'st-good'};
 
-function renderStudy(){renderGrid();renderDetail();renderSidebar();}
+var studyShowAll=false;
+  function renderStudy(){renderGrid();renderDetail();renderSidebar();}
 
 function renderGrid(){
   const subs = getCurrentSubjects();
@@ -1766,12 +1773,12 @@ function renderGrid(){
   const secRef2 = {s01:'Basic 第2章＋Int 第2章（健康施策・THP・健康経営・デジタルヘルス）',s02:'Basic 第3章 参照（3級・Int独立章なし）',s03:'Int 第1章 1節　フィットネス産業',s04a:'Int 第3章 運営業務全般（フロント/ジム/スタジオ/プール/スクール/付帯）＋第5章2節 商品・サービス管理',s04b:'Int 第4章 全体（マーケ・商圏・プロモ・Web）',s04c:'Int 第5章 1・3節（販売管理・収支管理）',s04d:'Int 第8章 2・4節（設備点検・事故防止/緊急時対応）',s04e:'Int 第6章 1〜6節（HRM・人材育成・コーチング・要員・労働法規一般）',s04f:'Int 第9章 2節　リスク管理',s05:'Int 第7章 全体（顧客管理・会員継続・コミュニティ）',s06:'Int 第9章 1節　主な法律',s07:'Int 第6章 7節　職場の安全衛生'};
       const chapRef2 = {s01:'Basic（3級参照）',s02:'Basic（3級参照）',s03:'Int. 第1章',s04a:'Int. 第3章',s04b:'Int. 第4章',s04c:'Int. 第5章',s04d:'Int. 第8章',s04e:'Int. 第6章',s04f:'Int. 第9章',s05:'Int. 第7章',s06:'Int. 第9章',s07:'Int. 第6章'};
   const chapRef = selectedGrade===2 ? chapRef2 : chapRef3;
-  const priMap = {pri:0, strat:1, teach:2, exam:3};
+  const priMap = {pri:0, strat:1, teach:0, exam:2};
   const priBadge = {
     pri: {label:'◎ 業務直結', bg:'#D1FAE5', color:'#065F46'},
-    strat:{label:'○ 戦略', bg:'#DBEAFE', color:'#1E40AF'},
-    teach:{label:'△ 指導系', bg:'#F3F4F6', color:'#4B5563'},
-    exam: {label:'▽ 受検用', bg:'#FEE2E2', color:'#991B1B'},
+    strat:{label:'○ 業務補完', bg:'#DBEAFE', color:'#1E40AF'},
+    teach:{label:'◎ 業務直結', bg:'#D1FAE5', color:'#065F46'},
+    exam: {label:'▽ 業務拡張', bg:'#FEE2E2', color:'#991B1B'},
   };
   const chPri = {};
   const sortOrder = [];
@@ -1799,21 +1806,22 @@ function renderGrid(){
     :gmSorted;
   const hasQR=Object.keys(quickAnswers).length>0;
   const descHtml=hasQR
-    ?`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">簡易チェックで「苦手」と「あやふや」だった業務分野を表示しています。<br>学習したい業務分野をタップしてください。<div style="margin-top:10px;"><button id="show-all-chapters-btn-top" onclick="showAllChapters()" style="font-size:13px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:8px;padding:8px 20px;cursor:pointer;">得意な業務分野も含めてすべて見る ▼</button></div></div>`
-    :`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">あなたの業務に直結する章から並べています。<br><span style="color:#065F46">◎業務直結</span> → <span style="color:#1E40AF">○戦略</span> → <span style="color:#4B5563">△指導系</span> → <span style="color:#991B1B">▽受検用</span> の順です。</div>`;
+    ?`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">FCM簡易チェックで「苦手」と「あやふや」だった業務分野を表示しています。<br>学習したい業務分野をタップしてください。<div style="margin-top:10px;"><button id="show-all-chapters-btn-top" onclick="showAllChapters()" style="font-size:13px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:8px;padding:8px 20px;cursor:pointer;">得意な業務分野も含めてすべて見る ▼</button></div></div>`
+    :`<div style="grid-column:1/-1;font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:8px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">あなたの業務に直結する章から並べています。<br><span style="color:#065F46">◎業務直結</span> → <span style="color:#1E40AF">○業務補完</span> → <span style="color:#991B1B">▽業務拡張</span> の順です。</div>`;
   // v2: 優先度グループ別に全章表示
   const priGroups = {pri:[], strat:[], teach:[], exam:[]};
   sorted.forEach(s => {
-    const pri = chPri[s.id] || 'exam';
+    let pri = chPri[s.id] || 'exam';
+    if(pri==='teach') pri='pri';
     priGroups[pri].push(s);
   });
-  const priLabel = {pri:'◎ 業務直結', strat:'○ 戦略', teach:'△ 指導系', exam:'▽ 受検用'};
-  const priColor = {pri:'#059669', strat:'#2563EB', teach:'#6B7280', exam:'#DC2626'};
+  const priLabel = {pri:'◎ 業務直結', strat:'○ 業務補完', teach:'◎ 業務直結', exam:'▽ 業務拡張'};
+  const priColor = {pri:'#059669', strat:'#2563EB', teach:'#059669', exam:'#DC2626'};
   const qcLabel = {'no':'✗ 苦手','vague':'△ あやふや','yes':'◎ できる'};
   const qcColor = {'no':'#991B1B','vague':'#92400E','yes':'#065F46'};
 
   let cardsHtml = descHtml;
-  ['pri','strat','teach','exam'].forEach(pri => {
+  ['pri','strat','exam'].forEach(pri => {
     const group = priGroups[pri];
     if(group.length === 0) return;
     const doneCount = group.filter(s => status[s.id]==='good'||status[s.id]==='ok').length;
@@ -1840,7 +1848,15 @@ function renderGrid(){
       </div>`;
     });
   });
+  if(hasQR){ cardsHtml += `<div style="grid-column:1/-1;text-align:center;margin:14px 0 4px;"><button id="show-all-chapters-btn" onclick="showAllChapters()" style="font-size:13px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:8px;padding:9px 22px;cursor:pointer;">得意な業務分野も含めてすべて見る ▼</button></div>`; }
   document.getElementById('sgrid').innerHTML = cardsHtml;
+  // 苦手・あやふやのみ表示（studyShowAll時は全件）。再描画でも維持
+  document.querySelectorAll('#sgrid .scard').forEach(function(el){
+    if(studyShowAll){el.style.display='';}
+    else{var qc=el.getAttribute('data-qc');el.style.display=(qc==='no'||qc==='vague')?'':'none';}
+  });
+  var _sab=document.getElementById('show-all-chapters-btn');if(_sab)_sab.style.display=studyShowAll?'none':'';
+  var _sabt=document.getElementById('show-all-chapters-btn-top');if(_sabt)_sabt.style.display=studyShowAll?'none':'';
 }
 
 function renderSidebar(){
@@ -1884,8 +1900,8 @@ function renderDetail(){
     <div style="margin-top:12px;font-size:11px;color:var(--text-dim);padding:8px 12px;
       background:var(--surface);border-radius:7px;line-height:1.7;border-left:2px solid var(--border);">
       公式テキストのpage番号が表示されますが、詳細確認は公式テキストの購入が必要となります。<br>
-      <a href="https://fia.or.jp/fcm_textbook/textset/" target="_blank"
-        style="color:var(--accent);font-weight:600;text-decoration:none;">→ 公式テキストを購入する</a>
+      <a href="https://fia.or.jp/fcm_textbook/textset/?utm_source=fcm_navi&utm_campaign=${(selectedPersona==='wa'||selectedPersona==='li')?'wa_li':selectedPersona}&utm_content=text" target="_blank"
+        style="color:var(--accent);font-weight:600;text-decoration:none;">→ 公式テキストの情報はこちら</a>
     </div>
   </div>`;
 
@@ -1953,7 +1969,7 @@ function renderDetail(){
   <div>${skillsHtml}${checkHtml}${kwHtml}${qHtml}${pastExamHtml}</div>
   <div class="dp-foot">
     <span class="rat-lbl">自己評価：</span>
-    <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">○理解できた＝テキストを読んで理解　◎確認済み＝問題で正解できた</div>
+    <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">○理解できた＝内容を理解できた　◎確認済み＝問題で正解できた</div>
     <div class="rat-btns">${ratingHtml}</div>
     <div class="pages-box">${s.pages}</div>
   </div>`;
@@ -1974,7 +1990,7 @@ function toggleDetail(id){
     nb=document.createElement('button');
     nb.id='detail-back-btn';
     nb.style.cssText='font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;text-decoration:underline;padding:8px 0;margin-bottom:8px;display:block;';
-    nb.textContent='← 章の一覧に戻る';
+    nb.textContent='← 業務分野の一覧に戻る';
     nb.onclick=function(){closeDetail();};
     document.getElementById('dpanel').before(nb);
   }
@@ -2121,8 +2137,8 @@ function selectPersona(pid){
     gb2.insertAdjacentHTML('afterbegin','<span class="pc-gb-badge" style="background:#10B981">メイン</span>');
     gb2.style.outline='2px solid #10B981';
   } else {
-    gb3sub.innerHTML='簡易チェック10問＋学習モード';
-    gb2sub.innerHTML='簡易チェック11問＋学習モード';
+    gb3sub.innerHTML='FCM簡易チェック10問＋学習モード';
+    gb2sub.innerHTML='FCM簡易チェック11問＋学習モード';
   }
   wrap.style.borderColor = p.color;
   setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}), 100);
@@ -2148,10 +2164,10 @@ function renderGM_v2(){
   if(!order){wrap.innerHTML='';return;}
   var gmKey=selectedGrade===2?GM_KEY2:GM_KEY3;
   var findFn=selectedGrade===2?function(k){return gmFindSec2(selectedPersona,k);}:function(k){return gmFindSec3(k);};
-  var bL={pri:'◎ 業務直結',strat:'○ 戦略',teach:'△ 指導系',exam:'▽ 受検用'};
-  var bC={pri:'#059669',strat:'#2563EB',teach:'#6B7280',exam:'#DC2626'};
+  var bL={pri:'◎ 業務直結',strat:'○ 業務補完',teach:'◎ 業務直結',exam:'▽ 業務拡張'};
+  var bC={pri:'#059669',strat:'#2563EB',teach:'#059669',exam:'#DC2626'};
   var groups={},chOrd={};
-  order.forEach(function(item){var key=item[0],badge=item[1];
+  order.forEach(function(item){var key=item[0],badge=item[1];if(badge==='teach')badge='pri';
     var found=findFn(key);if(!found)return;
     var ck=found.chNum||'';
     if(!groups[badge]){groups[badge]={};chOrd[badge]=[];}
@@ -2160,7 +2176,7 @@ function renderGM_v2(){
   });
   var pfx=selectedGrade===2?'Int.':'Basic';
   var out='';
-  ['pri','strat','teach','exam'].forEach(function(badge){
+  ['pri','strat','exam'].forEach(function(badge){
     if(!groups[badge])return;
     var chs=chOrd[badge].map(function(ck){return groups[badge][ck];});
     out+='<div class="gm2-group"><div class="gm2-group-hdr" onclick="this.parentElement.classList.toggle(\'open\')"><span style="color:'+bC[badge]+'">'+bL[badge]+' <span style="font-size:11px;font-weight:400;color:var(--text-dim)">（'+chs.length+'章）</span></span><span class="gm2-arrow">▶</span></div><div class="gm2-group-body">';
@@ -2249,7 +2265,7 @@ function renderGuideMap(){
   topGuide.className='gm-guide-intro';
   topGuide.innerHTML=`
     <div class="gm-intro-text">📍 あなたの仕事に直結する業務分野です。まず全体像を確認しましょう。</div>
-    <button class="gm-check-btn" onclick="goToQuickCheck()">📝 簡易チェックで現状を把握する →</button>`;
+    <button class="gm-check-btn" onclick="goToQuickCheck()">📝 FCM簡易チェックで現状を把握する →</button>`;
   wrap.appendChild(topGuide);
 
   groupOrder.forEach(g=>{
@@ -2290,16 +2306,16 @@ function renderGuideMap(){
   // 下部チェックボタン
   const botBtn=document.createElement('div');
   botBtn.className='gm-guide-bottom';
-  botBtn.innerHTML=`<button class="gm-check-btn" onclick="goToQuickCheck()">📝 簡易チェックで現状を把握する →</button>`;
+  botBtn.innerHTML=`<button class="gm-check-btn" onclick="goToQuickCheck()">📝 FCM簡易チェックで現状を把握する →</button>`;
   wrap.appendChild(botBtn);
 }
 
-// ガイドマップから簡易チェックへ（問題を即スタート）
+// ガイドマップからFCM簡易チェックへ（問題を即スタート）
 function goToQuickCheck(){
   switchView('check');
   const gm=document.getElementById('guide-map-wrap');
   if(gm) gm.classList.remove('open');
-  // 簡易チェックの問題を即開始（導入カードを飛ばす）
+  // FCM簡易チェックの問題を即開始（導入カードを飛ばす）
   startQuickCheck();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -2438,7 +2454,7 @@ function toggleGuideMap(){
 
 
 // ════════════════════════════════════════════════════════
-// 簡易チェック（10/11問）
+// FCM簡易チェック（10/11問）
 // ════════════════════════════════════════════════════════
 const QUICK_Q3 = [
   {sid:'s01', num:'① 健康づくり',
@@ -2510,18 +2526,18 @@ function getQuickQuestions(){
   return sortQuickByGuideMap(applied);
 }
 
-// 簡易チェックの出題順を、ガイドマップ（GM_ORDER）と同じ業務直結順に並べ替える
+// FCM簡易チェックの出題順を、ガイドマップ（GM_ORDER）と同じ業務直結順に並べ替える
 function sortQuickByGuideMap(items){
   const lvKey = selectedGrade===2 ? 'g2' : 'g3';
   const order = (GM_ORDER[selectedPersona]||{})[lvKey];
   if(!order || order==='uniform') return items;
   const qcMap = selectedGrade===2 ? QC2_TO_GMKEY : QC3_TO_GMKEY;
   // マーク区分の優先度（◎○△▽の順）
-  const badgeRank = {pri:0, strat:1, teach:2, exam:3};
+  const badgeRank = {pri:0, strat:1, teach:0, exam:2};
   // GM_ORDER内での各節キーの位置を記録
   const keyPos = {};
   order.forEach(([key,badge],i)=>{ if(!(key in keyPos)) keyPos[key]={badge,idx:i}; });
-  // 各簡易チェック項目に、対応する節キーのマーク区分・順位を付与
+  // 各FCM簡易チェック項目に、対応する節キーのマーク区分・順位を付与
   const scored = items.map((item,origIdx)=>{
     const gmKey = qcMap[item.sid];
     let rank=99, sub=origIdx;
@@ -2529,7 +2545,7 @@ function sortQuickByGuideMap(items){
       rank = badgeRank[keyPos[gmKey].badge] ?? 9;
       sub = keyPos[gmKey].idx;
     } else if(gmKey===null){
-      // 2級の運動トレーニング等：指導系扱いで後ろ
+      // 2級の運動トレーニング等：後ろに配置（Basic参照）
       rank = 2; sub = 900+origIdx;
     }
     return {item, rank, sub, origIdx};
@@ -2625,8 +2641,31 @@ function renderQuickResult(){
   const vague = qs.filter(item=>quickAnswers[item.sid]==='vague');
   const allOk = weak.length===0 && vague.length===0;
 
+  // 項目4: スコア（できる2/あやふや1/できない0）
+  const vagueN = vague.length;
+  const okN = qs.length - weak.length - vagueN;
+  const scoreVal = okN*2 + vagueN;
+  const maxScore = qs.length*2;
+  const rate = Math.floor(scoreVal / maxScore * 100);  // 正答率（端数切り捨て）
+  const isFshainn = (selectedPersona==='wa' || selectedPersona==='li');
+  const show2kyu = (selectedGrade!==2 && rate>=70 && !isFshainn);  // 70%以上で2級誘導
+  const show3kyu = (selectedGrade===2 && rate<70 && !isFshainn);  // 2級70%未満で3級誘導
+  const scoreBox = '<div style="text-align:center;background:var(--card);border:2px solid #0F6E56;border-radius:10px;padding:11px;margin-bottom:12px;">'
+    +'<div style="font-size:11px;color:var(--text-dim);margin-bottom:2px;">あなたの正答率</div>'
+    +'<div style="font-size:24px;font-weight:700;color:#0F6E56;line-height:1.2;">'+rate
+    +'<span style="font-size:14px;color:var(--text-sub);font-weight:500;">% / 100%</span></div>'
+    +'<div style="font-size:10.5px;color:var(--text-dim);margin-top:3px;">できる2点・あやふや1点・できない0点で換算（'+scoreVal+'/'+maxScore+'点）</div></div>';
+  const promo2 = show2kyu ? ('<div style="background:#EEF6FF;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<strong style="color:#185FA5;">🎯 2級（Intermediate）に挑戦できるレベルです。</strong><br>'
+    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">3級の理解が十分にあります。2級に進んで、業務スキルの幅を広げましょう。</span><br>'
+    +'<button onclick="startWithGrade(2)" style="margin-top:9px;background:#185FA5;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 2級のFCM簡易チェックに進む</button></div>') : '';
+  const promo3 = show3kyu ? ('<div style="background:#FFF7ED;border:1px solid #C2620C;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<strong style="color:#C2620C;">📘 まずは3級から学ぶのがおすすめです。</strong><br>'
+    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">2級の正答率が70%未満でした。土台となる3級（Basic）から固めると、2級の理解がスムーズになります。</span><br>'
+    +'<button onclick="startWithGrade(3)" style="margin-top:9px;background:#C2620C;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 3級のFCM簡易チェックに進む</button></div>') : '';
+
   if(allOk){
-    msg.innerHTML = '<div class="qr-ok-box">'+
+    msg.innerHTML = scoreBox + promo2 + promo3 + '<div class="qr-ok-box">'+
       '<strong>全業務分野「できる」と回答しました。</strong><br>'+
       '現在の知識レベルであれば、FCM技能検定'+(selectedGrade===2?'2級':'3級')+'の受検タイミングです。<br>'+
       '最終確認として各業務分野のチェックリストを見直し、公式テキストで知識を固めてから受検申込へ進みましょう。</div>';
@@ -2635,7 +2674,7 @@ function renderQuickResult(){
     const weakCount = weak.length;
     const vagueCount = vague.length;
     const okCount = totalQ - weakCount - vagueCount;
-    msg.innerHTML = '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
+    msg.innerHTML = scoreBox + promo2 + promo3 + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
       'padding:12px 14px;background:var(--surface);border-radius:9px;margin-bottom:10px;">'+
       '全'+totalQ+'分野中、<strong style="color:#DC2626">✗ 苦手 '+weakCount+'分野</strong>'+
       (vagueCount>0?' ・ <strong style="color:#D97706">△ あやふや '+vagueCount+'分野</strong>':'')+
@@ -2745,8 +2784,8 @@ function renderPastExamTab(sid){
   html += '上記の回・問番号のページを開いて実際に解いてみましょう。<br>';
   html += '解答・解説を確認することで理解が深まります。<br><br>';
   html += 'まだお持ちでない方は、テキストとのセット購入がお得です。<br>';
-  html += '<a href="https://fia.or.jp/fcm_textbook/textset/" target="_blank" ';
-  html += 'style="color:var(--accent);font-weight:700;text-decoration:none;">→ 過去問解説集を購入する</a>';
+  html += '<a href="https://fia.or.jp/fcm_textbook/textset/?utm_source=fcm_navi&utm_campaign='+((selectedPersona==='wa'||selectedPersona==='li')?'wa_li':selectedPersona)+'&utm_content=kakomon" target="_blank" ';
+  html += 'style="color:var(--accent);font-weight:700;text-decoration:none;">→ 過去問解説集の情報はこちら</a>';
   html += '</div></div>';
   return html;
 }
