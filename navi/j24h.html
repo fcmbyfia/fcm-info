@@ -650,7 +650,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
             <button onclick="toggleGuideMap()" id="guide-toggle-btn" class="guide-toggle-btn-main">▶ ガイドマップを開く</button>
           </div>
         </div>
-        <div id="fcm-lp-link-wrap" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);"><div style="font-size:12px;color:var(--text-sub);line-height:1.8;margin-bottom:6px;">24時間ジムにとってFCM公式テキスト・過去問解説集がどう役立つか、分かりやすくまとめた<strong style="color:var(--text);">サイトはこちらです。</strong></div><a href="https://fia.or.jp/fcm-24-hourgym/" target="_blank" class="fcm-lp-a">→ 24時間ジム</a></div>
+        <div id="fcm-lp-link-wrap" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);"></div>
       </div>
     </div>
     <div class="guide-map-wrap" id="guide-map-wrap">
@@ -943,7 +943,7 @@ const GM_KEY3 = {"産業概論": "産業概論・業界の歴史", "健康定義
 const GM_KEY2 = {"産業概論": "フィットネス産業", "介護予防": "介護予防", "THP": "THP・データヘルス", "健康経営": "健康経営・デジタルヘルス", "フロント運営": "フロント運営業務", "スタジオ運営": "スタジオ運営業務", "プール運営": "プール運営業務", "付帯事業": "付帯事業", "マーケ": "マーケティング（STP", "プロモ": "プロモーション・NPS", "Webマーケ": "Webマーケティング", "販売管理": "販売管理", "収支管理": "収支管理", "HRM": "HRM・人材育成", "要員管理": "要員管理・労働法規", "職場安全": "職場の安全衛生", "顧客管理": "顧客管理・会員継続", "施設管理": "施設管理・法定点検", "リスク管理": "関連法規・リスク管理"};
 
 const FCM_LP = {
-  j24: {name:'24時間ジム運営者', url:'https://fia.or.jp/fcm-24gym/'},
+  j24: {name:'24時間ジム運営者', url:'https://fia.or.jp/fcm-24-hourgym/'},
 };
 // LPリンクのHTMLを生成（将来：urlに識別パラメータを付与する場合はここで付ける）
 function fcmLpLink(){
@@ -2647,31 +2647,33 @@ function renderQuickResult(){
   const maxScore = qs.length*2;
   const rate = Math.floor(scoreVal / maxScore * 100);  // 正答率（端数切り捨て）
   const isFshainn = (selectedPersona==='wa' || selectedPersona==='li');
-  const show2kyu = (selectedGrade!==2 && rate>=70 && !isFshainn);  // 70%以上で2級誘導
-  const show3kyu = (selectedGrade===2 && rate<70 && !isFshainn);  // 2級70%未満で3級誘導
   const scoreBox = '<div style="text-align:center;background:var(--card);border:2px solid #0F6E56;border-radius:10px;padding:11px;margin-bottom:12px;">'
     +'<div style="font-size:11px;color:var(--text-dim);margin-bottom:2px;">あなたの正答率</div>'
     +'<div style="font-size:24px;font-weight:700;color:#0F6E56;line-height:1.2;">'+rate
     +'<span style="font-size:14px;color:var(--text-sub);font-weight:500;">% / 100%</span></div>'
     +'<div style="font-size:10.5px;color:var(--text-dim);margin-top:3px;">できる2点・あやふや1点・できない0点で換算（'+scoreVal+'/'+maxScore+'点）</div></div>';
-  const promo2 = show2kyu ? ('<div style="background:#EEF6FF;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
-    +'<strong style="color:#185FA5;">🎯 2級（Intermediate）に挑戦できるレベルです。</strong><br>'
-    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">3級の理解が十分にあります。2級に進んで、業務スキルの幅を広げましょう。</span><br>'
-    +'<button onclick="startWithGrade(2)" style="margin-top:9px;background:#185FA5;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 2級のFCM簡易チェックに進む</button></div>') : '';
-  const promo3 = show3kyu ? ('<div style="background:#FFF7ED;border:1px solid #C2620C;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
-    +'<strong style="color:#C2620C;">📘 まずは3級から学ぶのがおすすめです。</strong><br>'
-    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">2級の正答率が70%未満でした。土台となる3級（Basic）から固めると、2級の理解がスムーズになります。</span><br>'
-    +'<button onclick="startWithGrade(3)" style="margin-top:9px;background:#C2620C;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 3級のFCM簡易チェックに進む</button></div>') : '';
-  // 級横断の誘導が出ないケース向けの「継続学習」コメント（苦手分野が残っている場合のみ＝else分岐で使用）
-  const stay3 = (selectedGrade!==2 && !show2kyu) ? ('<div style="background:#F0FDF4;border:1px solid #15803D;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+  // 級ガイダンス（全7ペルソナ共通／正答率70%で分岐）
+  const g3kyu = (selectedGrade!==2);
+  // 3級・70%以上：知識十分→3級で土台→2級へ（A案）
+  const a3high = (g3kyu && rate>=70) ? ('<div style="background:#F0FDF4;border:1px solid #15803D;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<span style="font-size:13px;color:var(--text);line-height:1.85;">🟢 正答率'+rate+'%。知識面はよく身についています。ただし2級（Intermediate）はマネジメント実務・応用の要素もより深く問われます。3級（Basic）で土台をしっかり固めてから、2級（Intermediate）に進みましょう。</span></div>') : '';
+  // 3級・70%未満：苦手が残る
+  const stay3 = (g3kyu && rate<70) ? ('<div style="background:#F0FDF4;border:1px solid #15803D;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
     +'<strong style="color:#15803D;">📗 引き続き3級（Basic）の学習を進めましょう。</strong><br>'
     +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">苦手な業務分野が残っています。下の一覧から、苦手分野に対応する公式テキストの範囲を確認して固めていきましょう。</span></div>') : '';
-  const stay2 = (selectedGrade===2 && !show3kyu) ? ('<div style="background:#EEF6FF;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+  // 2級・70%未満：まず3級から
+  const promo3 = (!g3kyu && rate<70) ? ('<div style="background:#FFF7ED;border:1px solid #C2620C;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
+    +'<strong style="color:#C2620C;">📘 まず3級（Basic）から固めましょう。</strong><br>'
+    +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">2級（Intermediate）の正答率が70%未満でした。土台となる3級（Basic）から固めると、2級（Intermediate）の理解がスムーズになります。</span><br>'
+    +'<button onclick="startWithGrade(3)" style="margin-top:9px;background:#C2620C;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">▶ 3級のFCM簡易チェックに進む</button></div>') : '';
+  // 2級・70%以上：2級継続
+  const stay2 = (!g3kyu && rate>=70) ? ('<div style="background:#EEF6FF;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'
     +'<strong style="color:#185FA5;">📘 引き続き2級（Intermediate）の学習を進めましょう。</strong><br>'
     +'<span style="font-size:12px;color:var(--text-sub);line-height:1.7;">苦手な業務分野を、公式テキストの該当範囲で固めて受検準備を整えましょう。</span></div>') : '';
+  const gradeMsg = a3high + stay3 + promo3 + stay2;
 
   if(allOk){
-    msg.innerHTML = scoreBox + promo2 + promo3 + '<div class="qr-ok-box">'+
+    msg.innerHTML = scoreBox + gradeMsg + '<div class="qr-ok-box">'+
       '<strong>全業務分野「できる」と回答しました。</strong><br>'+
       '現在の知識レベルであれば、FCM技能検定'+(selectedGrade===2?'2級':'3級')+'の受検タイミングです。<br>'+
       '最終確認として各業務分野のチェックリストを見直し、公式テキストで知識を固めてから受検申込へ進みましょう。</div>';
@@ -2680,7 +2682,7 @@ function renderQuickResult(){
     const weakCount = weak.length;
     const vagueCount = vague.length;
     const okCount = totalQ - weakCount - vagueCount;
-    msg.innerHTML = scoreBox + promo2 + promo3 + stay3 + stay2 + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
+    msg.innerHTML = scoreBox + gradeMsg + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7;'+
       'padding:12px 14px;background:var(--surface);border-radius:9px;margin-bottom:10px;">'+
       '全'+totalQ+'分野中、<strong style="color:#DC2626">✗ 苦手 '+weakCount+'分野</strong>'+
       (vagueCount>0?' ・ <strong style="color:#D97706">△ あやふや '+vagueCount+'分野</strong>':'')+
