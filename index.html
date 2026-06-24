@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>FCM技能検定 情報サイト</title>
+<title>FCM Web学習ナビ｜ペルソナ別一覧（テスト）</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
@@ -22,39 +22,47 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   line-height:1.6;-webkit-font-smoothing:antialiased;padding:28px 16px 48px;}
 .wrap{max-width:560px;margin:0 auto;}
 
+/* ── ヘッダー ── */
 .eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;
   color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
 .title{font-size:23px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
-.lead{font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:22px;}
+.lead{font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:4px;}
+.note{font-size:12px;color:var(--text-dim);margin-bottom:22px;}
+.note b{color:var(--accent);font-weight:500;}
 
+/* ── カード一覧 ── */
 .list{display:flex;flex-direction:column;gap:10px;}
 .nav-card{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;
   background:var(--card);border:1px solid var(--border);border-left:4px solid var(--pc,var(--accent));
-  border-radius:12px;padding:16px 16px;transition:border-color .18s,transform .12s,box-shadow .18s;}
+  border-radius:12px;padding:15px 16px;transition:border-color .18s,transform .12s,box-shadow .18s;}
 .nav-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07);transform:translateY(-1px);}
 .nav-card:focus-visible{outline:2px solid var(--pc,var(--accent));outline-offset:2px;}
 .ic{font-size:24px;line-height:1;flex:0 0 auto;width:34px;text-align:center;}
 .body{flex:1 1 auto;min-width:0;}
 .label{font-size:15px;font-weight:700;color:var(--text);}
 .sub{font-size:12px;color:var(--text-sub);margin-top:1px;}
+.grade{font-family:'DM Mono',monospace;font-size:11px;color:var(--pc,var(--accent));
+  font-weight:500;flex:0 0 auto;margin-left:4px;}
 .arrow{flex:0 0 auto;color:var(--text-dim);font-size:15px;}
 
-.soon{display:flex;align-items:center;gap:14px;
-  background:var(--surface);border:1px dashed var(--border);
-  border-radius:12px;padding:16px 16px;opacity:.7;}
-.soon .label{color:var(--text-sub);}
-.soon .tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
-  color:var(--text-dim);border:1px solid var(--border);border-radius:4px;padding:2px 7px;flex:0 0 auto;}
-
-.sec-h{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.1em;
-  color:var(--text-dim);text-transform:uppercase;margin:24px 0 10px;}
-
-.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);
+/* ── フッター ── */
+.foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--border);
   font-size:11px;color:var(--text-dim);line-height:1.7;text-align:center;}
+
+/* ── ガイド ── */
+.guide-sec{margin-top:20px;padding-top:18px;border-top:1px dashed var(--border);}
+.guide-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;
+  color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.guide-card{--pc:var(--accent);background:var(--surface);}
+.guide-card .sub{color:var(--text-dim);}
+.pdf-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);
+  border:1px solid var(--border);border-radius:5px;padding:2px 6px;flex:0 0 auto;
+  margin-left:4px;letter-spacing:.04em;}
 
 @media(max-width:380px){
   .title{font-size:20px;}
-  .nav-card,.soon{padding:14px 13px;gap:11px;}
+  .nav-card{padding:13px 13px;gap:11px;}
+  .grade{display:none;}
 }
 @media(prefers-reduced-motion:reduce){
   .nav-card{transition:none;}
@@ -65,32 +73,65 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 <body>
 <div class="wrap">
 
-  <div class="eyebrow">FCM Skill Test</div>
-  <h1 class="title">FCM技能検定 情報サイト</h1>
-  <p class="lead">FCM技能検定（厚生労働省所管の国家資格）の学習・情報をまとめた、一般社団法人日本フィットネス産業協会（FIA）の情報サイトです。</p>
+  <div class="eyebrow">FCM Skill Test　/　Internal</div>
+  <h1 class="title">FCM Web学習ナビ</h1>
+  <p class="lead">ペルソナ別の学習ナビ一覧です。職種を選ぶと、3級・2級の現状把握チェックと学習モードに進めます。</p>
+  <p class="note"><b>登録不要・すぐ使えます。</b>　動作確認用のテスト一覧です。</p>
 
-  <div class="sec-h">コンテンツ</div>
   <nav class="list">
 
-    <a class="nav-card" style="--pc:#2563EB" href="navi/">
-      <span class="ic">📚</span>
-      <span class="body"><span class="label">Web学習ナビ</span><span class="sub">職種別に、3級・2級の現状把握チェックと学習モードに進めます</span></span>
-      <span class="arrow">›</span>
+    <a class="nav-card" style="--pc:#0F6E56" href="py_v2.html">
+      <span class="ic">🧘</span>
+      <span class="body"><span class="label">ピラティス・ヨガ指導者</span><span class="sub">スタジオ運営・経営視点を業務に沿って</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
     </a>
 
-    <div class="soon">
-      <span class="ic">❓</span>
-      <span class="body"><span class="label">よくある質問（FAQ）</span><span class="sub">準備中</span></span>
-      <span class="tag">SOON</span>
-    </div>
+    <a class="nav-card" style="--pc:#3B6D11" href="pt_v2.html">
+      <span class="ic">💪</span>
+      <span class="body"><span class="label">パーソナルトレーナー（PT）</span><span class="sub">独立開業・パーソナルジム運営の知識</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
 
-    <div class="soon">
-      <span class="ic">📖</span>
-      <span class="body"><span class="label">用語集</span><span class="sub">準備中</span></span>
-      <span class="tag">SOON</span>
-    </div>
+    <a class="nav-card" style="--pc:#185FA5" href="j24h_v2.html">
+      <span class="ic">🔑</span>
+      <span class="body"><span class="label">24時間ジム運営者</span><span class="sub">無人運営・出店判断・会員管理に直結</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
+
+    <a class="nav-card" style="--pc:#854F0B" href="kokyo_v2.html">
+      <span class="ic">🏛️</span>
+      <span class="body"><span class="label">公共スポーツ施設</span><span class="sub">指定管理者制度・地域施設の運営</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
+
+    <a class="nav-card" style="--pc:#A32D2D" href="jusen_v2.html">
+      <span class="ic">🩹</span>
+      <span class="body"><span class="label">柔道整復師</span><span class="sub">フィットネス業界との連携・参入</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
+
+    <a class="nav-card" style="--pc:#534AB7" href="rigaku_v2.html">
+      <span class="ic">🦴</span>
+      <span class="body"><span class="label">理学療法士</span><span class="sub">転職・独立先の業態選択の判断材料</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
+
+    <a class="nav-card" style="--pc:#475569" href="fshainn_v2.html">
+      <span class="ic">🏢</span>
+      <span class="body"><span class="label">フィットネスクラブ社員</span><span class="sub">若手社員／リーダーを選んで学べます</span></span>
+      <span class="grade">3級・2級</span><span class="arrow">›</span>
+    </a>
 
   </nav>
+
+  <section class="guide-sec">
+    <p class="guide-eyebrow">はじめての方へ</p>
+    <a class="nav-card guide-card" href="fcm-navi-guide.pdf" target="_blank" rel="noopener">
+      <span class="ic">📘</span>
+      <span class="body"><span class="label">使い方ガイド</span><span class="sub">操作の流れを画像つきで解説（別タブで開きます）</span></span>
+      <span class="pdf-tag">PDF</span><span class="arrow">›</span>
+    </a>
+  </section>
 
   <p class="foot">
     本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>
