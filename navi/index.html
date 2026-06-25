@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>FCM Web学習ナビ｜ペルソナ別一覧</title>
+<title>FCM Web学習ナビ｜ペルソナ別一覧（テスト）</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
@@ -23,6 +23,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .wrap{max-width:560px;margin:0 auto;}
 
 /* ── ヘッダー ── */
+.topnav{display:inline-block;font-size:12px;color:var(--text-dim);text-decoration:none;
+  margin-bottom:16px;}
+.topnav:hover{color:var(--accent);text-decoration:underline;}
 .eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;
   color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
 .title{font-size:23px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
@@ -49,6 +52,16 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--border);
   font-size:11px;color:var(--text-dim);line-height:1.7;text-align:center;}
 
+/* ── ガイド ── */
+.guide-sec{margin-top:20px;padding-top:18px;border-top:1px dashed var(--border);}
+.guide-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;
+  color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.guide-card{--pc:var(--accent);background:var(--surface);}
+.guide-card .sub{color:var(--text-dim);}
+.pdf-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);
+  border:1px solid var(--border);border-radius:5px;padding:2px 6px;flex:0 0 auto;
+  margin-left:4px;letter-spacing:.04em;}
+
 @media(max-width:380px){
   .title{font-size:20px;}
   .nav-card{padding:13px 13px;gap:11px;}
@@ -63,11 +76,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 <body>
 <div class="wrap">
 
-  <p style="margin-bottom:14px;"><a href="../" style="font-size:12px;color:var(--text-dim);text-decoration:none;">← FCM情報サイト トップ</a></p>
-  <div class="eyebrow">FCM Skill Test</div>
+  <a class="topnav" href="https://fcmbyfia.github.io/fcm-info/">← FCM情報サイト トップ</a>
+
+  <div class="eyebrow">FCM Skill Test　/　Internal</div>
   <h1 class="title">FCM Web学習ナビ</h1>
   <p class="lead">ペルソナ別の学習ナビ一覧です。職種を選ぶと、3級・2級の現状把握チェックと学習モードに進めます。</p>
-  <p class="note"><b>登録不要・すぐ使えます。</b></p>
+  <p class="note"><b>登録不要・すぐ使えます。</b>　動作確認用のテスト一覧です。</p>
 
   <nav class="list">
 
@@ -114,6 +128,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     </a>
 
   </nav>
+
+  <section class="guide-sec">
+    <p class="guide-eyebrow">はじめての方へ</p>
+    <a class="nav-card guide-card" href="https://fcmbyfia.github.io/fcm-info/navi/fcm-navi-guide.pdf" target="_blank" rel="noopener">
+      <span class="ic">📘</span>
+      <span class="body"><span class="label">使い方ガイド</span><span class="sub">操作の流れを画像つきで解説（別タブで開きます）</span></span>
+      <span class="pdf-tag">PDF</span><span class="arrow">›</span>
+    </a>
+  </section>
 
   <p class="foot">
     本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>
