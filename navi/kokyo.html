@@ -556,7 +556,25 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .gm2-ch{padding:10px 16px 10px 24px;border-bottom:1px solid var(--border);font-size:13px;}
 .gm2-ch:last-child{border-bottom:none;}
 
+.qz-empty{font-size:13px;color:var(--text-sub);line-height:1.9;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;text-align:center;}
+.qz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px;}
+.qz-prog{font-weight:700;color:var(--accent);}
+.qz-src{color:var(--text-dim);}
+.qz-body{font-size:13.5px;line-height:1.95;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px;}
+.qz-choices{display:flex;gap:8px;margin-bottom:12px;}
+.qz-ch{flex:1;padding:12px 0;font-size:18px;font-weight:700;color:var(--text);background:var(--card);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;}
+.qz-ch:hover{border-color:var(--accent);}
+.qz-ch.sel{border-color:var(--accent);background:var(--accent);color:#fff;}
+.qz-submit{width:100%;padding:13px;font-size:14px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:10px;cursor:pointer;}
+.qz-submit:disabled{opacity:.4;cursor:default;}
+.qz-result{font-size:14.5px;font-weight:700;padding:12px 14px;border-radius:8px;margin-bottom:12px;}
+.qz-result.ok{color:#0E7C66;background:rgba(14,124,102,.10);border:1px solid rgba(14,124,102,.30);}
+.qz-result.ng{color:#A32D2D;background:rgba(163,45,45,.08);border:1px solid rgba(163,45,45,.30);}
+.qz-exp{font-size:12.5px;line-height:1.9;color:var(--text-sub);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px;}
+.qz-next,.qz-restart{width:100%;padding:12px;font-size:14px;font-weight:700;color:var(--accent);background:var(--card);border:2px solid var(--accent);border-radius:10px;cursor:pointer;margin-top:4px;}
+.qz-done{text-align:center;font-size:14px;color:var(--text);line-height:2.2;padding:20px;}
 </style>
+
 <meta name="referrer" content="no-referrer-when-downgrade">
 </head>
 <body>
@@ -710,7 +728,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
               <div style="font-size:12px;color:var(--text-sub);line-height:1.7;margin-bottom:14px;">公式テキストの内容に関わる法改正・業界動向・事例などが生じた場合、FCMのWebに掲載します。掲載時にメールでお知らせします。</div>
               <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
                 <input type="text" id="reg-name" placeholder="お名前" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
-                <input type="text" id="reg-org" placeholder="所属（会社名・スタジオ名等）" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
+                <input type="text" id="reg-org" placeholder="施設名" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
                 <input type="email" id="reg-email" placeholder="メールアドレス" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
                 <input type="email" id="reg-email2" placeholder="メールアドレス（確認用）" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
               </div>
@@ -1893,7 +1911,7 @@ function renderDetail(){
     <div class="itab ${activeTab==='check'?'active':''}" onclick="switchTab('check')">チェックリスト<span class="itab-badge">${s.checklist.length}</span></div>
     <div class="itab ${kwCount===0?'disabled':''} ${activeTab==='keywords'?'active':''}" ${kwCount>0?`onclick="switchTab('keywords')"`:'style="opacity:0.4;cursor:default;"'}>キーワード${kwCount>0?`<span class="itab-badge purple">${kwCount}</span>`:''}</div>
     <div class="itab ${activeTab==='questions'?'active':''}" onclick="switchTab('questions')">理解度質問<span class="itab-badge">${s.questions.length}</span></div>
-    ${''}
+    <div class="itab ${activeTab==='quiz'?'active':''}" onclick="switchTab('quiz')">過去問お試し</div>
     ${hasPastExam?`<div class="itab ${activeTab==='pastexam'?'active':''}" onclick="switchTab('pastexam')">過去問</div>`:''}
   </div>`;
 
@@ -1936,6 +1954,9 @@ function renderDetail(){
   const pastExamHtml=hasPastExam?`<div class="tab-pane ${activeTab==='pastexam'?'active':''}">
     ${renderPastExamTab(s.id)}
   </div>`:'';
+  const quizHtml=`<div class="tab-pane ${activeTab==='quiz'?'active':''}">
+    ${renderQuizTab(s.id)}
+  </div>`;
   const practiceHtml=hasPractice?`<div class="tab-pane ${activeTab==='practice'?'active':''}">
     ${s.practice.map((p,pi)=>`<div class="jitsu-card">
       <div class="jitsu-label">${p.label}</div>
@@ -1968,7 +1989,7 @@ function renderDetail(){
     <button class="dp-close" onclick="closeDetail()">✕</button>
   </div>
   ${innerTabsHtml}
-  <div>${skillsHtml}${checkHtml}${kwHtml}${qHtml}${pastExamHtml}</div>
+  <div>${skillsHtml}${checkHtml}${kwHtml}${qHtml}${quizHtml}${pastExamHtml}</div>
   <div class="dp-foot">
     <span class="rat-lbl">自己評価：</span>
     <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">○理解できた＝内容を理解できた　◎確認済み＝問題で正解できた</div>
@@ -2742,9 +2763,13 @@ const PAST_EXAM_DATA = {
   },
 };
 
+const PAST_QUIZ = {"g3":{"s02":[{"kai":"12","no":"24","q":"フィットネスクラブにおける事故・傷害の予防に関する以下の記述で、不適切なものを①~④から一つ選びなさい。\n\n①フィットネスクラブでは多くの場合、入会時に既往歴や障害の有無についての確認が行われているが、そのほとんどが自己申告制となっている。\n②事故・傷害の予防に向けて、定期的に施設や機器の点検を行い、問題がある箇所については速やかに整備・修繕を行うことが必要である。\n③24時間ジムのようにスタッフ不在時間帯が生じる施設については、事故や緊急時の対応は利用者の自己責任のもと、監視システム、緊急時の通報設備や支援体制は必要ない。\n④心肺蘇生や外傷に対する応急処置については、全従業員が定期的に研修を受講することが重要である。","a":3,"exp":"③24時間ジムのようにスタッフ不在時間帯が生じる施設については、事故や緊急時の通報などは利用者の自己管理のもと行うものであり、施設側の管理の必要はない。\n【参照】Basic 第3章 3節「事故・障害予防、緊急時対応の基礎」 P.100〜106付近"}],"s04":[{"kai":"10","no":"42","q":"フィットネスクラブのジムエリアに関する以下の記述で、(ア)~(エ)に当てはまる適切な組合せを①~④から一つ選びなさい。\n\nトレーニングジムに配置されるマシンは、有酸素運動を行う（ ア ）系マシンと筋力強化をする（ イ ）マシンがある。それぞれエリアで分かれているジムが多いが、最近では、筋力強化や有酸素運動効果、さらには身体調整能力など、（ ウ ）にエクササイズ効果を得ることのできる（ エ ）トレーニングを提供することを目的とし、TRXのようなサスペンショントレーニング機材やメディシンボールなどを配したエリアを設けているジムもある。\n\n①(ア)ストレングス  (イ)カーディオ     (ウ)受動的   (エ)体幹\n②(ア)ストレングス  (イ)カーディオ     (ウ)複合的   (エ)体幹\n③(ア)カーディオ   (イ)ストレングス  (ウ)複合的   (エ)ファンクショナル\n④(ア)カーディオ   (イ)ストレングス  (ウ)受動的   (エ)ファンクショナル","a":3,"exp":"【参照】Basic 第4章 2節「ジム運営業務」 P.122〜127付近"},{"kai":"12","no":"45","q":"経費管理上で押さえておくべき主な科目に関する以下の(a)～(d)の記述で、費用科目名と内容の適切な組合せを①～④から一つ選びなさい。\n\n(a)施設変動費＝水道代\n(b)施設固定費＝賃料\n(c)修繕費＝駅看板作成費\n(d)事務費＝アルバイト給与\n\n①(a)(b) ②(b)(c) ③(c)(d) ④(a)(d)","a":1,"exp":"(c)コピー用紙は事務費(消耗品費) (d)アルバイト給与は人件費\n【参照】Basic 第4章 1節「フロント業務」/第4章 6節「イベント企画・運営」 P.120、P.152付近"},{"kai":"8","no":"44","q":"お客様に快適にクラブ利用してもらうための項目に関する以下の(a)〜(d)の記述で、適切なものがいくつあるか①～④から一つ選びなさい。\n\n(a)顧客満足を高めるためには清潔で安心できるクラブ環境を維持することが大切である。\n(b)フリーウエイトゾーンの利用が集中する時間帯は、利用マナーをめぐっての利用者同士のトラブルを未然に防ぐよう、目を配ることが必要である。\n(c)快適にクラブを利用してもらうためには会員のマナーも重要であるため、入会手続き時には利用ルールについて案内する。\n(d)公平性を保つため利用が集中しやすいトレーニングマシンには利用ルールを作り、会員に守ってもらうことが必要である。\n\n①1つ ②2つ ③3つ ④4つ","a":4,"exp":"全て適切\n【参照】Basic 第4章 1節「フロント業務」/第4章 2節「ジム運営業務」 P.114、P.123付近"}],"s05":[{"kai":"12","no":"31","q":"花見ウォーキングイベントの損益管理に関する以下の記述で、(ア)(イ)に当てはまる適切な組合せを、①〜④から一つ選びなさい。(金額は全て税別)\n\n 参加料3,000円のイベントの集客をしている。このイベントは固定費が50,000円、変動費は1名当たり1,000円の費用がかかる。\n 10,000円の黒字となる( ア )名の集客を目標としているが、現在の申込数15名では( イ )円の赤字である。\n\n ①(ア)20  (イ)5,000\n ②(ア)20  (イ)20,000\n ③(ア)30  (イ)5,000\n ④(ア)30  (イ)20,000","a":4,"exp":"x人の売上 3000x \\= 50000 \\+ 1000x \\+10000 ➔ 2000x \\= 60000 ➔ x \\= 20(人)\n15名での売上と経費 3000 x 15 - (50000 \\+ 1000 x 15\\) \\= -20000(円)\n【参照】Basic 第4章 6節「イベント企画・運営」 P.151〜152付近"}],"s07":[{"kai":"6","no":"55","q":"お客様からの問合せ対応に関する以下の記述で、ア~エに当てはまる適切な組合せを、①～④から一つ選びなさい。\n\nお客様の問合せに対応する際には、お客様が口にする（ ア ）ニーズをくみ取ることはもちろん、（ イ ）ニーズを聞き取ることも重要である。\nお客様は、クラブの（ ウ ）だけではなく、（ エ ）も入会の判断材料にしている為、お客様の要望を的確に把握した上で案内することが重要である。\n\n ①ア．潜在  イ．顕在  ウ．接客  エ．施設\n ②ア．顕在 イ．軽微な ウ．高級感 エ．知名度\n ③ア．顕在 イ．潜在  ウ．施設  エ．接客\n ④ア．潜在 イ．顕在  ウ．大きさ エ．フロントの優雅さ","a":3,"exp":"【参照】Basic 第5章 1節「顧客対応と接客の心構え」/第5章 2節「入会問合せ・見学者への応対」 P.174〜176付近"}],"s06":[{"kai":"12","no":"49","q":"施設の衛生管理に関する以下の記述で、適切なものを①～④から一つ選びなさい。\n\n①遊泳用プールについては、厚生労働省が定める衛生基準を満たしていれば、都道府県の条例は必ずしも遵守の必要はない。\n②菌やウイルスを取り除いて、その数を減らすための除菌施策は、衛生上の観点から、クラブのどのエリアでも必要である。\n③月1回程度の定期清掃では、専用機材等を用いて日常清掃を超えた範囲や場所を行うため、専門業者に委託しなければならない。\n④各種施設・機械の安全には日頃から施設内の状況に気を配り、安全管理上の問題点や改善すべき点などを察知し、同僚間だけで共有している。","a":2,"exp":"①不適切 遵守する必要がある。 ③不適切 必ず専門業者に依頼するわけではない。 ④不適切 全スタッフで共有する。\n【参照】Basic 第7章 2節「施設・設備管理の基本」 P.211〜215付近"},{"kai":"6","no":"32","q":"施設内の事故防止対策に関する以下の記述で、不適切なものを①～④から一つ選びなさい。\n①プール施設での排水口における溺死事故防止対策として、格子鉄蓋や金網の変形等の吸込み防止金具設置、ほか設備面の管理の徹底。\n②コンセント火災防止対策として、結露の水分による火花放電対策、テーブルタップの設置状況管理、清掃、ホコリ除去など周辺環境の整備。\n③プール天井落下事故防止対策として、放送や非常照明、防火扉などお客様を安全に誘導するための管理、避難に関する標準化。\n④レジオネラ肺炎による傷病への防止対策として、循環ろ過装置の一定期間ごとの逆洗などの汚れの排出、配管を含めた洗浄･消毒の実施。","a":3,"exp":"適切な換気や断熱、軽量鉄骨や下地材などの腐食する恐れがあり、目に見えない部分も含めた定期点検\n【参照】Basic 第7章 2節「施設・設備管理の基本」 P.211〜217付近"},{"kai":"10","no":"59","q":"安全衛生に関する以下の記述で、(ア)~(オ)に当てはまる適切な組合せを①~④から一つ選びなさい。\n\nフィットネスクラブにおける労働災害をなくす取組の一つとして、5S活動が挙げられるが、5Sとは( ア )、整頓、清潔、整理、( イ )の頭文字をとったもので、仕事の( ウ )を高めるだけでなく、作業による( エ )や( オ )などの防止対策にもなる為、積極的に行う事が推奨される。\n\n①(ア)躾     (ｲ)正確  (ウ)効率  (エ)ケガ  (オ)ミス\n②(ア)清掃    (ｲ)正確  (ウ)効果  (エ)ケガ  (オ)事故\n③(ア)躾     (ｲ)清掃  (ウ)効率  (エ)ケガ  (オ)事故\n④(ア)清掃    (ｲ)躾   (ウ)能力  (エ)故障  (オ)事故","a":3,"exp":"③適切 (ア)躾 (ｲ)清掃 (ウ)効率 (エ)ケガ (オ)事故\n【参照】Basic 第7章 2節「施設・設備管理の基本」 P.212付近"}],"s09":[{"kai":"6","no":"47","q":"報告・連絡・相談「報・連・相（ほうれんそう）」の説明に関する以下(a)~(d)の記述で、適切なものがいくつあるか、①～④から一つ選びなさい。\n\n（a）報連相をすることにより、作業の方向性の確認、効率的に作業を進めることへのアドバイス・指示を命令を得ることができる\n（b）報告・連絡を行う場合、急ぎの場合は口頭で完結に行うようにするが、まずは、原因や経過を述べ、次に結論を報告するようにする\n（c）まずは、上司からも求められなくても、個人の意見を述べてから、事実を正確に伝える\n（d）報連相をすることにより、他の人の進捗状況やその仕事への思いなども共有することができ、業務の流れを円滑にする潤滑油の役割を果たすこともある\n\n①なし ②1つ ③２つ ④3つ","a":3,"exp":"b）まず結論から\n（C）個人的な意見は上司に求められた場合のみ伝える\n【参照】Basic 第6章 2節「仕事の進め方」 P.190付近"},{"kai":"8","no":"58","q":"コミュニケーションに関する以下の(a)〜(c)の記述で、適切なものはいくつあるか①～④から一つ選びなさい。\n\n(a)仕事の場面では、指導育成する・ご案内や説明をする・指示するほか日常会話でコミュニケーションが必要となる\n(b)コミュニケーションには、バーバルとノンバーバルのコミュニケーション方法がある。\n(c)メラビアンの法則で言われるように、聴覚情報が最も重要となるため、相手に対する声色には気を付けるべきである\n\n①0（なし） ②1つ ③2つ ④3つ","a":3,"exp":"【参照】Basic 第6章 3節「コミュニケーションの重要性」 P.194付近"}],"s08":[{"kai":"10","no":"32","q":"顧客対応と問題解決に関する以下の(a)~(d)の記述で、適切なものはいくつあるか①~④から一つ選びなさい。\n\n(a)クレームはお客様の期待の裏返しとして必ず記録し、サービス改善に役立る。また、記録をもとに対応をマニュアル化し、どんなクレームにも対応できるように準備万端とすることが大切である。\n(b)クレームを発生させる顧客心理として「このクラブを良くしてあげたい」と思ってのご意見に対しては、できるだけその場で判断をし、すぐに改善することを約束する。\n(c)同僚がクレーム対応を行っている場合は、基本的には謝罪・対応・報告・改善をその対応者に全て任せておくべきである。\n(d)クレームはマイナスのイメージがあることから内々に片付けようとしがちだが、どんな小さなことでも正確にメモを取り記録しておく。\n\n①1つ ②2つ ③3つ ④4つ","a":2,"exp":"（b）その場で判断をし改善を約束することはできない。\n（c）同僚のクレーム対応を全てその個人に任せることは不適切。\n【参照】Basic 第5章 3節「顧客対応と課題解決」 P.178〜180付近"}]},"g2":{"s04c":[{"kai":"6","no":"26","q":"サービスの品質レベルに関する、以下の（a）～（d）の記述で適切なものはいくつあるか、①～④から一つ選びなさい。\n\n（a）退会率を改善する場合、誰がなぜ退会したのかの原因を深堀し、目標設定、改善行動、効果検証、更なる改善行動サイクルを回すことが必要である。\n（b）施設サービスを考える上でのポイントは、「安全性」「快適性」「機能性・利便性」などが挙げられる。「デザイン性」「漸新性」などもサービス向上において必要である。\n（c）KPI（Key Performance Indicator:重要業績評価指標）とは、組織やプロジェクトの最終目標を評価する指標であり、売上高や成約数、利益率などを指す。\n（d）スタジオ参加率は、「プログラム参加人数÷同時間帯施設在館者数」で算出することができ、参加率の高いプログラムは、顧客ニーズに応えられていると判断できる目安となる。\n\n ①１つ ②２つ ③３つ ④４つ","a":3,"exp":"（ｃ）が×KGIの説明内容\n【参照】Intermediate 第5章 2節「商品・サービス管理」 P.157〜161付近"},{"kai":"8","no":"16","q":"損益計算書の経常利益に関する以下の記述で、適切なものを①～④から一つ選びなさい。\n\n①経常利益とは、売上から原価を引いたもの。\n②経常利益とは、売上総利益から販売費・一般管理費を引いたもの。\n③経常利益とは、営業利益から営業外収益・費用を差し引いたもの。\n④経常利益とは、税引前当期純利益から法人税等の税金を差し引いたもの。","a":3,"exp":"【参照】Intermediate 第5章 3節「収支管理」 P.167付近"},{"kai":"10","no":"28","q":"フィットネスクラブの伝票管理に関する以下の(a)～(d)の記述で、適切なものはいくつあるか①～④から一つ選びなさい。\n\n(a)伝票とは、取引の発生ごとに金銭の出入りや取引内容を記入する用紙で、会計ソフトを導入していれば、ソフトに入力する基礎資料としても利用される。\n(b)受付者、管理者などが押印することから責任の所在を明らかにするためにも利用される。\n(c)会計伝票には、現金が入金されたときに使用する入金伝票、現金が出金されたときに使用する出金伝票、現金の入出金以外の全ての取引に使用する振替伝票がある。\n(d)伝票は取引証憑であり、法定で保存年限も定められているため、厳正な管理が必要である。\n\n①1つ ②2つ ③3つ ④4つ","a":4,"exp":"全て正しい\n【参照】Intermediate 第5章 1節・3節「販売管理」「収支管理」 P.151、P.167付近"},{"kai":"12","no":"46","q":"顧客満足度に関する以下の(a)～(d)の記述で、適切なものがいくつあるか①～④から一つ選びなさい。\n\n(a)管理者は、お客さまが持つ満足・不満足の感情という目に見えないものを定量化し管理することで不満の改善に役立てる。\n(b)顧客満足度とは、この企業のサービス・ブランドを友人や同僚に勧めたいかを0~10の11段階で評価してもらったものである。\n(c)顧客が入会時に持っていた事前期待を超えるサポートが退会を防ぐポイントとなる。\n(d)NPS（ネットプロモータースコア）は、収益性や売り上げなどに相関性はない。\n\n①1つ  ②2つ ③3つ ④4つ","a":2,"exp":"(a,cが適切)\n（b）NPS ネットプロモータースコアといい、顧客推薦度  顧客ロイヤリティを数値化したもの\n(a)適切 (b)不適切 (c)適切 (d)不適切\n【参照】Intermediate 第5章 2節「商品・サービス管理」 P.159付近"}],"s04b":[{"kai":"8","no":"24","q":"商圏分析に関する以下の記述の( ア )～( エ )に当てはまる適切な組合せを①～④から一つ選びなさい。\n\n(a)2次商圏とは、1次商圏以遠で店舗または客数の（ ア ）％程度以上を占める顧客の居住範囲をいう。\n(b)都心駅前タイプにおける成功クラブの在籍構成比率の目安は、2㎞圏内で（ イ ）％である。\n(c)郊外タイプ（都下＋三県）の主要移動手段は乗用車も多く、必要駐車場台数は（ ウ ）である。\n(d)地方／ロードサイドタイプの成功クラブ参加率の目安は、1㎞圏内で（ エ ）%である。\n\n①(ア)40   (イ)40～50  (ウ)50～100  (エ)30\n②(ア)30   (イ)60～70  (ウ)50～100  (エ)2.5\n③(ア)30   (イ)40～50  (ウ)20～40   (エ)2.5\n④(ア)40  (イ)60～70  (ウ)50～100  (エ)30","a":2,"exp":"【参照】Intermediate 第4章 2節「市場・商圏分析と店舗戦略」 P.114〜118付近"}],"s04e":[{"kai":"6","no":"22","q":"解雇に関する以下の記述で、不適切なものを①～④から一つ選びなさい\n\n①労働基準法では、労働基準監督署に是正申告したことを理由とする解雇は禁止されている。\n②男女雇用機会均等法では、女性労働者が結婚・妊娠・出産・産前産後の休業をしたことなどを理由とする解雇は禁止されている。\n③育児・介護休業法では、産前産後の休業期間とその後の30日間の解雇は禁止されている。\n④育児・介護休業法では、労働者が育児・介護休業などを申し出たこと、又は育児・介護休業などをしたことを理由とする解雇は禁止されている。","a":3,"exp":"①適切 ②適切 ③不適切 ④適切\n【参照】Intermediate 第6章 6節「労働法規一般」 P.193〜195付近"},{"kai":"12","no":"33","q":"労働法規に関する以下の(a)～(d)の記述で、適切な組合せを、①～④から一つ選びなさい。\n\n(a)法定休日は、労働基準法により毎週1日の休日、または4週間を通じて6日以上の休日を付与することが義務付けられている。\n(b)労働基準法における休憩は、1日の労働時間が6時間を超える場合は45分以上、8時間を超える場合は1時間以上の休憩を労働時間の途中に与える義務がある。\n(c)週40時間勤務の常勤労働者の年次有給休暇とは、本来労働義務がある日について休暇を取得しても賃金が減額されない休暇のことで、労働者が6ヶ月間継続勤務し、その間の全労働日の6割以上出勤した場合に最低10労働日の有給休暇が与えられる。\n(d)労働基準法が定める労働時間の上限は、一日8時間、一週40時間であり、これを「法定労働時間」という。\n\n①(a)(b)  ②(a)(d)  ③(b)(c)  ④(b)(d)","a":4,"exp":"間違い\n(a) 6日以上 ⇒ 4日以上\n(c) 6割以上 ⇒ 8割以上\n【参照】Intermediate 第6章 6節「労働法規一般」 P.194〜195付近"}],"s04f":[{"kai":"5","no":"29","q":"金銭管理リスクに関する以下の(a)〜(d)の記述で、適切な組合せを、①～④から一つ選びなさい。\n\n(ａ)金銭過不足などのトラブルが発生した場合、担当者が現金と伝票の照合を行い、その差額を過不足として処理する。\n(ｂ)金銭過不足の原因として、悪意あるスタッフの不正行為、業務上横領罪や窃盗罪に問われることがある。\n(c)金銭トラブルは発生予測がつきにくいので、発生後の対策が最も重要である。\n(d)金銭管理においては、明確なルールを定めなければならない。\n\n①(ａ)と(c)\n②(ａ)と(d)\n③(ｂ)と(ｃ)\n④(ｂ)と(ｄ)","a":4,"exp":"(a)現金と伝票を照らし合わせるだけでなく、複数の人間で計算し直す必要がある。\n(c)金銭トラブルが発生してからではなく、発生することを想定して対策を取らなければならない。\n【参照】Intermediate 第9章 2節「リスク管理」 P.263付近"}],"s04d":[{"kai":"12","no":"32","q":"トレーニング機器のメンテナンス業務に関する以下の記述で、適切なものを①～④から一つ選びなさい。\n\n①ストレングスマシンは、水を含ませた布でフレームやシート等を清鎖する。洗剤などを直接吹きかけてしまうと思わぬところに液体が散布し不具合につながる恐れがあることに注意する。\n②ストレングスマシンのガイドロッドは浸透性潤滑剤、ポップピンはシリコンスプレー、ベアリングはグリスと使い分けを行わないと逆効果になることがある。\n③トレッドミルは、電源コンセントの清掃を月一回程度行う。モーター周りはほこりを吸着しているので年1回はカバーを外し、掃除機による吸引によるマシン内の清掃が望ましい。\n④トレッドミルのランニングベルトは、走行距離が交換目安に達するまでは交換する必要はない。","a":1,"exp":"①適切 ②不適切 浸透性潤滑剤 ⇔ シリコンスプレー\n③不適切 月１回→週１回 年一回→月１回 ④不適切 交換する必要はない→不具合があれば交換する\n【参照】Intermediate 第8章 2節「施設・設備点検業務」 P.244付近"},{"kai":"6","no":"34","q":"設備の操作業務に関する以下の（a）～（d）の記述で不適切なものはいくつあるか、①～④から一つ選びなさい。\n\n（a）操作方法については、操作の目的、操作上の注意、操作手順をオペレーションマニュアルにまとめ、誰もが同様 of の操作をできるようにする。\n（b）レジオネラ菌が検出された場合、ただちに関係部署に報告し、必要な措置を行う。保健所報告が必要なケースは、ただちに管轄保健所に報告、指導を受ける。\n（c）安全や環境に配慮するため、空調設備の設定や熱量の設定、節電など、エネルギー消費に関して管理する必要がある。\n（d）プールには、水中の細かい汚れを大きくし、ろ過器で取り除きやすくする清澄剤、大腸菌など殺菌のための塩素、透明度を増すために凝集剤を投入する。\n\n①1つ ②2つ ③3つ ④4つ","a":1,"exp":"d x 清澄剤と凝集剤が逆\n(a)適切 (b)適切 (c)適切 (d)不適切 清澄剤と凝集剤が逆\n【参照】Intermediate 第8章 2節「施設・設備点検業務」/第8章 4節「事故・トラブル防止、緊急時対応」 P.238、P.247付近"}],"s05":[{"kai":"6","no":"48","q":"日本フィットネス産業協会が行った調査に関する以下の記述で、(a)～(c)に当てはまる適切な組合わせを①～④から一つ選びなさい。\n\nお客様がクラブで話しをする相手として最も多いのが（ a ）であるが、（ b ）と話しをする割合も高いというデータが出ている。よって（ c ）を理解するには（ b ）との会話を聞くことが有効な手段があり、その情報をサービス提供等に活かし売上増加した例はたくさんある。\n\n①(a)フロントスタッフ  (b)ジムトレーナー   (c)サービス品質\n②(a)ジムトレーナー   (b)他の会員      (c)顧客心理\n③(a)他の会員      (b)ジムトレーナー    (c)サービス品質\n④(a)フロントスタッフ  (b)他の会員         (c)顧客心理","a":2,"exp":"②(a) ジムトレーナー  (b)他の会員     (c)顧客心理\n【参照】Intermediate 第7章 1節「顧客管理」/第7章 2節「会員継続」 P.215〜225付近"}],"s06":[{"kai":"8","no":"48","q":"フィットネスクラブ運営におけるもコンプライアンス（法令遵守）に関する以下の(a)～(d)の記述で、適切なものがいくつあるか①～④から一つ選びなさい。\n\n(a)反社会的勢力が取引先や株主となって、不当要求を行う場合の被害を防止するため、契約書、約款、規程に暴力団排除条項を設ける。\n(b)有線放送から流れている音楽を館内BGM\nなどに使用する場合は、著作者の許諾及び使用料の支払いは必要ない。\n(c)街頭でチラシを配布する場合、店舗を管轄する警察署に道路使用許可を得ることでいつでもどこでも実施できる。\n(d)会員向けスキーバスツアーを企画、実施し、旅行参加者から直接ツアー代金を受け取ることができる。\n\n①1つ ②2つ ③3つ ④4つ","a":2,"exp":"(a)適切 (b)適切 (c)不適切 いつでもどこでもというわけではない (d)不適切 旅行業法に基づいて旅行業登録が必要\n【参照】Intermediate 第9章 1節「フィットネスクラブ運営に関わる主な法律」 P.253〜260付近"}]}};
+
 // ── 過去問タブ ──────────────────────────────────────────────────────────────
 function getPastExamData(sid){
   const key = selectedGrade===2 ? 'g2' : 'g3';
+  // 3級：SUBJECTSのid → 過去問データのキーへ対応づけ（s04/s10のタブ欠落・s05〜s09の中身ズレを修正）
+  if(key==='g3'){ const _m={s01:'s01',s02:'s02',s03:'s03',s04:'s04a',s05:'s04b',s06:'s05',s07:'s06',s08:'s07',s09:'s08',s10:'s09'}; sid = _m[sid] || sid; }
   return PAST_EXAM_DATA[key] && PAST_EXAM_DATA[key][sid] ? PAST_EXAM_DATA[key][sid] : null;
 }
 
@@ -2800,6 +2825,48 @@ function renderPastExamTab(sid){
   html += '</div></div>';
   return html;
 }
+
+// ── 過去問お試しタブ ─────────────────────────────────────────────────────────
+let QUIZ={sid:null,idx:0,sel:null,done:false};
+function getQuizData(sid){
+  const key=selectedGrade===2?'g2':'g3';
+  return (typeof PAST_QUIZ!=='undefined'&&PAST_QUIZ[key]&&PAST_QUIZ[key][sid])?PAST_QUIZ[key][sid]:null;
+}
+function qzEsc(x){return (x||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderQuizTab(sid){
+  const list=getQuizData(sid);
+  if(!list||!list.length){
+    return '<div class="qz-empty">過去問お試しは、全分野からいくつかを抜粋しています。<br>この分野は今回の抜粋に含まれていません。</div>';
+  }
+  if(QUIZ.sid!==sid){QUIZ={sid:sid,idx:0,sel:null,done:false};}
+  return '<div id="quiz-host">'+quizCard()+'</div>';
+}
+function quizCard(){
+  const list=getQuizData(QUIZ.sid)||[];
+  if(QUIZ.idx>=list.length){
+    return '<div class="qz-done">この分野のお試しは以上です。<br><button class="qz-restart" onclick="quizRestart()">もう一度</button></div>';
+  }
+  const q=list[QUIZ.idx], marks=['①','②','③','④'];
+  let h='<div class="qz-head"><span class="qz-prog">'+(QUIZ.idx+1)+' / '+list.length+'問</span><span class="qz-src">第'+q.kai+'回 問'+q.no+'</span></div>';
+  h+='<div class="qz-body">'+qzEsc(q.q).replace(/\n/g,'<br>')+'</div>';
+  if(!QUIZ.done){
+    h+='<div class="qz-choices">';
+    for(let n=1;n<=4;n++){h+='<button class="qz-ch'+(QUIZ.sel===n?' sel':'')+'" onclick="quizSelect('+n+')">'+marks[n-1]+'</button>';}
+    h+='</div>';
+    h+='<button class="qz-submit" '+(QUIZ.sel?'':'disabled')+' onclick="quizSubmit()">解答する</button>';
+  }else{
+    const okk=(QUIZ.sel===q.a);
+    h+='<div class="qz-result '+(okk?'ok':'ng')+'">'+(okk?'◎ 正解':'✗ 不正解')+'　／　あなたの解答：'+marks[QUIZ.sel-1]+'　正解：'+marks[q.a-1]+'</div>';
+    h+='<div class="qz-exp">'+qzEsc(q.exp).replace(/\n/g,'<br>')+'</div>';
+    h+='<button class="qz-next" onclick="quizNext()">'+(QUIZ.idx+1>=list.length?'おわり →':'次の問題 →')+'</button>';
+  }
+  return h;
+}
+function quizRefresh(){const el=document.getElementById('quiz-host');if(el)el.innerHTML=quizCard();}
+function quizSelect(n){if(QUIZ.done)return;QUIZ.sel=n;quizRefresh();}
+function quizSubmit(){if(!QUIZ.sel)return;QUIZ.done=true;quizRefresh();}
+function quizNext(){QUIZ.idx++;QUIZ.sel=null;QUIZ.done=false;quizRefresh();}
+function quizRestart(){QUIZ.idx=0;QUIZ.sel=null;QUIZ.done=false;quizRefresh();}
 
 
 
