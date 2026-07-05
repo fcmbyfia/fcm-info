@@ -140,6 +140,18 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .dp-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:4px;}
 .dp-name{font-size:16px;font-weight:700;margin-bottom:8px;}
 .dp-ess{font-size:12px;color:var(--text-sub);line-height:1.7;background:var(--surface);border-radius:7px;padding:8px 12px;border-left:2px solid var(--accent);}
+.dp-progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 20px;background:var(--surface);border-bottom:1px solid var(--border);font-size:12px;}
+.dp-progress .dpp-txt{color:var(--text-sub);font-weight:600;white-space:nowrap;}
+.dp-progress .dpp-txt b{color:#0E7C66;font-weight:700;font-size:13px;}
+.dp-progress .dpp-dots{display:flex;align-items:center;gap:3px;flex-wrap:wrap;}
+.dp-progress .dpp-dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:background .35s ease;}
+.dp-progress .dpp-dot.on{background:#0E7C66;}
+.dp-progress .dpp-star{width:11px;height:11px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;line-height:1;color:#D97706;flex-shrink:0;}
+.dp-progress .dpp-note{flex-basis:100%;width:100%;font-size:10px;color:var(--text-dim);line-height:1.5;margin-top:2px;}
+.dp-progress .dpp-note .note-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0E7C66;vertical-align:middle;margin:0 2px;}
+.dp-progress .dpp-note .note-star{color:#D97706;vertical-align:middle;margin:0 1px;font-size:11px;}
+.dp-progress .dpp-reset{font-size:11px;color:var(--text-dim);background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;white-space:nowrap;}
+.dp-progress .dpp-reset:hover{color:var(--danger);border-color:var(--danger);}
 .dp-close{background:none;border:1px solid var(--border);color:var(--text-sub);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
 .dp-close:hover{border-color:var(--danger);color:var(--danger);}
 .inner-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);}
@@ -181,6 +193,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .dp-foot{padding:16px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .rat-lbl{font-size:12px;color:var(--text-sub);white-space:nowrap;}
 .rat-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.tab-rating{margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .rbt{font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:500;padding:5px 12px;border-radius:7px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text-sub);transition:all .2s;}
 .rbt[data-val="none"].active{background:var(--s-none);border-color:var(--c-none);color:var(--c-none);}
 .rbt[data-val="weak"].active{background:var(--s-weak);border-color:var(--c-weak);color:var(--c-weak);}
@@ -626,7 +639,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   <div class="sb-sec">
     <div class="sb-lbl">全体進捗</div>
     <div class="tp">
-      <div class="tp-row"><span style="font-size:11px;color:var(--text-sub)" id="progress-label">確認済み業務分野</span>
+      <div class="tp-row"><span style="font-size:11px;color:var(--text-sub)" id="progress-label">◎到達 業務分野</span>
         <span><span class="tp-val" id="good-count">1</span><span class="tp-unit" id="subject-total"> / 12</span></span></div>
       <div class="ptrack"><div class="pfill" id="pfill" style="width: 10%;"></div></div>
     </div>
@@ -636,8 +649,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="legend">
       <div class="li"><div class="ldot" style="background:var(--c-none)"></div><span style="color:var(--text-sub)">✗　未着手</span></div>
       <div class="li"><div class="ldot" style="background:var(--c-weak)"></div><span style="color:var(--text-sub)">△　学習中</span></div>
-      <div class="li"><div class="ldot" style="background:var(--c-ok)"></div><span style="color:var(--text-sub)">○　理解できた</span></div>
-      <div class="li"><div class="ldot" style="background:var(--c-good)"></div><span style="color:var(--text-sub)">◎　問題で確認済み</span></div>
+      <div class="li"><div class="ldot" style="background:var(--c-ok)"></div><span style="color:var(--text-sub)">○　過去問が解ける</span></div>
+      <div class="li"><div class="ldot" style="background:var(--c-good)"></div><span style="color:var(--text-sub)">◎　予想問題を作って解ける</span></div>
     </div>
   </div>
   <div class="sb-sec">
@@ -801,7 +814,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="grid-hdr">
       <button id="back-to-result-btn" onclick="updateFlowState()" style="display:none;font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:&#39;Noto Sans JP&#39;,sans-serif;text-decoration:underline;margin-bottom:8px;">← 結果に戻る</button>
       <span class="grid-title" id="study-title">🔑 <span style="color:#185FA5">24時間ジム運営者</span>　2級（Intermediate）　業務分野一覧</span>
-      <button class="reset-btn" onclick="resetAll()">進捗をリセット</button>
     </div>
     <div class="dpanel" id="dpanel"></div>
     <div class="sgrid" id="sgrid"></div>
@@ -1381,6 +1393,10 @@ function ldcr(){ try{return JSON.parse(localStorage.getItem(lsKey('check_results
 function svs(s){ localStorage.setItem(lsKey('status'),JSON.stringify(s)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
 function svc(c){ localStorage.setItem(lsKey('checks'),JSON.stringify(c)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
 function svcr(r){ localStorage.setItem(lsKey('check_results'),JSON.stringify(r)); localStorage.setItem(lsKey('updated'),new Date().toISOString()); updLU(); }
+function ldts(){ try{return JSON.parse(localStorage.getItem(lsKey('tabseen'))||'{}')}catch{return{}}}
+function svts(t){ try{localStorage.setItem(lsKey('tabseen'),JSON.stringify(t));}catch(e){} }
+function ldtst(){ try{return JSON.parse(localStorage.getItem(lsKey('tabstatus'))||'{}')}catch{return{}}}
+function svtst(){ try{localStorage.setItem(lsKey('tabstatus'),JSON.stringify(tabStatus));}catch(e){} }
 function updLU(){
   if(!selectedGrade){ document.getElementById('last-updated').textContent=''; return; }
   const ts=localStorage.getItem(lsKey('updated'));
@@ -1399,6 +1415,9 @@ function startWithGrade(grade){
   try{ status=JSON.parse(localStorage.getItem(lsKey('status'))||'{}'); }catch{ status={}; }
   try{ checks=JSON.parse(localStorage.getItem(lsKey('checks'))||'{}'); }catch{ checks={}; }
   try{ checkResults=JSON.parse(localStorage.getItem(lsKey('check_results'))||'{}'); }catch{ checkResults={}; }
+  try{ tabseen=JSON.parse(localStorage.getItem(lsKey('tabseen'))||'{}'); }catch{ tabseen={}; }
+  try{ tabStatus=JSON.parse(localStorage.getItem(lsKey('tabstatus'))||'{}'); }catch{ tabStatus={}; }
+  try{ quickAnswers=JSON.parse(localStorage.getItem(lsKey('quickans'))||'{}'); }catch{ quickAnswers={}; }
   const badge=document.getElementById('grade-badge');
   if(grade===3){ badge.textContent='FCM 3級'; badge.style.background='var(--accent)'; }
   else{ badge.textContent='FCM 2級'; badge.style.background='var(--purple)'; }
@@ -1481,7 +1500,8 @@ function backToGuide(){
 }
 
 
-let status=lds(), checks=ldc(), checkResults=ldcr();
+let status=lds(), checks=ldc(), checkResults=ldcr(), tabseen=ldts();
+let tabStatus=ldtst();
 let openId=null, activeTab='skills', currentView='check';
 
 // チェックモード用
@@ -1747,7 +1767,7 @@ function renderResults(){
     });
     const pct=total>0?Math.round(score/(total*2)*100):0;
     const fillColor=st==='good'?'var(--c-good)':st==='ok'?'var(--c-ok)':st==='weak'?'var(--c-weak)':'var(--c-none)';
-    const statusLabel={none:'✗ 未着手',weak:'△ 学習中',ok:'○ おおむねOK',good:'◎ 理解できた'};
+    const statusLabel={none:'✗ 未着手',weak:'△ 学習中',ok:'○ 過去問が解ける',good:'◎ 予想問題を作って解ける'};
     
     // 各質問の回答バッジ
     const qBadges=s.hp_questions.map((q,i)=>{
@@ -1774,7 +1794,7 @@ function renderResults(){
 // ════════════════════════════════════════════════════════
 // STUDY MODE
 // ════════════════════════════════════════════════════════
-const SL={none:'✗ 未着手',weak:'△ 学習中',ok:'○ 理解できた',good:'◎ 確認済み'};
+const SL={none:'✗ 未着手',weak:'△ 学習中',ok:'○ 過去問が解ける',good:'◎ 予想問題を作って解ける'};
 const SC={none:'st-none',weak:'st-weak',ok:'st-ok',good:'st-good'};
 
 var studyShowAll=false;
@@ -1844,11 +1864,11 @@ function renderGrid(){
   ['pri','strat','exam'].forEach(pri => {
     const group = priGroups[pri];
     if(group.length === 0) return;
-    const doneCount = group.filter(s => status[s.id]==='good'||status[s.id]==='ok').length;
-    const progressText = doneCount > 0 ? `　✅ ${doneCount}/${group.length}分野 確認済み` : '';
+    const doneCount = group.filter(s => subjectAllOk(s)).length;
+    const progressText = doneCount > 0 ? `　✅ ${doneCount}/${group.length}分野 学習到達` : '';
     cardsHtml += `<div style="grid-column:1/-1;font-size:13px;font-weight:700;color:${priColor[pri]};padding:12px 0 6px 0;border-bottom:1px solid var(--border);margin-bottom:4px;">${priLabel[pri]}（${group.length}分野）<span style="font-size:11px;font-weight:400;color:var(--text-dim);">${progressText}</span></div>`;
     group.forEach(s => {
-      const st=status[s.id]||'none';
+      const st=subjectRollup(s);
       const cl=checks[s.id]||[];
       const done=cl.filter(Boolean).length;
       const badge = chPri[s.id] ? priBadge[chPri[s.id]] : null;
@@ -1863,7 +1883,7 @@ function renderGrid(){
         <div class="sc-name">${s.name}</div>
         <div class="sc-foot">
           <span class="sc-cnt">${done}/${s.checklist.length} チェック</span>
-          <span class="sbadge ${SC[st]}">${SL[st]}</span>
+          <span class="sbadge ${SC[st]}">${subjectStar(s)?'★ 予想問題まで':subjectAllOk(s)?'✓ 学習到達':st==='weak'?'△ 学習中':'✗ 未着手'}</span>
         </div>
       </div>`;
     });
@@ -1923,12 +1943,14 @@ function renderDetail(){
       <a href="https://fia.or.jp/fcm_textbook/textset/?utm_source=fcm_navi&utm_campaign=${(selectedPersona==='wa'||selectedPersona==='li')?'wa_li':selectedPersona}&utm_content=text" target="_blank"
         style="color:var(--accent);font-weight:600;text-decoration:none;">→ 公式テキストの情報はこちら</a>
     </div>
+    ${tabRatingHtml(s,'skills')}
   </div>`;
 
   const checkHtml=`<div class="tab-pane ${activeTab==='check'?'active':''}">
     ${s.checklist.map((item,i)=>`<div class="check-item ${cl[i]?'checked':''}" onclick="toggleCheck('${s.id}',${i})">
       <div class="cbox">${cl[i]?'✓':''}</div><div>${item}</div>
     </div>`).join('')}
+    ${tabRatingHtml(s,'check')}
   </div>`;
 
   const kwHtml=`<div class="tab-pane ${activeTab==='keywords'?'active':''}">
@@ -1944,18 +1966,22 @@ function renderDetail(){
     </div>`;
     }).join('')}
     `}
+    ${kwCount>0?tabRatingHtml(s,'keywords'):''}
   </div>`;
 
   const qHtml=`<div class="tab-pane ${activeTab==='questions'?'active':''}">
     <div style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">記述式で答えられるかが合否の分かれ目です。</div>
     ${s.questions.map(q=>`<div class="q-item">${q}</div>`).join('')}
+    ${tabRatingHtml(s,'questions')}
   </div>`;
 
   const pastExamHtml=hasPastExam?`<div class="tab-pane ${activeTab==='pastexam'?'active':''}">
     ${renderPastExamTab(s.id)}
+    ${tabRatingHtml(s,'pastexam')}
   </div>`:'';
   const quizHtml=`<div class="tab-pane ${activeTab==='quiz'?'active':''}">
     ${renderQuizTab(s.id)}
+    ${getQuizData(s.id)?tabRatingHtml(s,'quiz'):''}
   </div>`;
   const practiceHtml=hasPractice?`<div class="tab-pane ${activeTab==='practice'?'active':''}">
     ${s.practice.map((p,pi)=>`<div class="jitsu-card">
@@ -1976,9 +2002,39 @@ function renderDetail(){
   </div>`:'';
 
   const ratingHtml=['none','weak','ok','good'].map((v,i)=>{
-    const labels=['✗ 未着手','△ 学習中','○ 理解できた','◎ 確認済み'];
+    const labels=['✗ 未着手','△ 学習中','○ 過去問が解ける','◎ 予想問題を作って解ける'];
     return`<button class="rbt ${st===v?'active':''}" data-val="${v}" onclick="setStatus('${s.id}','${v}')">${labels[i]}</button>`;
   }).join('');
+
+  // 常設ミニ進捗：閲覧バー（全タブ閲覧）＋学習バー（○◎到達）。どちらも級全体が母数。
+  const _subs=getCurrentSubjects();
+  const _total=_subs.length;
+  // 閲覧：全タブ閲覧済みの分野数（左から累積）
+  const _seen=_subs.filter(x=>isTabMastered(x)).length;
+  const _seenDots=_subs.map((x,i)=>`<span class="dpp-dot ${i<_seen?'on':''}"></span>`).join('');
+  // 学習：◎(good)＝★、○(ok)＝●。T-a＝★を左へ寄せて左詰め累積
+  let _star=0, _okc=0;
+  _subs.forEach(x=>{
+    if(subjectStar(x)) _star++;
+    else if(subjectAllOk(x)) _okc++;
+  });
+  const _lit=_star+_okc;
+  let _learnDots='';
+  for(let i=0;i<_star;i++) _learnDots+='<span class="dpp-star">★</span>';
+  for(let i=0;i<_okc;i++) _learnDots+='<span class="dpp-dot on"></span>';
+  for(let i=0;i<_total-_lit;i++) _learnDots+='<span class="dpp-dot"></span>';
+  const progressBandHtml=`<div class="dp-progress">
+    <span class="dpp-txt">${selectedGrade}級　<b>${_seen}/${_total}</b> 分野 閲覧済み</span>
+    <span class="dpp-dots">${_seenDots}</span>
+    <button class="dpp-reset" onclick="resetView()">閲覧をリセット</button>
+    <span class="dpp-note">💡 各分野の全タブを開くと<span class="note-dot"></span>が点灯します。まず「見て回った」進み具合の目安です。</span>
+  </div>
+  <div class="dp-progress dp-progress2">
+    <span class="dpp-txt">${selectedGrade}級　<b>${_lit}/${_total}</b> 分野 学習進捗</span>
+    <span class="dpp-dots">${_learnDots}</span>
+    <button class="dpp-reset" onclick="resetLearning()">学習をリセット</button>
+    <span class="dpp-note">💡 各タブで○以上をつけ、分野の全タブがそろうと<span class="note-dot"></span>点灯。過去問タブで◎（予想問題をつくって解ける）まで到達した分野は<span class="note-star">★</span>。</span>
+  </div>`;
 
   panel.innerHTML=`
   <div class="dp-hdr">
@@ -1986,23 +2042,20 @@ function renderDetail(){
       <div class="dp-name">${s.name}</div>
       <div class="dp-ess">${s.essence.replace(/\n/g,'<br>')}</div>
     </div>
-    <button class="dp-close" onclick="closeDetail()">✕</button>
   </div>
+  ${progressBandHtml}
   ${innerTabsHtml}
   <div>${skillsHtml}${checkHtml}${kwHtml}${qHtml}${quizHtml}${pastExamHtml}</div>
   <div class="dp-foot">
-    <span class="rat-lbl">自己評価：</span>
-    <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;">○理解できた＝内容を理解できた　◎確認済み＝問題で正解できた</div>
-    <div class="rat-btns">${ratingHtml}</div>
     <div class="pages-box">${s.pages}</div>
   </div>`;
   panel.classList.add('open');
-  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
 function toggleDetail(id){
   if(openId===id){closeDetail();return;}
   openId=id;activeTab='skills';
+  markTab(id,'skills');
   // v2: 一覧を隠して選んだ章だけ表示
   var sgbox=document.querySelector('.study-guide-box');if(sgbox)sgbox.style.display='none';
   var ghdr=document.querySelector('.grid-hdr');if(ghdr)ghdr.style.display='none';
@@ -2031,7 +2084,50 @@ function closeDetail(){
   if(currentView==='study')renderStudy();
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function switchTab(tab){activeTab=tab;renderDetail();}
+// タブ閲覧トラッキング（全タブ閲覧＝閲覧済み。自己評価とは独立）
+function markTab(id,tab){ if(!id)return; if(!tabseen[id])tabseen[id]={}; if(!tabseen[id][tab]){ tabseen[id][tab]=true; svts(tabseen); } }
+function subjectTabList(s){
+  const kw=s.keywords.reduce((a,g)=>a+g.terms.filter(t=>getKWDB()[t]).length,0);
+  const tabs=['skills','check','questions','quiz'];
+  if(kw>0) tabs.push('keywords');
+  if(getPastExamData(s.id)) tabs.push('pastexam');
+  return tabs;
+}
+function isTabMastered(s){ const seen=tabseen[s.id]||{}; return subjectTabList(s).every(t=>seen[t]); }
+// ── タブ単位の自己評価 ──
+function kwCountOf(s){ return s.keywords.reduce((a,g)=>a+g.terms.filter(t=>getKWDB()[t]).length,0); }
+// 評価対象＝中身のあるタブのみ（空タブは分母から外す）
+function rateTabsFor(s){
+  const tabs=['skills','check','questions'];
+  if(kwCountOf(s)>0) tabs.push('keywords');
+  if(getQuizData(s.id)) tabs.push('quiz');
+  if(getPastExamData(s.id)) tabs.push('pastexam');
+  return tabs;
+}
+function getTS(id,tab){ return (tabStatus[id]&&tabStatus[id][tab])||'none'; }
+function setTabStatus(id,tab,val){ if(!tabStatus[id])tabStatus[id]={}; tabStatus[id][tab]=val; svtst(); renderDetail(); renderGrid(); renderSidebar(); }
+// 分野：存在する全タブが○以上→緑
+function subjectAllOk(s){ const ts=rateTabsFor(s); return ts.length>0 && ts.every(t=>{const v=getTS(s.id,t);return v==='ok'||v==='good';}); }
+// ★：緑かつ過去問タブが◎（予想問題をつくって解ける）
+function subjectStar(s){ return subjectAllOk(s) && getTS(s.id,'pastexam')==='good'; }
+// カード/見出し用の分野ロールアップ
+function subjectRollup(s){
+  const ts=rateTabsFor(s); if(!ts.length) return 'none';
+  if(subjectAllOk(s)) return 'good';
+  if(ts.some(t=>getTS(s.id,t)!=='none')) return 'weak';
+  return 'none';
+}
+// タブ内の評価ボタン群（過去問タブだけラベルが異なる）
+function tabRatingHtml(s,tab){
+  const isPast = tab==='pastexam';
+  const labels = isPast
+    ? ['✗ 未着手','△ 学習中','○ 過去問が解ける','◎ 予想問題をつくって解ける']
+    : ['✗ 未着手','△ 学習中','○ テキストを理解','◎ 過去問が解ける'];
+  const cur=getTS(s.id,tab);
+  const btns=['none','weak','ok','good'].map((v,i)=>`<button class="rbt ${cur===v?'active':''}" data-val="${v}" onclick="setTabStatus('${s.id}','${tab}','${v}')">${labels[i]}</button>`).join('');
+  return `<div class="tab-rating"><span class="rat-lbl">このタブの自己評価：</span><div class="rat-btns">${btns}</div></div>`;
+}
+function switchTab(tab){ markTab(openId,tab); activeTab=tab; renderDetail(); }
 function setStatus(id,val){status[id]=val;svs(status);renderStudy();}
 function toggleCheck(id,idx){
   const s=getCurrentSubjects().find(x=>x.id===id);
@@ -2040,13 +2136,12 @@ function toggleCheck(id,idx){
   svc(checks);
   // v2: チェック状況で自己評価を自動更新
   const checked=checks[id].filter(Boolean).length;
-  const total=checks[id].length;
-  if(checked===0 && (status[id]==='weak'||!status[id])){
-    status[id]='none';svs(status);
-  } else if(checked>0 && checked<total && status[id]!=='ok' && status[id]!=='good'){
-    status[id]='weak';svs(status);
-  } else if(checked===total){
-    status[id]='good';svs(status);
+  if(!tabStatus[id])tabStatus[id]={};
+  const cur=tabStatus[id]['check']||'none';
+  if(checked===0){
+    if(cur==='weak'){ tabStatus[id]['check']='none'; svtst(); }
+  } else {
+    if(cur==='none'){ tabStatus[id]['check']='weak'; svtst(); }
   }
   renderDetail();renderGrid();renderSidebar();
 }
@@ -2055,14 +2150,17 @@ function toggleAnswer(btn){
   ans.classList.toggle('open');
   btn.textContent=ans.classList.contains('open')?'解答を閉じる ▲':'解答を見る ▼';
 }
-function resetAll(){
-  if(!confirm('この職種・級の進捗をリセットしますか？'))return;
-  status={};checks={};checkResults={};
-  quickAnswers={};
-  [lsKey('status'),lsKey('checks'),lsKey('check_results'),lsKey('updated')]
-    .forEach(k=>localStorage.removeItem(k));
-  openId=null;updLU();renderStudy();
-  document.getElementById('result-view').style.display='none';
+function resetView(){
+  if(!confirm('閲覧の進捗（全タブを見た記録）をリセットします。\n学習進捗（○◎）は残ります。よろしいですか？'))return;
+  tabseen={};
+  try{ localStorage.removeItem(lsKey('tabseen')); }catch(e){}
+  renderDetail(); renderGrid(); renderSidebar();
+}
+function resetLearning(){
+  if(!confirm('学習の進捗（各タブの自己評価とチェックリスト）をリセットします。\nFCM簡易チェックの結果（苦手な業務分野）は残ります。よろしいですか？'))return;
+  tabStatus={}; checks={}; status={};
+  [lsKey('tabstatus'),lsKey('checks'),lsKey('status'),lsKey('updated')].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+  updLU(); renderDetail(); renderGrid(); renderSidebar();
 }
 
 // ─── KWポップアップ ───────────────────────────────────
@@ -2621,6 +2719,7 @@ function answerQuick(val){
   const qs = getQuickQuestions();
   const item = qs[quickIndex];
   quickAnswers[item.sid] = val;
+  try{ localStorage.setItem(lsKey('quickans'),JSON.stringify(quickAnswers)); }catch(e){}
   ['yes','vague','no'].forEach(v=>{
     document.getElementById('qcb-'+v).className =
       'qc-btn' + (v===val ? ' sel-'+v : '');
@@ -2715,15 +2814,7 @@ function renderQuickResult(){
       '<br><span style="font-size:11px;color:var(--text-dim);">※1つの章に複数の業務分野が含まれるため、章の数と業務分野の数は異なります。</span></div>';
   }
 
-  const quickStatus = {};
-  qs.forEach(item=>{
-    const ans = quickAnswers[item.sid]||'no';
-    quickStatus[item.sid] = ans==='yes'?'ok':ans==='vague'?'weak':'none';
-  });
-  qs.forEach(item=>{
-    if(!status[item.sid]){ status[item.sid] = quickStatus[item.sid]; }
-  });
-  svs(status);
+  try{ localStorage.setItem(lsKey('quickans'),JSON.stringify(quickAnswers)); }catch(e){}
   renderSidebar();
 }
 
@@ -2864,7 +2955,11 @@ function quizCard(){
 }
 function quizRefresh(){const el=document.getElementById('quiz-host');if(el)el.innerHTML=quizCard();}
 function quizSelect(n){if(QUIZ.done)return;QUIZ.sel=n;quizRefresh();}
-function quizSubmit(){if(!QUIZ.sel)return;QUIZ.done=true;quizRefresh();}
+function quizSubmit(){
+  if(!QUIZ.sel)return;
+  QUIZ.done=true;
+  quizRefresh();
+}
 function quizNext(){QUIZ.idx++;QUIZ.sel=null;QUIZ.done=false;quizRefresh();}
 function quizRestart(){QUIZ.idx=0;QUIZ.sel=null;QUIZ.done=false;quizRefresh();}
 

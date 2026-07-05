@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>よくある質問（Q&A）｜FCM Web学習ナビ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#FFFFFF;--surface:#F6F8FA;--card:#FFFFFF;--border:#D0D7DE;
+  --text:#1F2328;--text-sub:#4B5563;--text-dim:#6B7280;--accent:#2563EB;--green:#0F6E56;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0F1117;--surface:#181C27;--card:#1E2335;--border:#2A3050;
+    --text:#E8EAF0;--text-sub:#8B95B5;--text-dim:#5A638A;--accent:#4B7BF5;--green:#3FB48C;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.7;-webkit-font-smoothing:antialiased;padding:28px 16px 48px;}
+.wrap{max-width:620px;margin:0 auto;}
+.topnav{display:inline-block;font-size:12px;color:var(--text-dim);text-decoration:none;margin-bottom:16px;}
+.topnav:hover{color:var(--accent);text-decoration:underline;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
+.title{font-size:23px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.lead{font-size:13px;color:var(--text-sub);line-height:1.8;margin-bottom:22px;}
+
+.cat{font-size:13px;font-weight:700;color:var(--green);letter-spacing:.02em;
+  margin:22px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.cat:first-of-type{margin-top:6px;}
+
+details.qa{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--green);
+  border-radius:12px;margin-bottom:9px;overflow:hidden;transition:box-shadow .18s;}
+details.qa[open]{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+details.qa>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px;
+  padding:14px 16px;font-size:14.5px;font-weight:700;color:var(--text);}
+details.qa>summary::-webkit-details-marker{display:none;}
+.qmark{color:var(--green);font-family:'DM Mono',monospace;font-weight:500;flex:0 0 auto;font-size:14px;line-height:1.5;}
+.qtext{flex:1 1 auto;min-width:0;}
+.chev{flex:0 0 auto;color:var(--text-dim);font-size:13px;transition:transform .2s;margin-top:2px;}
+details.qa[open] .chev{transform:rotate(90deg);}
+details.qa>summary:hover .qtext{color:var(--accent);}
+.ans{padding:0 16px 15px 40px;font-size:13.5px;color:var(--text-sub);line-height:1.85;}
+.ans p{margin-bottom:7px;}
+.ans p:last-child{margin-bottom:0;}
+
+.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--text-dim);line-height:1.7;text-align:center;}
+@media(max-width:380px){ .title{font-size:20px;} .ans{padding-left:16px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="topnav" href="index.html">← 学習ナビ一覧へ戻る</a>
+
+  <div class="eyebrow">FCM Web学習ナビ　/　FAQ</div>
+  <h1 class="title">よくある質問（Q&A）</h1>
+  <p class="lead">FCM Web学習ナビの使い方について、よくある質問をまとめました。各質問をタップすると回答が開きます。</p>
+
+  <div id="faq"></div>
+
+  <p class="foot">
+    本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>
+    複写・転載・再配布を禁止します。
+  </p>
+
+</div>
+
+<script>
+const DATA = [
+ ["使い始め", [
+  ["何をするためのページですか。ダウンロードは必要ですか？",
+   ["業務に必要な知識を、あなたの業務に沿って効率よく確認するためのWebページです。スマートフォンやパソコンのブラウザからアクセスするだけで使え、アプリのダウンロードやインストールは不要です。",
+    "公式テキスト Basic（3級）・Intermediate（2級）と組み合わせて使うことで、苦手な業務分野を見つけて重点的に学習できます。"]],
+  ["どの級（3級・2級）を選べばよいですか？",
+   ["受検を予定している級を選んでください。迷う場合は、まず Basic（3級）の簡易チェックを受けてみてください。結果の点数から、3級・2級のどちらが目安かが分かります。"]],
+  ["「簡易チェック」とは何ですか。何分かかりますか？",
+   ["各業務分野の代表的な問題1問に「◎できる」「△あやふや」「✗できない」の3択で答える、現状把握のためのチェックです。所要時間は約1〜2分（3級は10問・2級は11問）です。",
+    "回答が終わると、正答率と、苦手・あやふや・できる業務分野の数、学習アドバイスが表示されます。"]],
+  ["職種によって表示される業務分野が違うのはなぜですか？",
+   ["職種ごとに、現場で毎日使う知識が異なるためです。あなたの業務に直結する業務分野を「◎業務直結」として、選んだ級と職種に応じてナビが自動的に示します。"]],
+ ]],
+ ["画面の見方", [
+  ["◎業務直結／○業務補完／▽業務拡張の3つのマークは何ですか？",
+   ["あなたの業務にとっての重要度を表します。◎業務直結は毎日の業務に直結する分野、○業務補完・▽業務拡張はそれに次ぐ分野です。◎業務直結の分野だけを学習して終わりでも十分です。"]],
+  ["詳細パネルの6つのタブはどう使い分けますか？",
+   ["「必要な技能」と「チェックリスト」が学習の中心です。「キーワード」「理解度質問」「過去問お試し」「過去問」は、必要に応じて使ってください。各タブの内容の下には、そのタブの自己評価ボタンがあります。"]],
+  ["「過去問お試し」と「過去問」の違いは何ですか？",
+   ["「過去問お試し」は、数問を実際に解いて正誤（◎正解／✗不正解）が表示されるタブです。",
+    "「過去問」は、その業務分野に該当する過去問の回・問番号と、対応する公式テキストのページを一覧で示すタブです（採点はありません）。実際に解くときは、お手元の過去問解説集で問題を確認してください。"]],
+ ]],
+ ["進捗バー（今回の新機能）", [
+  ["進捗バーが2本あります。「閲覧進捗」と「学習進捗」の違いは？",
+   ["詳細パネルの上部に2本のバーがあります。どちらも、選んだ級の全業務分野（3級は10分野・2級は12分野）を母数にした、この級全体の進み具合を表します。",
+    "上の「閲覧進捗」は“見て回った”進み具合、下の「学習進捗」は“解ける段階に達したか”の進み具合です。"]],
+  ["「学習進捗」の●（緑）はどうすれば点きますか？",
+   ["その業務分野の（存在する）全タブで自己評価を「○以上」にすると、●が1つ点灯します。"]],
+  ["学習進捗の★（金色）は何ですか？",
+   ["過去問タブで◎「予想問題をつくって解ける」まで到達した業務分野です。その分野の●が★に格上げして表示されます。"]],
+  ["全部○にしたのに学習進捗が増えません。なぜ？",
+   ["学習進捗の●は、その業務分野の「全タブ」が○以上になって初めて1つ点きます。1つでも△学習中以下のタブが残っていると点灯しません。",
+    "なお、中身のないタブ（キーワードが無い、過去問お試しの抜粋が無い等）は、自己評価の対象外で、母数にも含まれません。"]],
+ ]],
+ ["自己評価（今回の変更）", [
+  ["自己評価は業務分野ごとですか、タブごとですか？",
+   ["タブごとです。各タブの内容の下にある自己評価ボタンで、そのタブの理解度を選びます。"]],
+  ["✗未着手／△学習中／○テキストを理解／◎過去問が解ける は何が違いますか？",
+   ["✗未着手＝まだ学習していない、△学習中＝学習を始めた、○テキストを理解＝公式テキストの該当部分を理解した、◎過去問が解ける＝過去問レベルで解ける、という段階です。",
+    "△学習中はチェックリストに1つ以上チェックを付けると自動で付きます。○・◎はご自身で選んでください。"]],
+  ["過去問タブだけラベルが違うのはなぜですか？",
+   ["過去問タブは「過去問そのもの」を扱うため、一段上の到達を表します。○は「過去問が解ける」、◎は「予想問題をつくって解ける」を意味します。"]],
+  ["チェックリストを全部チェックしたのに◎になりません。なぜ？",
+   ["チェックリストの操作で自動的に付くのは△学習中までです（全部チェックしても△どまり）。○・◎は、ご自身の理解に基づいて手動で選ぶ仕組みです。"]],
+  ["簡易チェックで「できる」と答えたのに、自己評価が付きません。なぜ？",
+   ["簡易チェックは苦手な業務分野を見つけるための診断で、自己評価は自動では付きません。学習を進める中で、各タブの自己評価をご自身で付けてください。"]],
+ ]],
+ ["リセット・保存", [
+  ["「閲覧をリセット」と「学習をリセット」の違いは？",
+   ["「閲覧をリセット」は、閲覧の記録（どのタブを開いたか）だけを消します。学習の自己評価（○◎）は残ります。",
+    "「学習をリセット」は、各タブの自己評価とチェックリストを消します。閲覧の記録は残ります。"]],
+  ["リセットしても簡易チェックの結果（苦手分野）は残りますか？",
+   ["残ります。「閲覧をリセット」「学習をリセット」のどちらでも、簡易チェックの結果（苦手な業務分野）は消えません。"]],
+  ["進捗はどこに保存されますか。別の端末やブラウザでも残りますか？",
+   ["進捗は、お使いの端末のブラウザ内に保存されます。別の端末や別のブラウザには引き継がれません。",
+    "シークレット（プライベート）ウィンドウでは毎回“初回”の扱いになります。また、ブラウザの閲覧データを削除すると進捗も消えます。"]],
+ ]],
+ ["メール登録・その他", [
+  ["メール登録は必須ですか。登録すると何が届きますか？",
+   ["任意です。登録しなくても学習はそのまま続けられます。公式テキストの内容に関わる法改正・業界動向・事例などが生じた場合に、掲載時にメールでお知らせします。"]],
+  ["「フィットネスクラブ社員」向けの若手／リーダー選択とは何ですか？",
+   ["フィットネスクラブ社員向けのナビでは、はじめに「若手社員」または「社員リーダー」のいずれかを選んでから級を選びます。役割に応じて、学習の重点が変わります。"]],
+  ["公式テキストや過去問解説集は必要ですか？",
+   ["このWeb学習ナビは、学習の入口とナビゲーションの役割です。詳しい内容の確認や実際に問題を解くには、公式テキストや過去問解説集をあわせてお使いいただくと効果的です。"]],
+ ]],
+];
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let html='', n=0;
+for(const [cat, qs] of DATA){
+  html += `<div class="cat">${esc(cat)}</div>`;
+  for(const [q, a] of qs){
+    n++;
+    const ans = a.map(p=>`<p>${esc(p)}</p>`).join('');
+    html += `<details class="qa">
+      <summary><span class="qmark">Q${n}</span><span class="qtext">${esc(q)}</span><span class="chev">▸</span></summary>
+      <div class="ans">${ans}</div>
+    </details>`;
+  }
+}
+document.getElementById('faq').innerHTML = html;
+</script>
+</body>
+</html>
