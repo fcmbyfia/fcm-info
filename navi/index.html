@@ -57,6 +57,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .guide-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;
   color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
 .guide-card{--pc:var(--accent);background:var(--surface);}
+.corp{margin-top:30px;padding-top:20px;border-top:1px solid var(--border);}
+.corp-h{font-size:13px;font-weight:700;color:var(--text-sub);margin-bottom:5px;}
+.corp-sub{font-size:11.5px;color:var(--text-dim);line-height:1.75;margin-bottom:12px;}
 .guide-card .sub{color:var(--text-dim);}
 .pdf-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);
   border:1px solid var(--border);border-radius:5px;padding:2px 6px;flex:0 0 auto;
@@ -134,7 +137,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="list">
       <a class="nav-card guide-card" href="https://fcmbyfia.github.io/fcm-info/navi/fcm-navi-guide.pdf" target="_blank" rel="noopener">
         <span class="ic">📘</span>
-        <span class="body"><span class="label">使い方ガイド</span><span class="sub">操作の流れを画像つきで解説（別タブで開きます）</span></span>
+        <span class="body"><span class="label">利用者ガイド</span><span class="sub">操作の流れを画像つきで解説（別タブで開きます）</span></span>
         <span class="pdf-tag">PDF</span><span class="arrow">›</span>
       </a>
       <a class="nav-card guide-card" style="--pc:#0F6E56" href="qa.html">
@@ -150,11 +153,50 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     </div>
   </section>
 
+  <section class="corp">
+    <div class="corp-h">進捗管理担当者向け</div>
+    <p class="corp-sub">学習者の学習進捗を集計する場合は、こちらをご覧ください。学習にお使いの方は不要です。</p>
+    <a class="nav-card guide-card" style="--pc:#475569" href="company-setup.html">
+      <span class="ic">🔗</span>
+      <span class="body"><span class="label">進捗報告リンクの作成（担当者用）</span><span class="sub">学習者に配る報告用リンクを作成します</span></span>
+      <span class="pdf-tag">設定</span><span class="arrow">›</span>
+    </a>
+    <a class="nav-card guide-card" style="--pc:#475569" href="fcm-report-guide.pdf" target="_blank" rel="noopener">
+      <span class="ic">📄</span>
+      <span class="body"><span class="label">進捗報告ガイド</span><span class="sub">学習者向けの報告手順です（学習者にお渡しください）</span></span>
+      <span class="pdf-tag">PDF</span><span class="arrow">›</span>
+    </a>
+    <a class="nav-card guide-card" style="--pc:#475569" href="https://fcmbyfia.github.io/fcm-info/navi/fcm-navi-guide.pdf" target="_blank" rel="noopener">
+      <span class="ic">📘</span>
+      <span class="body"><span class="label">利用者ガイド</span><span class="sub">学習ナビ自体の使い方です。ご担当者さまもご一読ください</span></span>
+      <span class="pdf-tag">PDF</span><span class="arrow">›</span>
+    </a>
+  </section>
+
   <p class="foot">
     本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>
     複写・転載・再配布を禁止します。
   </p>
 
 </div>
+
+<script>
+// 配布リンク（?rf=&rc=）で開かれた場合のみ、7つのナビカードにパラメータを引き継ぐ
+(function(){
+  var NAVIS = ['py','pt','j24h','kokyo','jusen','rigaku','fshainn'];
+  var rf, rc;
+  try{
+    var q = new URLSearchParams(location.search);
+    rf = q.get('rf'); rc = q.get('rc');
+  }catch(e){ return; }
+  if(!rf || !rc) return;
+  if(!/^[A-Za-z0-9_-]+$/.test(rf) || !/^entry\.\d+$/.test(rc)) return;
+  var qs = '?rf=' + encodeURIComponent(rf) + '&rc=' + rc;
+  NAVIS.forEach(function(n){
+    var a = document.querySelector('a[href="' + n + '.html"]');
+    if(a) a.href = n + '.html' + qs;
+  });
+})();
+</script>
 </body>
 </html>

@@ -154,9 +154,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .dp-progress .dpp-reset:hover{color:var(--danger);border-color:var(--danger);}
 .dp-close{background:none;border:1px solid var(--border);color:var(--text-sub);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
 .dp-close:hover{border-color:var(--danger);color:var(--danger);}
-.inner-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);}
-.itab{padding:9px 16px;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-sub);transition:all .2s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
-.itab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.inner-tabs{display:flex;gap:4px;padding:6px 6px 0;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.itab{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text-sub);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:7px 7px 0 0;transition:background .15s,color .15s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
+.itab:hover{background:var(--card);color:var(--text);}
+.itab.active{background:var(--card);color:var(--accent);border-color:var(--border);border-bottom:2px solid var(--accent);margin-bottom:-1px;position:relative;z-index:1;}
+.itab.active:hover{color:var(--accent);}
+.itab:not(.active){position:relative;}
+.itab:not(.active) + .itab:not(.active)::before{content:"";position:absolute;left:-2px;top:0;bottom:0;width:1px;background:var(--border);}
 .itab-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:4px;background:#DBEAFE;color:var(--accent);}
 .itab-badge.purple{background:#EDE9FE;color:var(--purple);}
 .itab-badge.amber{background:#FEF3C7;color:var(--accent3);}
@@ -587,6 +591,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .qz-exp{font-size:12.5px;line-height:1.9;color:var(--text-sub);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px;}
 .qz-next,.qz-restart{width:100%;padding:12px;font-size:14px;font-weight:700;color:var(--accent);background:var(--card);border:2px solid var(--accent);border-radius:10px;cursor:pointer;margin-top:4px;}
 .qz-done{text-align:center;font-size:14px;color:var(--text);line-height:2.2;padding:20px;}
+.report-fab{position:fixed;right:16px;bottom:16px;z-index:50;display:none;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:26px;padding:12px 20px;box-shadow:0 6px 18px rgba(0,0,0,.20);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:transform .12s,box-shadow .18s;}
+.report-fab:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.26);}
+.report-fab:active{transform:translateY(0);}
+@media(max-width:380px){.report-fab{right:12px;bottom:12px;padding:11px 16px;font-size:13px;}}
+@media(prefers-reduced-motion:reduce){.report-fab{transition:none;}.report-fab:hover{transform:none;}}
 </style>
 <meta name="referrer" content="no-referrer-when-downgrade">
 </head>
@@ -738,7 +747,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
             <!-- メール登録エリア（未登録の場合のみ表示） -->
             <div id="mail-register-area" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;text-align:left;">
               <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">📩 公式テキストの更新情報をお知らせします</div>
-              <div style="font-size:12px;color:var(--text-sub);line-height:1.7;margin-bottom:14px;">公式テキストの内容に関わる法改正・業界動向・事例などが生じた場合、FCMのWebに掲載します。掲載時にメールでお知らせします。</div>
+              <div style="font-size:12px;color:var(--text-sub);line-height:1.7;margin-bottom:14px;">公式テキストの内容に関わる法改正・業界動向・事例などが生じた場合、FCMのWebに掲載します。掲載時にメールでお知らせします。<br><b>登録は任意です。</b>登録しなくても学習はそのまま続けられます。</div>
               <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
                 <input type="text" id="reg-name" placeholder="お名前" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
                 <input type="text" id="reg-org" placeholder="施設名" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:&#39;Noto Sans JP&#39;,sans-serif;color:var(--text);background:var(--bg);">
@@ -1616,10 +1625,22 @@ function submitRegistration(){
   showStudyFromResult();
 }
 function skipRegistration(){
+  try{
+    var n=parseInt(localStorage.getItem('fcm_reg_skips')||'0',10);
+    if(isNaN(n)) n=0;
+    localStorage.setItem('fcm_reg_skips', String(n+1));
+  }catch(e){}
   showStudyFromResult();
 }
+function regFormDone(){
+  try{
+    if(localStorage.getItem('fcm_registered')==='1') return true;
+    var n=parseInt(localStorage.getItem('fcm_reg_skips')||'0',10);
+    return !isNaN(n) && n>=2;   // スキップ2回まで表示、3回目から出さない
+  }catch(e){ return false; }
+}
 function checkRegistrationStatus(){
-  if(localStorage.getItem('fcm_registered')==='1'){
+  if(regFormDone()){
     var reg=document.getElementById('mail-register-area');
     var done=document.getElementById('already-registered');
     if(reg)reg.style.display='none';
@@ -1860,7 +1881,7 @@ function renderGrid(){
   const qcLabel = {'no':'✗ 苦手','vague':'△ あやふや','yes':'◎ できる'};
   const qcColor = {'no':'#991B1B','vague':'#92400E','yes':'#065F46'};
 
-  let cardsHtml = descHtml;
+  let cardsHtml = descHtml + reportBlockHtml();
   ['pri','strat','exam'].forEach(pri => {
     const group = priGroups[pri];
     if(group.length === 0) return;
@@ -1896,6 +1917,7 @@ function renderGrid(){
   });
   var _sab=document.getElementById('show-all-chapters-btn');if(_sab)_sab.style.display=studyShowAll?'none':'';
   var _sabt=document.getElementById('show-all-chapters-btn-top');if(_sabt)_sabt.style.display=studyShowAll?'none':'';
+  updateReportFab();
 }
 
 function renderSidebar(){
@@ -2109,6 +2131,96 @@ function setTabStatus(id,tab,val){ if(!tabStatus[id])tabStatus[id]={}; tabStatus
 function subjectAllOk(s){ const ts=rateTabsFor(s); return ts.length>0 && ts.every(t=>{const v=getTS(s.id,t);return v==='ok'||v==='good';}); }
 // ★：緑かつ過去問タブが◎（予想問題をつくって解ける）
 function subjectStar(s){ return subjectAllOk(s) && getTS(s.id,'pastexam')==='good'; }
+// ══ 進捗報告機能（仕様書 FCM1）══════════════════════════════════════════
+// selectedPersona から職種を引く（ペルソナ固定の原則に従う。固定値を増やさない）
+const NAVI_OF = { py:'py', pt:'pt', j24:'j24h', ko:'kokyo',
+                  ju:'jusen', ri:'rigaku', wa:'fshainn', li:'fshainn' };
+function naviId(){ return NAVI_OF[selectedPersona] || selectedPersona; }
+function reportKey(){ return 'fcm_report_' + naviId(); }
+let REPORT = { rf:null, rc:null };
+const RF_RE = /^[A-Za-z0-9_-]+$/;
+const RC_RE = /^entry\.\d+$/;
+function loadReportTarget(){
+  try{
+    const o = JSON.parse(localStorage.getItem(reportKey())||'null');
+    if(o && RF_RE.test(o.rf||'') && RC_RE.test(o.rc||'')) REPORT = {rf:o.rf, rc:o.rc};
+  }catch(e){}
+}
+function saveReportTarget(){ try{ localStorage.setItem(reportKey(), JSON.stringify(REPORT)); }catch(e){} }
+function initReportFromUrl(){
+  loadReportTarget();
+  let rf=null, rc=null;
+  try{ const q=new URLSearchParams(location.search); rf=q.get('rf'); rc=q.get('rc'); }catch(e){ return; }
+  if(!rf || !rc) return;                          // 片方だけは無視
+  if(!RF_RE.test(rf) || !RC_RE.test(rc)) return;  // 形式違反は無視
+  REPORT = {rf, rc};                              // 別リンクなら確認なく上書き
+  saveReportTarget();
+}
+function hasReportTarget(){ return !!(REPORT.rf && REPORT.rc); }
+// 役割：fshainn のみ wa/li、他ナビは '-'
+function hasRole(){ return selectedPersona === 'wa' || selectedPersona === 'li'; }
+function roleCode(){ return hasRole() ? (selectedPersona==='li' ? 'li' : 'wa') : '-'; }
+function roleLabel(){ return !hasRole() ? '' : (selectedPersona==='li' ? '社員リーダー' : '若手社員'); }
+// 分野の4状態： - 未着手 / w 一部進行 / o 達成 / s ★
+function subjectState4(s){
+  if(subjectStar(s)) return 's';
+  if(subjectAllOk(s)) return 'o';
+  const ts = rateTabsFor(s);
+  if(ts.some(t=>getTS(s.id,t)!=='none')) return 'w';
+  return '-';
+}
+function reportYMD(){
+  const d=new Date(), z=n=>String(n).padStart(2,'0');
+  return String(d.getFullYear()).slice(2)+z(d.getMonth()+1)+z(d.getDate());
+}
+function reportChecksum(payload){
+  let sum=0; for(let i=0;i<payload.length;i++) sum=(sum+payload.charCodeAt(i))%36;
+  return 'K'+sum.toString(36).toUpperCase();
+}
+function reportSummary(){
+  const subs=getCurrentSubjects();
+  const states=subs.map(subjectState4).join('');
+  const lit=(states.match(/[os]/g)||[]).length;
+  const stars=(states.match(/s/g)||[]).length;
+  return { states, lit, stars, total:subs.length };
+}
+function buildProgressCode(){
+  const r=reportSummary();
+  const payload=['FCM1',naviId(),roleCode(),String(selectedGrade),reportYMD(),
+                 r.states, r.lit+'/'+r.total, 'S'+r.stars].join('~');
+  return payload+'~'+reportChecksum(payload);
+}
+function updateReportFab(){ var el=document.getElementById('report-fab'); if(el) el.style.display = hasReportTarget() ? 'inline-flex' : 'none'; }
+function reportBlockHtml(){
+  if(!hasReportTarget()) return '';
+  return `<div style="grid-column:1/-1;margin:2px 0 10px;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">
+    <div style="font-size:12px;color:var(--text-sub);line-height:1.7;">勤務先の担当者に学習の進み具合を報告する方は、こちらから送信できます。</div>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <button onclick="doReport()" style="font-size:13px;color:var(--text-sub);background:none;border:1px solid var(--border);border-radius:8px;padding:8px 20px;cursor:pointer;">📤 進捗を報告する</button>
+      <a href="javascript:void(0)" onclick="clearReportTarget()" style="font-size:11px;color:var(--text-dim);text-decoration:underline;">報告先を解除</a>
+      <a href="fcm-report-guide.pdf" target="_blank" rel="noopener" style="font-size:11px;color:var(--text-dim);text-decoration:underline;">進捗報告ガイド（PDF）</a>
+    </div>
+  </div>`;
+}
+function doReport(){
+  if(!hasReportTarget()) return;
+  const r=reportSummary();
+  const roleLine = roleLabel() ? '　'+roleLabel()+' ／ '+selectedGrade+'級\n' : '　'+selectedGrade+'級\n';
+  const msg='以下の内容を勤務先の担当者に報告します。\n\n'
+    +roleLine
+    +'　学習進捗　'+r.lit+' / '+r.total+' 分野'+(r.stars>0?'（★'+r.stars+'）':'')+'\n\n'
+    +'Googleフォームが開きます。氏名を入力して送信してください。';
+  if(!confirm(msg)) return;
+  const url='https://docs.google.com/forms/d/e/'+encodeURIComponent(REPORT.rf)
+    +'/viewform?usp=pp_url&'+REPORT.rc+'='+encodeURIComponent(buildProgressCode());
+  window.open(url,'_blank','noopener');
+}
+function clearReportTarget(){
+  if(!confirm('勤務先への報告先を解除します。\n報告ボタンが表示されなくなります。学習の進捗は消えません。\n\n再び報告するには、勤務先から配られたリンクを開き直してください。')) return;
+  REPORT={rf:null,rc:null};
+  try{ localStorage.removeItem(reportKey()); }catch(e){}
+  renderGrid();
+}
 // カード/見出し用の分野ロールアップ
 function subjectRollup(s){
   const ts=rateTabsFor(s); if(!ts.length) return 'none';
@@ -2979,6 +3091,7 @@ function backToQuickCheck(){
 // ── 初期化 ─────────────────────────────────────────────────────────────────
 // py専用版：ペルソナ固定
 selectedPersona = 'py';
+initReportFromUrl();
 updLU();
 renderSidebar();
 document.getElementById('persona-select-area').style.display = '';
@@ -2988,4 +3101,5 @@ document.querySelector('.layout').style.display = 'none';
 <footer style="text-align:center;padding:20px 16px;font-size:11px;color:var(--text-dim);line-height:1.6;border-top:1px solid var(--border);margin-top:24px;">
   本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>複写・転載・再配布を禁止します。
 </footer>
+<button class="report-fab" id="report-fab" onclick="doReport()" aria-label="進捗を報告する">📤 進捗を報告する</button>
 </body></html>

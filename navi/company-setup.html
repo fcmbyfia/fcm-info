@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>学習者の学習進捗 報告リンクの作成（担当者用）｜FCM Web学習ナビ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#FFFFFF;--surface:#F6F8FA;--card:#FFFFFF;--border:#D0D7DE;
+  --text:#1F2328;--text-sub:#4B5563;--text-dim:#6B7280;--accent:#2563EB;
+  --green:#0F6E56;--gold:#D97706;--danger:#B42318;
+  --code-bg:#F4F6F8;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0F1117;--surface:#181C27;--card:#1E2335;--border:#2A3050;
+    --text:#E8EAF0;--text-sub:#8B95B5;--text-dim:#5A638A;--accent:#4B7BF5;
+    --green:#3FB48C;--gold:#E9A23B;--danger:#F97066;
+    --code-bg:#141824;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.7;-webkit-font-smoothing:antialiased;padding:28px 16px 56px;}
+.wrap{max-width:680px;margin:0 auto;}
+
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;
+  color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
+.title{font-size:23px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;}
+.lead{font-size:13px;color:var(--text-sub);line-height:1.85;margin-bottom:6px;}
+.lead b{color:var(--text);font-weight:700;}
+.forwhom{font-size:12px;color:var(--text-dim);margin-bottom:24px;}
+
+.sec{margin-top:26px;}
+.sec-h{font-size:14px;font-weight:700;color:var(--green);letter-spacing:.02em;
+  padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.step{display:flex;gap:11px;margin-bottom:9px;}
+.step-n{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--green);
+  color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;
+  justify-content:center;margin-top:3px;}
+.step-b{flex:1 1 auto;min-width:0;font-size:13.5px;color:var(--text-sub);line-height:1.8;}
+.step-b b{color:var(--text);font-weight:700;}
+
+code,.mono{font-family:'DM Mono',monospace;}
+.ex-label{display:inline-block;font-size:10.5px;font-weight:700;color:var(--text-dim);
+  letter-spacing:.06em;background:var(--surface);border:1px solid var(--border);
+  border-radius:5px;padding:2px 8px;margin-top:10px;}
+.ex-note{font-size:11.5px;color:var(--text-dim);line-height:1.75;margin-top:5px;}
+.manual{display:flex;gap:11px;align-items:flex-start;margin:0 0 24px;padding:13px 15px;
+  background:var(--surface);border:1px solid var(--green);border-radius:10px;text-decoration:none;}
+.manual .mi{font-size:19px;line-height:1.2;}
+.manual .mt{font-size:13px;font-weight:700;color:var(--green);}
+.manual .ms{font-size:11.5px;color:var(--text-sub);line-height:1.7;margin-top:2px;}
+.manual:hover{background:var(--card);}
+.codebox{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-sub);
+  overflow-x:auto;white-space:pre;margin:6px 0 2px;}
+
+textarea{width:100%;min-height:78px;padding:11px 12px;border:1px solid var(--border);
+  border-radius:9px;background:var(--card);color:var(--text);font-family:'DM Mono',monospace;
+  font-size:12px;line-height:1.6;resize:vertical;}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+
+.btn{font-family:'Noto Sans JP',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;
+  border-radius:9px;padding:10px 22px;border:1px solid var(--green);background:var(--green);
+  color:#fff;transition:opacity .15s;}
+.btn:hover{opacity:.88;}
+.btn-sm{font-size:12px;font-weight:500;padding:7px 14px;border:1px solid var(--border);
+  background:none;color:var(--text-sub);border-radius:8px;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:11px;}
+
+.msg{margin-top:14px;padding:11px 13px;border-radius:8px;font-size:12.5px;line-height:1.8;}
+.msg-err{background:rgba(180,35,24,.07);border:1px solid var(--danger);color:var(--danger);}
+.msg-err b{display:block;margin-bottom:2px;}
+
+.out{margin-top:16px;display:none;}
+.out.show{display:block;}
+.kv{display:flex;gap:8px;font-size:11.5px;color:var(--text-dim);margin-bottom:3px;
+  font-family:'DM Mono',monospace;word-break:break-all;}
+.kv span:first-child{flex:0 0 auto;color:var(--green);font-weight:500;}
+.result{margin-top:12px;background:var(--surface);border:1px solid var(--border);
+  border-left:4px solid var(--green);border-radius:9px;padding:13px 14px;}
+.result-l{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.link{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-sub);
+  word-break:break-all;line-height:1.7;background:var(--card);border:1px solid var(--border);
+  border-radius:7px;padding:9px 11px;}
+
+.pick{margin-top:14px;padding:12px 13px;background:var(--surface);border:1px solid var(--gold);
+  border-radius:9px;font-size:12.5px;}
+.pick-h{font-weight:700;margin-bottom:7px;color:var(--text);}
+.pick label{display:flex;gap:8px;align-items:flex-start;padding:5px 0;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text-sub);}
+.pick label input{margin-top:4px;}
+
+.note{margin-top:10px;padding:11px 13px;background:var(--surface);
+  border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+  font-size:12px;color:var(--text-sub);line-height:1.85;}
+.note b{color:var(--text);}
+ul{margin:6px 0 0 18px;}
+li{font-size:12.5px;color:var(--text-sub);line-height:1.85;margin-bottom:4px;}
+li b{color:var(--text);}
+
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--text-dim);line-height:1.8;text-align:center;}
+@media(max-width:420px){ .title{font-size:20px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">FCM Web学習ナビ　/　Setup</div>
+  <h1 class="title">学習者の学習進捗 報告リンクの作成（担当者用）</h1>
+  <p class="lead">このページは<b>進捗管理担当者</b>が使います。貴組織のGoogleフォームから取得した「事前入力したリンク」を貼り付けると、<b>学習者に配布するリンク</b>が表示されます。学習者がそのリンクから学習ナビを開くと、進捗を貴組織のフォームへ報告できるようになります。</p>
+  <p class="forwhom">※ 7つの職種すべてのナビに対応しています。　※ 報告先のフォームは貴組織が作成・管理します。FIAは氏名等の個人情報を受領しません。</p>
+
+  <a class="manual" href="fcm-report-company-guide.pdf" target="_blank" rel="noopener">
+    <span class="mi">📕</span>
+    <span>
+      <span class="mt">はじめに｜進捗管理担当者向け説明書（PDF）</span>
+      <span class="ms">全体の流れ、Googleフォームの作り方、集計の方法、個人情報の取り扱いをまとめています。初めての方は、先にこちらをお読みください。</span>
+    </span>
+  </a>
+
+  <!-- ── 1. フォームを作る ── -->
+  <section class="sec">
+    <div class="sec-h">1. Googleフォームを用意する</div>
+
+    <div class="step"><div class="step-n">1</div><div class="step-b">
+      Googleフォームを新規作成し、質問を4つ作ります。<br>
+      <b>氏名</b>（記述式・必須）／ <b>部署・所属名</b>（記述式・必須）／ <b>個人No.</b>（記述式）／ <b>進捗報告</b>（記述式・必須）
+    </div></div>
+
+    <div class="step"><div class="step-n">2</div><div class="step-b">
+      「進捗報告」は必ず<b>記述式</b>にしてください。ラジオボタンやプルダウンでは自動入力できません。<br>
+      回答の検証（文字数制限など）は<b>設定しないで</b>ください。
+    </div></div>
+
+    <div class="step"><div class="step-n">3</div><div class="step-b">
+      右上の「⋮」→「<b>回答を事前入力したリンクを取得</b>」を選びます。
+    </div></div>
+
+    <div class="step"><div class="step-n">4</div><div class="step-b">
+      <b>「進捗報告」欄だけ</b>に仮の文字（例：<code>TEST</code>）を入力し、下部の「<b>リンクを取得</b>」→「リンクをコピー」を押します。
+    </div></div>
+
+    <div class="note">
+      <b>注意：</b>フォームの編集画面のURL（<code>/forms/d/…/edit</code>）は使えません。必ず上記「回答を事前入力したリンクを取得」で得たURLを使ってください。
+    </div>
+  </section>
+
+  <!-- ── 2. 貼り付ける ── -->
+  <section class="sec">
+    <div class="sec-h">2. コピーしたリンクを貼り付ける</div>
+    <p class="lead" style="margin-bottom:4px;">手順4でコピーしたリンクは、次のような形をしています。<b>これは見本です</b>ので、貼り付ける必要はありません。ご自身のフォームからコピーしたリンクを、下の欄に貼り付けてください。</p>
+    <div class="ex-label">貼り付けるリンクの例</div>
+    <div class="codebox">https://docs.google.com/forms/d/e/1FAIpQLS…/viewform?usp=pp_url&amp;entry.1234567890=TEST</div>
+    <div class="ex-note">「/d/e/」の後ろがフォームID、「entry.〇〇」が「進捗報告」欄のIDです。どちらもこのページが自動で読み取ります。</div>
+    <div style="margin-top:14px;">
+      <textarea id="src" placeholder="ここに、コピーした「事前入力したリンク」を貼り付けてください" spellcheck="false"></textarea>
+    </div>
+    <div class="row">
+      <button class="btn" onclick="gen()">配布リンクを作成</button>
+      <button class="btn-sm" onclick="clearAll()">クリア</button>
+    </div>
+    <div id="err"></div>
+    <div id="pick"></div>
+  </section>
+
+  <!-- ── 3. 結果 ── -->
+  <section class="sec out" id="out">
+    <div class="sec-h">3. 学習者に配布するリンク</div>
+    <div class="kv"><span>rf</span><span id="v-rf"></span></div>
+    <div class="kv"><span>rc</span><span id="v-rc"></span></div>
+
+    <div class="result">
+      <div class="result-l">🏠 すべての学習者に配るリンク（推奨）</div>
+      <p class="ex-note" style="margin:0 0 8px;">職種の一覧が開きます。学習者がご自身の職種を選ぶと、そのナビに報告のボタンが表示されます。職種が混在する場合は、このリンク1本を配ってください。</p>
+      <div class="link" id="link"></div>
+      <div class="row">
+        <button class="btn-sm" onclick="copyLink()">リンクをコピー</button>
+        <button class="btn-sm" onclick="openLink()">動作を確認する（新しいタブ）</button>
+        <span id="copied" style="font-size:11.5px;color:var(--green);display:none;">コピーしました</span>
+      </div>
+    </div>
+
+    <details style="margin-top:14px;">
+      <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--text-sub);">職種を限定して配る場合（7職種別）</summary>
+      <p class="ex-note" style="margin:8px 0 10px;">対象の職種が決まっている場合は、その職種のリンクだけを配ってください。</p>
+      <div id="navi-links"></div>
+    </details>
+
+    <div class="note" style="margin-top:14px;">
+      学習者がこのリンクからナビを開くと、業務分野一覧の画面に「📤 進捗を報告する」ボタンが表示されます。<br>
+      一度開けば、次回以降は通常のURLで開いてもボタンが表示されます。<br>
+      報告の手順は <a href="fcm-report-guide.pdf" target="_blank" rel="noopener" style="color:var(--accent);">進捗報告ガイド（PDF）</a> をご覧ください。学習者にもお渡しください。
+    </div>
+  </section>
+
+  <!-- ── 4. 集計シート ── -->
+  <section class="sec">
+    <div class="sec-h">4. 集計シートを用意する</div>
+    <p class="lead">送信された「進捗報告」を、業務分野ごとに展開して集計するための雛形です。式は入力済みです。次のリンクを開くと「コピーを作成」と表示され、貴組織のGoogleドライブに複製されます。</p>
+    <div class="ex-label">集計シートの雛形</div>
+    <div class="codebox">https://docs.google.com/spreadsheets/d/1af40cOKc0cK_vRl3LV_c0H6mdG6LHaZsTp4M-BPoegE/copy</div>
+    <div class="row">
+      <button class="btn-sm" onclick="copySheet()">リンクをコピー</button>
+      <a class="btn-sm" href="https://docs.google.com/spreadsheets/d/1af40cOKc0cK_vRl3LV_c0H6mdG6LHaZsTp4M-BPoegE/copy" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block;">コピーを作成する（新しいタブ）</a>
+      <span id="copied-sheet" style="font-size:11.5px;color:var(--green);display:none;">コピーしました</span>
+    </div>
+    <div class="note">
+      Googleアカウントにログインした状態で開いてください。ログインしていない場合は、先にログイン画面が表示されます。<br>
+      コピー後の手順（フォームの紐づけ、シート名の変更、サンプル行の削除）は、<b>進捗管理担当者向け説明書の第6章</b>をご覧ください。
+    </div>
+    <div class="note" style="border-left-color:var(--danger);">
+      雛形の式は<b>Googleスプレッドシート専用</b>です。Microsoft Excelで開くとエラーになります。ダウンロードせず、Googleスプレッドシートのままお使いください。
+    </div>
+  </section>
+
+  <!-- ── 5. 運用上の注意 ── -->
+  <section class="sec">
+    <div class="sec-h">5. 運用上の注意（必ずお読みください）</div>
+    <ul>
+      <li><b>報告は「役割 × 級」ごとです。</b>若手社員／社員リーダー、3級／2級は別々に保存されます。3級と2級を並行して学習する学習者は、級を切り替えて2回報告します。集計は「氏名 × 役割 × 級」を1件として扱ってください。</li>
+      <li><b>複数回の報告を前提としてください。</b>フォームの「回答は1回のみ」設定は使用しないでください。月次報告ができなくなります。最新値は「氏名・役割・級ごとに最新のタイムスタンプの行」を採用します。</li>
+      <li><b>端末・ブラウザをまたぐと進捗は合算されません。</b>「報告は普段使う1台から」を職場であらかじめ決めてください。</li>
+      <li><b>ブラウザの閲覧データを削除すると進捗は消えます。</b>その後の報告値は0になります。学習の停滞を意味しません。</li>
+      <li><b>進捗は本人の自己申告です。</b>「○」「◎」は学習者本人が選択した自己評価であり、システムが正誤を判定した結果ではありません。集計値は「学習到達度」ではなく「<b>自己申告による進み具合</b>」として扱ってください。人事評価・処遇の直接の根拠として用いることは推奨しません。</li>
+      <li><b>個人情報は貴組織が直接取得します。</b>氏名・所属等はGoogleフォームを通じて貴組織が取得するものであり、FIAは受領も保存もしません。利用目的の明示、報告が任意か義務かの明示など、必要な対応は貴組織にて行ってください。</li>
+    </ul>
+  </section>
+
+  <p class="foot">
+    本コンテンツの著作権は一般社団法人日本フィットネス産業協会（FIA）に帰属します。<br>
+    複写・転載・再配布を禁止します。
+  </p>
+
+</div>
+
+<script>
+var BASE = 'https://fcmbyfia.github.io/fcm-info/navi/';
+var NAVIS = [
+  ['index',   '🏠 職種の一覧（すべての学習者向け）'],
+  ['py',      '🧘 ピラティス・ヨガ指導者'],
+  ['pt',      '💪 パーソナルトレーナー'],
+  ['j24h',    '🔑 24時間ジム運営者'],
+  ['kokyo',   '🏛️ 公共スポーツ施設'],
+  ['jusen',   '🩹 柔道整復師'],
+  ['rigaku',  '🦴 理学療法士'],
+  ['fshainn', '🏢 フィットネスクラブ社員']
+];
+var RF_RE = /^[A-Za-z0-9_-]+$/;
+var RC_RE = /^entry\.\d+$/;
+var cur = { rf:null, rc:null };
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showErr(title, body){
+  document.getElementById('err').innerHTML =
+    '<div class="msg msg-err"><b>' + esc(title) + '</b>' + body + '</div>';
+}
+function clearMsgs(){
+  document.getElementById('err').innerHTML = '';
+  document.getElementById('pick').innerHTML = '';
+  document.getElementById('out').classList.remove('show');
+}
+function clearAll(){ document.getElementById('src').value=''; clearMsgs(); document.getElementById('navi-links').innerHTML=''; cur={rf:null,rc:null}; }
+
+function gen(){
+  clearMsgs();
+  var raw = document.getElementById('src').value.trim();
+  if(!raw){ showErr('リンクが入力されていません。', '手順4でコピーしたURLを貼り付けてください。'); return; }
+
+  if(/\/forms\/d\/[^/]+\/edit/.test(raw)){
+    showErr('これは編集画面のURLです。', 'フォームの「⋮」→「回答を事前入力したリンクを取得」で得られるURLを貼り付けてください。');
+    return;
+  }
+  if(raw.indexOf('docs.google.com/forms') < 0){
+    showErr('GoogleフォームのURLではないようです。', 'https://docs.google.com/forms/d/e/… で始まるURLを貼り付けてください。');
+    return;
+  }
+
+  var mf = raw.match(/\/forms\/d\/e\/([A-Za-z0-9_-]+)/);
+  if(!mf){
+    showErr('フォームIDを読み取れませんでした。', '「回答を事前入力したリンクを取得」で得たURLを、途中で切らずに貼り付けてください。');
+    return;
+  }
+  var rf = mf[1];
+  if(!RF_RE.test(rf)){ showErr('フォームIDの形式が正しくありません。', 'URLをもう一度コピーし直してください。'); return; }
+
+  // entry.NNN=値 をすべて拾う
+  var entries = [], re = /[?&](entry\.\d+)=([^&#]*)/g, m;
+  while((m = re.exec(raw)) !== null){
+    entries.push({ id:m[1], val:decodeURIComponent(m[2].replace(/\+/g,' ')) });
+  }
+  if(entries.length === 0){
+    showErr('「進捗報告」の欄が見つかりません。',
+      '手順4で「進捗報告」欄に仮の文字（例：TEST）を入力してから、リンクを取得してください。');
+    return;
+  }
+  if(entries.length === 1){ build(rf, entries[0].id); return; }
+
+  // 複数の欄に事前入力されている場合は選ばせる
+  var html = '<div class="pick"><div class="pick-h">複数の質問に事前入力されています。「進捗報告」の欄を選んでください。</div>';
+  entries.forEach(function(e, i){
+    html += '<label><input type="radio" name="pk" value="' + esc(e.id) + '"' + (i===0?' checked':'') + '>'
+         +  '<span>' + esc(e.id) + '　（入力値：' + esc(e.val || '空欄') + '）</span></label>';
+  });
+  html += '<div class="row"><button class="btn-sm" onclick="pickDone(\'' + esc(rf) + '\')">この欄で作成する</button></div></div>';
+  document.getElementById('pick').innerHTML = html;
+}
+
+function pickDone(rf){
+  var el = document.querySelector('input[name=pk]:checked');
+  if(!el) return;
+  build(rf, el.value);
+}
+
+function build(rf, rc){
+  if(!RC_RE.test(rc)){ showErr('質問欄IDの形式が正しくありません。', 'entry. に続く数字である必要があります。'); return; }
+  cur = { rf:rf, rc:rc };
+  document.getElementById('v-rf').textContent = rf;
+  document.getElementById('v-rc').textContent = rc;
+  var qs = '?rf=' + rf + '&rc=' + rc;
+  document.getElementById('link').textContent = BASE + 'index.html' + qs;
+  var html = '';
+  NAVIS.slice(1).forEach(function(n){
+    var url = BASE + n[0] + '.html' + qs;
+    html += '<div class="result" style="margin-top:10px;">'
+         +  '<div class="result-l">' + n[1] + '</div>'
+         +  '<div class="link">' + esc(url) + '</div>'
+         +  '<div class="row"><button class="btn-sm" onclick="copyOne(this)">リンクをコピー</button></div>'
+         +  '</div>';
+  });
+  document.getElementById('navi-links').innerHTML = html;
+  document.getElementById('pick').innerHTML = '';
+  document.getElementById('err').innerHTML = '';
+  document.getElementById('out').classList.add('show');
+  document.getElementById('out').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function linkText(){ return document.getElementById('link').textContent; }
+
+function copyLink(){
+  var txt = linkText(); if(!txt) return;
+  var done = function(){
+    var c = document.getElementById('copied');
+    c.style.display = 'inline';
+    setTimeout(function(){ c.style.display = 'none'; }, 1800);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else { fallback(); }
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){ alert('コピーできませんでした。リンクを手動で選択してコピーしてください。'); }
+    document.body.removeChild(ta);
+  }
+}
+
+function copySheet(){
+  var txt = "https://docs.google.com/spreadsheets/d/1af40cOKc0cK_vRl3LV_c0H6mdG6LHaZsTp4M-BPoegE/copy";
+  var done = function(){
+    var c = document.getElementById('copied-sheet');
+    c.style.display = 'inline';
+    setTimeout(function(){ c.style.display = 'none'; }, 1800);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, function(){});
+  } else {
+    var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+}
+function copyOne(btn){
+  var box = btn.closest('.result').querySelector('.link');
+  var txt = box ? box.textContent : '';
+  if(!txt) return;
+  var done = function(){ var o=btn.textContent; btn.textContent='コピーしました'; setTimeout(function(){btn.textContent=o;},1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, function(){});
+  } else {
+    var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+}
+function openLink(){
+  var txt = linkText(); if(!txt) return;
+  window.open(txt, '_blank', 'noopener');
+}
+
+document.getElementById('src').addEventListener('keydown', function(e){
+  if((e.metaKey || e.ctrlKey) && e.key === 'Enter') gen();
+});
+</script>
+</body>
+</html>
